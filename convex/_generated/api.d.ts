@@ -14,6 +14,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as tracking from "../tracking";
 import type * as users from "../users";
 
 /**
@@ -25,6 +26,7 @@ import type * as users from "../users";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  tracking: typeof tracking;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

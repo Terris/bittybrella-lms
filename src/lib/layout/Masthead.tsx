@@ -13,9 +13,19 @@ import {
 } from "@/lib/ui";
 import Link from "next/link";
 import { useConvexAuth } from "convex/react";
+import { useTracking } from "../hooks/useTracking";
 
 export function Masthead() {
   const { isAuthenticated } = useConvexAuth();
+  const { trackEvent } = useTracking();
+
+  const trackNavigationEvent = (navigationLabel: string) => {
+    trackEvent({
+      event: `clicked ${navigationLabel} link`,
+      originatedFrom: "masthead",
+    });
+  };
+
   return (
     <div className="flex flex-row items-center justify-between w-full px-4 py-2 border-b lg:flex-col lg:w-auto lg:min-w-[260px] lg:border-b-0 lg:py-6 lg:px-8 lg:border-r lg:items-start lg:min-h-screen">
       <Link href="/">
@@ -23,7 +33,12 @@ export function Masthead() {
       </Link>
       {isAuthenticated && (
         <div className="flex flex-row gap-8 lg:flex-col lg:gap-4 lg:mb-auto lg:mt-8">
-          <Link href="/courses">My Courses</Link>
+          <Link
+            href="/my-courses"
+            onClick={() => trackNavigationEvent("my courses")}
+          >
+            My Courses
+          </Link>
         </div>
       )}
       <div className="flex flex-row items-center justify-between gap-4">
