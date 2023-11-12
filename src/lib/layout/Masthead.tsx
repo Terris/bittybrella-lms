@@ -10,13 +10,14 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  Text,
 } from "@/lib/ui";
 import Link from "next/link";
-import { useConvexAuth } from "convex/react";
 import { useTracking } from "../hooks/useTracking";
+import { useMe } from "../providers";
 
 export function Masthead() {
-  const { isAuthenticated } = useConvexAuth();
+  const { isAuthenticated, isAdmin } = useMe();
   const { trackEvent } = useTracking();
 
   const trackNavigationEvent = (navigationLabel: string) => {
@@ -39,6 +40,13 @@ export function Masthead() {
           >
             My Courses
           </Link>
+        </div>
+      )}
+      {isAdmin && (
+        <div className="flex flex-row gap-8 lg:flex-col lg:gap-4 lg:mb-auto lg:mt-8">
+          <Text className="text-xs tracking-widest">ADMIN MENU</Text>
+          <Link href="/admin">Admin</Link>
+          <Link href="/admin/courses">Courses</Link>
         </div>
       )}
       <div className="flex flex-row items-center justify-between gap-4">

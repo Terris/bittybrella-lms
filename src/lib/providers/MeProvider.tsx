@@ -7,27 +7,32 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useConvexAuth, useMutation } from "convex/react";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { useUser } from "@clerk/nextjs";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
 
 interface User {
   id: Id<"users">;
+  isAdmin?: boolean;
 }
 
 interface MeContextProps {
-  currentUser: User | null;
-  isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
+  isAuthenticated: boolean;
+  meId: Id<"users"> | null;
+  me: User | null;
+  isAdmin?: boolean;
 }
 
 const initialProps = {
-  currentUser: null,
-  isAuthenticated: false,
   loading: false,
   error: null,
+  isAuthenticated: false,
+  me: null,
+  meId: null,
+  isAdmin: false,
 };
 
 export const MeContext = createContext<MeContextProps>(initialProps);
@@ -40,18 +45,17 @@ export const MeProvider = ({ children }: MeProviderProps) => {
   const { isAuthenticated, isLoading: convexAuthIsLoading } = useConvexAuth();
   const { user: clerkUser, isLoaded: clerkUserIsLoaded } = useUser();
 
-  console.log("CLERK USER", clerkUser);
-
   const [loadingDBUser, setLoadingDBUser] = useState<boolean>(
     initialProps.loading
   );
-  const [currentUser, setCurrentUser] = useState<User | null>(
-    initialProps.currentUser
-  );
+  const [meId, setMeId] = useState<Id<"users"> | null>(initialProps.meId);
   const [dbError, setDBError] = useState<string | null>(initialProps.error);
 
+  const saveUser = useMutation(api.users.store);
+  const dbUserQueryArgs = meId ? { id: meId as Id<"users"> } : "skip";
+  const dbUserData = useQuery(api.users.get, dbUserQueryArgs);
+
   // Check for db user and store new user if user doesn't exist
-  const storeUser = useMutation(api.users.store);
   useEffect(() => {
     if (!isAuthenticated) {
       return;
@@ -59,8 +63,8 @@ export const MeProvider = ({ children }: MeProviderProps) => {
     async function createUser() {
       try {
         setLoadingDBUser(true);
-        const id = await storeUser();
-        setCurrentUser({ id });
+        const id = await saveUser();
+        setMeId(id);
       } catch (error: any) {
         setDBError(error.message);
       } finally {
@@ -68,15 +72,30 @@ export const MeProvider = ({ children }: MeProviderProps) => {
       }
     }
     createUser();
-    return () => setCurrentUser(null);
-  }, [isAuthenticated, storeUser, clerkUser?.id]);
+    return () => setMeId(null);
+  }, [isAuthenticated, saveUser, clerkUser?.id]);
+
+  const me = dbUserData
+    ? {
+        id: dbUserData._id,
+        isAdmin: dbUserData.isAdmin,
+      }
+    : null;
+
+  const isAdmin = me?.isAdmin;
 
   return (
     <MeContext.Provider
       value={{
-        currentUser,
         isAuthenticated,
-        loading: !clerkUserIsLoaded || loadingDBUser || convexAuthIsLoading,
+        me,
+        meId,
+        isAdmin,
+        loading:
+          !dbUserData ||
+          !clerkUserIsLoaded ||
+          loadingDBUser ||
+          convexAuthIsLoading,
         error: dbError,
       }}
     >

@@ -6,7 +6,7 @@ interface TextLinkProps extends LinkProps {
 
 export function TextLink({ children, ...rest }: TextLinkProps) {
   return (
-    <Link className="color-primary" {...rest}>
+    <Link className="color-primary hover:color-secondary" {...rest}>
       {children}
     </Link>
   );
