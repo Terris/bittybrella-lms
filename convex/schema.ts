@@ -13,4 +13,9 @@ export default defineSchema({
     originatedFrom: v.string(),
     metaData: v.optional(v.any()),
   }),
+  courses: defineTable({
+    title: v.string(),
+    description: v.string(),
+    isPublished: v.boolean(),
+  }),
 });

@@ -5,5 +5,6 @@ export * from "./Dialog";
 export * from "./DropdownMenu";
 export * from "./Input";
 export * from "./Label";
+export * from "./Table";
 export * from "./TextLink";
 export * from "./Text";

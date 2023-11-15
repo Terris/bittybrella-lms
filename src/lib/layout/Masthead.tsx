@@ -43,7 +43,7 @@ export function Masthead() {
         </div>
       )}
       {isAdmin && (
-        <div className="flex flex-row gap-8 lg:flex-col lg:gap-4 lg:mb-auto lg:mt-8">
+        <div className="flex flex-row gap-8 lg:flex-col lg:gap-4 lg:mb-8 lg:mt-auto">
           <Text className="text-xs tracking-widest">ADMIN MENU</Text>
           <Link href="/admin">Admin</Link>
           <Link href="/admin/courses">Courses</Link>
