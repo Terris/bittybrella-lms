@@ -1,8 +1,8 @@
 "use client";
 
-import { PageContent, PageHeader } from "@/lib/layout";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
+import { PageContent, PageHeader } from "@/lib/layout";
 import {
   Table,
   TableBody,
@@ -12,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/lib/ui";
+import { CreateCourseForm } from "./CreateCourseForm";
 
 export default function AdminPage() {
   const coursesData = useQuery(api.courses.getAll);
@@ -23,10 +24,11 @@ export default function AdminPage() {
           { href: "/admin", label: "Admin" },
           { href: "/admin/courses", label: "Courses" },
         ]}
+        renderActions={<CreateCourseForm />}
       />
       <PageContent>
         <Table>
-          <TableCaption>A list of all courses.</TableCaption>
+          {!coursesData && <TableCaption>No courses yet.</TableCaption>}
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">Title</TableHead>

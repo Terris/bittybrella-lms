@@ -3,6 +3,7 @@ import { Inter as FontSans } from "next/font/google";
 import { AppProviders } from "@/lib/providers";
 import { Masthead, Main } from "@/lib/layout";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/lib/ui";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <div className="flex flex-col lg:flex-row">
             <Masthead />
             <Main>{children}</Main>
+            <Toaster />
           </div>
         </AppProviders>
       </body>

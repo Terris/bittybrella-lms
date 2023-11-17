@@ -43,9 +43,11 @@ export function Masthead() {
         </div>
       )}
       {isAdmin && (
-        <div className="flex flex-row gap-8 lg:flex-col lg:gap-4 lg:mb-8 lg:mt-auto">
+        <div className="flex flex-row gap-8 items-center lg:items-start lg:flex-col lg:gap-4 lg:mb-8 lg:mt-auto">
           <Text className="text-xs tracking-widest">ADMIN MENU</Text>
+
           <Link href="/admin">Admin</Link>
+
           <Link href="/admin/courses">Courses</Link>
         </div>
       )}
@@ -54,9 +56,7 @@ export function Masthead() {
         {isAuthenticated ? (
           <UserButton afterSignOutUrl="/" />
         ) : (
-          <Button>
-            <SignInButton mode="modal" />
-          </Button>
+          <SignInButton mode="modal" />
         )}
       </div>
     </div>
