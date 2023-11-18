@@ -45,5 +45,6 @@ export const update = mutation({
       isPublished:
         isPublished === undefined ? existingCourse?.isPublished : isPublished,
     });
+    return await ctx.db.get(id);
   },
 });

@@ -9,12 +9,14 @@ import { Id } from "../../../../convex/_generated/dataModel";
 import { Pencil } from "lucide-react";
 import { Button } from "@/lib/ui";
 
+// Define the fields that can be edited
 export interface Course {
   title: string;
   description: string;
   isPublished: boolean;
 }
 
+// Define the validation schema
 const validationSchema = Yup.object().shape({
   title: Yup.string()
     .max(50, "Title must be less than 50 characters")
@@ -25,23 +27,34 @@ const validationSchema = Yup.object().shape({
   isPublished: Yup.boolean().optional(),
 });
 
-const courseFormFields = [
+// Configure the fields for diplay
+const fields = [
   { name: "title", label: "Title", initialValue: "" },
   { name: "description", label: "Description", initialValue: "" },
   {
     name: "isPublished",
     label: "Published?",
-    type: "switch" as AdminFieldtype,
+    fieldtype: "switch" as AdminFieldtype,
     initialValue: false,
   },
 ];
+
+// Set toast messages for success and error
+const successMessage = "Course saved.";
+const errorMessage = "Something went wrong trying to edit course.";
+
+// Set the form title
+const formTitle = "Edit course";
 
 interface EditCourseFormProps {
   courseId: Id<"courses">;
 }
 
 export const EditCourseForm = ({ courseId }: EditCourseFormProps) => {
+  // Fetch the course to edit
   const course = useQuery(api.courses.get, { id: courseId });
+
+  // Define the mutation
   const editCourse = useMutation(api.courses.update);
 
   const { toast } = useToast();
@@ -53,17 +66,18 @@ export const EditCourseForm = ({ courseId }: EditCourseFormProps) => {
     if (result) {
       toast({
         title: "Success!",
-        description: "Saved course.",
+        description: successMessage,
       });
     } else {
       toast({
         variant: "destructive",
         title: "Error!",
-        description: "Something went wrong trying to edit course.",
+        description: errorMessage,
       });
     }
   }
 
+  // Set initial values
   const initialValues = {
     title: course?.title ?? "",
     description: course?.description ?? "",
@@ -73,14 +87,14 @@ export const EditCourseForm = ({ courseId }: EditCourseFormProps) => {
   const courseFormConfig: AdminFormConfig<Course> = {
     validationSchema,
     initialValues,
-    fields: courseFormFields,
+    fields,
     onSubmit,
   };
 
   return (
     <AdminForm<Course>
       config={courseFormConfig}
-      formTitle={"Edit course"}
+      formTitle={formTitle}
       renderTrigger={
         <Button variant="ghost" size="sm">
           <Pencil className="h-4 w-4" />

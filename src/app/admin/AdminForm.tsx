@@ -135,7 +135,9 @@ export const AdminFormField = ({
           />
         )}
         {meta.touched && meta.error ? (
-          <Text className="text-destructive">{meta.error}</Text>
+          <Text className="text-destructive" size="sm">
+            {meta.error}
+          </Text>
         ) : null}
       </div>
     </div>
