@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { AdminFieldtype, AdminForm, AdminFormConfig } from "../AdminForm";
-import { useToast } from "@/lib/hooks/use-toast";
+import { useToast } from "@/lib/hooks/useToast";
 
 export interface Course {
   title: string;
@@ -60,7 +60,7 @@ export const CreateCourseForm = () => {
   }
 
   const courseFormConfig: AdminFormConfig<Course> = {
-    schema: CourseFormSchema,
+    validationSchema: CourseFormSchema,
     initialValues: courseFormInitialValues,
     fields: courseFormFields,
     onSubmit,
@@ -70,7 +70,6 @@ export const CreateCourseForm = () => {
     <AdminForm<Course>
       config={courseFormConfig}
       formTitle={"Create new course"}
-      triggerLabel={"Create course"}
     />
   );
 };

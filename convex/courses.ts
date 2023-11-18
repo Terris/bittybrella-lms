@@ -8,6 +8,13 @@ export const getAll = query({
   },
 });
 
+export const get = query({
+  args: { id: v.id("courses") },
+  handler: async (ctx, { id }) => {
+    return await ctx.db.get(id);
+  },
+});
+
 export const create = mutation({
   args: {
     title: v.string(),
@@ -19,6 +26,24 @@ export const create = mutation({
       title,
       description,
       isPublished,
+    });
+  },
+});
+
+export const update = mutation({
+  args: {
+    id: v.id("courses"),
+    title: v.string(),
+    description: v.string(),
+    isPublished: v.boolean(),
+  },
+  handler: async (ctx, { id, title, description, isPublished }) => {
+    const existingCourse = await ctx.db.get(id);
+    await ctx.db.patch(id, {
+      title: title ?? existingCourse?.title,
+      description: description ?? existingCourse?.description,
+      isPublished:
+        isPublished === undefined ? existingCourse?.isPublished : isPublished,
     });
   },
 });

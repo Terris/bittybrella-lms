@@ -16,7 +16,7 @@ import {
 import { Form, Formik, FormikValues, useField } from "formik";
 
 export interface AdminFormConfig<CustomFormValues> {
-  schema: any;
+  validationSchema: any;
   fields: AdminFormField[];
   initialValues: CustomFormValues;
   onSubmit: (values: CustomFormValues) => Promise<void>;
@@ -25,22 +25,34 @@ export interface AdminFormConfig<CustomFormValues> {
 
 export interface AdminFormProps<CustomFormValues> {
   formTitle: string;
+  renderTrigger?: React.ReactNode;
   formDescription?: string;
-  triggerLabel: string;
   config: AdminFormConfig<CustomFormValues>;
 }
 
 export const AdminForm = <CustomFormValues extends FormikValues>({
   formTitle,
+  renderTrigger,
   formDescription,
-  triggerLabel,
   config,
 }: AdminFormProps<CustomFormValues>) => {
-  const { schema, initialValues, fields, onSubmit, submitButtonLabel } = config;
+  const {
+    validationSchema,
+    initialValues,
+    fields,
+    onSubmit,
+    submitButtonLabel,
+  } = config;
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline">{triggerLabel}</Button>
+        {renderTrigger ? (
+          renderTrigger
+        ) : (
+          <Button variant="outline" size="sm">
+            {formTitle}
+          </Button>
+        )}
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
@@ -51,7 +63,7 @@ export const AdminForm = <CustomFormValues extends FormikValues>({
         </SheetHeader>
         <Formik<CustomFormValues>
           initialValues={initialValues}
-          validationSchema={schema}
+          validationSchema={validationSchema}
           onSubmit={onSubmit}
         >
           {({ isSubmitting }) => (

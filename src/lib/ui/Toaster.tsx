@@ -9,7 +9,7 @@ import {
   ToastViewport,
 } from "@/lib/ui/Toast";
 
-import { useToast } from "@/lib/hooks/use-toast";
+import { useToast } from "@/lib/hooks/useToast";
 
 export function Toaster() {
   const { toasts } = useToast();
