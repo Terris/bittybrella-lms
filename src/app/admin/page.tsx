@@ -1,6 +1,6 @@
 import { PageContent, PageHeader } from "@/lib/layout";
 
-export default function AdminPage() {
+export default function AdminCoursesPage() {
   return (
     <>
       <PageHeader breadcrumbs={[{ href: "/admin", label: "Admin" }]} />

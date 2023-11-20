@@ -1,15 +1,10 @@
 "use client";
 
-import { useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
 import { PageContent, PageHeader } from "@/lib/layout";
 import { CreateCourseForm } from "./CreateCourseForm";
-import { columns } from "./CoursesTableConfig";
-import { AdminTable } from "../AdminTable";
+import { CoursesForm } from "./CoursesTable";
 
 export default function AdminPage() {
-  const coursesData = useQuery(api.courses.getAll);
-
   return (
     <>
       <PageHeader
@@ -20,7 +15,7 @@ export default function AdminPage() {
         renderActions={<CreateCourseForm />}
       />
       <PageContent>
-        {coursesData && <AdminTable columns={columns} data={coursesData} />}
+        <CoursesForm />
       </PageContent>
     </>
   );

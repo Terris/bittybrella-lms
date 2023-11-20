@@ -1,18 +1,20 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Check, X } from "lucide-react";
-import { Text } from "@/lib/ui";
+import { useQuery } from "convex/react";
 import { EditCourseForm } from "./EditCourseForm";
 import { Id } from "../../../../convex/_generated/dataModel";
-import { CopyToClipboardButton } from "@/lib/ui/CopyToClipboardButton";
+import { api } from "../../../../convex/_generated/api";
+import { Text, CopyToClipboardButton } from "@/lib/ui";
+import { AdminTable } from "../AdminTable";
 
-export type CourseRow = {
+interface CourseRow {
   _id: string;
   title: string;
   description: string;
   isPublished: boolean;
-};
+}
 
-export const columns: ColumnDef<CourseRow>[] = [
+const columns: ColumnDef<CourseRow>[] = [
   {
     accessorKey: "title",
     header: "Title",
@@ -59,3 +61,9 @@ export const columns: ColumnDef<CourseRow>[] = [
     ),
   },
 ];
+
+export const CoursesForm = () => {
+  const coursesData = useQuery(api.courses.getAll);
+  if (!coursesData) return null;
+  return <AdminTable columns={columns} data={coursesData} />;
+};

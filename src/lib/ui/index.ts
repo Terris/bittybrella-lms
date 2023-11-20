@@ -1,6 +1,7 @@
 export * from "./Alert";
 export * from "./Button";
 export * from "./Card";
+export * from "./CopyToClipboardButton";
 export * from "./Dialog";
 export * from "./DropdownMenu";
 export * from "./Input";

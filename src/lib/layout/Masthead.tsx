@@ -45,10 +45,9 @@ export function Masthead() {
       {isAdmin && (
         <div className="flex flex-row gap-8 items-center lg:items-start lg:flex-col lg:gap-4 lg:mb-8 lg:mt-auto">
           <Text className="text-xs tracking-widest">ADMIN MENU</Text>
-
           <Link href="/admin">Admin</Link>
-
           <Link href="/admin/courses">Courses</Link>
+          <Link href="/admin/modules">Modules</Link>
         </div>
       )}
       <div className="flex flex-row items-center justify-between gap-4">

@@ -18,4 +18,8 @@ export default defineSchema({
     description: v.string(),
     isPublished: v.boolean(),
   }),
+  modules: defineTable({
+    title: v.string(),
+    description: v.string(),
+  }),
 });
