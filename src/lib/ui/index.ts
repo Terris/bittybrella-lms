@@ -6,6 +6,7 @@ export * from "./Dialog";
 export * from "./DropdownMenu";
 export * from "./Input";
 export * from "./Label";
+export * from "./Menubar";
 export * from "./Sheet";
 export * from "./Switch";
 export * from "./Table";

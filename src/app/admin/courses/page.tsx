@@ -3,6 +3,7 @@
 import { PageContent, PageHeader } from "@/lib/layout";
 import { CreateCourseForm } from "./CreateCourseForm";
 import { CoursesForm } from "./CoursesTable";
+import { ContentEditor } from "../ContentEditor";
 
 export default function AdminPage() {
   return (
@@ -16,6 +17,7 @@ export default function AdminPage() {
       />
       <PageContent>
         <CoursesForm />
+        <ContentEditor />
       </PageContent>
     </>
   );

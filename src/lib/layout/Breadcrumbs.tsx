@@ -11,16 +11,16 @@ export interface BreadcrumbsProps {
 }
 export const Breadcrumbs = ({ breadcrumbs }: BreadcrumbsProps) => {
   return (
-    <p className="text-xs flex gap-4">
+    <div className="text-xs flex gap-4">
       <TextLink
         href="/"
         className={breadcrumbs?.length === 0 ? "font-bold" : ""}
       >
         Home
-      </TextLink>{" "}
-      {breadcrumbs?.length && "/"}{" "}
+      </TextLink>
+      {breadcrumbs?.length && " / "}
       {breadcrumbs?.map((bc, index) => (
-        <>
+        <span key={bc.href} className="flex gap-4">
           <Link
             href={bc.href}
             className={index + 1 === breadcrumbs.length ? "font-bold" : ""}
@@ -28,8 +28,8 @@ export const Breadcrumbs = ({ breadcrumbs }: BreadcrumbsProps) => {
             {bc.label}
           </Link>
           {index + 1 < breadcrumbs.length && " / "}
-        </>
+        </span>
       ))}
-    </p>
+    </div>
   );
 };

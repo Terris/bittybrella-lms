@@ -31,9 +31,9 @@ const columns: ColumnDef<CourseRow>[] = [
       return (
         <div className="">
           {isPublished ? (
-            <Check className="h-4 w-4" color="green" />
+            <Check className="h-4 w-4 text-primary" />
           ) : (
-            <X className="h-4 w-4" color="red" />
+            <X className="h-4 w-4 text-destructive" />
           )}
         </div>
       );
