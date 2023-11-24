@@ -28,7 +28,7 @@ export function Masthead() {
   };
 
   return (
-    <div className="flex flex-row items-center justify-between w-full px-4 py-2 border-b lg:flex-col lg:w-auto lg:min-w-[260px] lg:border-b-0 lg:py-6 lg:px-8 lg:border-r lg:items-start lg:min-h-screen">
+    <div className="flex flex-row items-center justify-between w-full px-4 py-2 border-b lg:fixed lg:flex-col lg:w-[260px] lg:border-b-0 lg:py-6 lg:px-8 lg:border-r lg:items-start lg:h-screen">
       <Link href="/">
         <PocketKnife className="text-emerald-700" />
       </Link>

@@ -17,6 +17,7 @@ export default defineSchema({
     title: v.string(),
     description: v.string(),
     isPublished: v.boolean(),
+    moduleIds: v.optional(v.array(v.id("modules"))),
   }),
   modules: defineTable({
     title: v.string(),

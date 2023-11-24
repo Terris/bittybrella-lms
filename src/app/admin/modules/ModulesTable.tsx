@@ -5,6 +5,7 @@ import { Id } from "../../../../convex/_generated/dataModel";
 import { api } from "../../../../convex/_generated/api";
 import { Text, CopyToClipboardButton } from "@/lib/ui";
 import { AdminTable } from "../AdminTable";
+import Link from "next/link";
 
 interface ModuleRow {
   _id: string;
@@ -16,6 +17,13 @@ const columns: ColumnDef<ModuleRow>[] = [
   {
     accessorKey: "title",
     header: "Title",
+    cell: ({ row }) => {
+      return (
+        <Link href={`/admin/modules/${row.original._id}`}>
+          {row.original.title}
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "description",
@@ -37,7 +45,7 @@ const columns: ColumnDef<ModuleRow>[] = [
   },
   {
     id: "edit",
-    header: "Edit",
+    header: "Quick Edit",
     cell: ({ row }) => (
       <EditModuleForm moduleId={row.original._id as Id<"modules">} />
     ),

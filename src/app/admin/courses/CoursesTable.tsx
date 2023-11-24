@@ -4,8 +4,9 @@ import { useQuery } from "convex/react";
 import { EditCourseForm } from "./EditCourseForm";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { api } from "../../../../convex/_generated/api";
-import { Text, CopyToClipboardButton } from "@/lib/ui";
+import { Text, CopyToClipboardButton, Button } from "@/lib/ui";
 import { AdminTable } from "../AdminTable";
+import Link from "next/link";
 
 interface CourseRow {
   _id: string;
@@ -18,6 +19,13 @@ const columns: ColumnDef<CourseRow>[] = [
   {
     accessorKey: "title",
     header: "Title",
+    cell: ({ row }) => {
+      return (
+        <Link href={`/admin/courses/${row.original._id}`}>
+          {row.original.title}
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "description",
@@ -55,7 +63,7 @@ const columns: ColumnDef<CourseRow>[] = [
   },
   {
     id: "edit",
-    header: "Edit",
+    header: "Quick Edit",
     cell: ({ row }) => (
       <EditCourseForm courseId={row.original._id as Id<"courses">} />
     ),

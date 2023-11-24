@@ -1,10 +1,7 @@
-import { Button, Menubar } from "@/lib/ui";
-import {
-  EditorProvider,
-  FloatingMenu,
-  BubbleMenu,
-  useCurrentEditor,
-} from "@tiptap/react";
+"use client";
+
+import { Button } from "@/lib/ui";
+import { Editor, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import {
   Bold,
@@ -30,27 +27,26 @@ const extensions = [StarterKit];
 const content = "<p>Hello World!</p>";
 
 export const ContentEditor = () => {
+  const editor = useEditor({
+    extensions,
+    content,
+  });
+
   return (
-    <EditorProvider
-      extensions={extensions}
-      content={content}
-      slotBefore={<ToolBar />}
-    >
-      {/* <FloatingMenu>Floating menu</FloatingMenu> */}
-      {/* <BubbleMenu>This is the bubble menu</BubbleMenu> */}
-    </EditorProvider>
+    <div className="p-4 border rounded">
+      <ToolBar editor={editor} />
+      <EditorContent editor={editor} />
+    </div>
   );
 };
 
-const ToolBar = () => {
-  const { editor } = useCurrentEditor();
-
+const ToolBar = ({ editor }: { editor: Editor | null }) => {
   if (!editor) {
     return null;
   }
 
   return (
-    <div className="flex gap-1 items-center">
+    <div className="flex gap-1 items-center pb-2 mb-4 border-b">
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
@@ -58,6 +54,7 @@ const ToolBar = () => {
       >
         <Bold className="w-4 h-4" />
       </ToolbarButton>
+
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleItalic().run()}
         disabled={!editor.can().chain().focus().toggleItalic().run()}
@@ -65,6 +62,7 @@ const ToolBar = () => {
       >
         <Italic className="w-4 h-4" />
       </ToolbarButton>
+
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleStrike().run()}
         disabled={!editor.can().chain().focus().toggleStrike().run()}
@@ -72,6 +70,7 @@ const ToolBar = () => {
       >
         <Strikethrough className="w-4 h-4" />
       </ToolbarButton>
+
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleCode().run()}
         disabled={!editor.can().chain().focus().toggleCode().run()}
@@ -93,12 +92,14 @@ const ToolBar = () => {
       >
         <Heading1 className="w-4 h-4" />
       </ToolbarButton>
+
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
         isActive={editor.isActive("heading", { level: 2 })}
       >
         <Heading2 className="w-4 h-4" />
       </ToolbarButton>
+
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
         isActive={editor.isActive("heading", { level: 3 })}
@@ -112,35 +113,41 @@ const ToolBar = () => {
       >
         <List className="w-4 h-4" />
       </ToolbarButton>
+
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
         isActive={editor.isActive("orderedList")}
       >
         <ListOrdered className="w-4 h-4" />
       </ToolbarButton>
+
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
         isActive={editor.isActive("codeBlock")}
       >
         <SquareCode className="w-4 h-4" />
       </ToolbarButton>
+
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
         isActive={editor.isActive("blockquote")}
       >
         <Quote className="w-4 h-4" />
       </ToolbarButton>
+
       <ToolbarButton
         onClick={() => editor.chain().focus().setHorizontalRule().run()}
       >
         <Minus className="w-4 h-4" />
       </ToolbarButton>
+
       <ToolbarButton
         onClick={() => editor.chain().focus().undo().run()}
         disabled={!editor.can().chain().focus().undo().run()}
       >
         <Undo className="w-4 h-4" />
       </ToolbarButton>
+
       <ToolbarButton
         onClick={() => editor.chain().focus().redo().run()}
         disabled={!editor.can().chain().focus().redo().run()}

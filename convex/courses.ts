@@ -1,17 +1,29 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
-export const getAll = query({
-  args: {},
-  handler: async (ctx) => {
-    return await ctx.db.query("courses").order("desc").take(100);
-  },
-});
-
 export const get = query({
   args: { id: v.id("courses") },
   handler: async (ctx, { id }) => {
     return await ctx.db.get(id);
+  },
+});
+
+export const getWithModules = query({
+  args: { id: v.id("courses") },
+  handler: async (ctx, { id }) => {
+    const course = await ctx.db.get(id);
+    if (course?.moduleIds === undefined) return course;
+    const courseModules = await Promise.all(
+      (course?.moduleIds ?? []).map((moduleId) => ctx.db.get(moduleId))
+    );
+    return { ...course, courseModules };
+  },
+});
+
+export const getAll = query({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.db.query("courses").order("desc").take(100);
   },
 });
 

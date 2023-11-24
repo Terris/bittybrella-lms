@@ -8,18 +8,6 @@ export const getAll = query({
   },
 });
 
-// export const getAllByCourseId = query({
-//   args: {
-//     courseId: v.id("courses"),
-//   },
-//   handler: async (ctx, { courseId }) => {
-//     return await ctx.db
-//       .query("modules")
-//       .filter((q) => q.eq(q.field("courseId"), courseId))
-//       .collect();
-//   },
-// });
-
 export const get = query({
   args: {
     id: v.id("modules"),

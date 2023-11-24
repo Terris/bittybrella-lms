@@ -57,3 +57,59 @@
     @apply bg-background text-foreground;
   }
 }
+
+.tiptap {
+  outline: none;
+}
+
+.tiptap h1 {
+  font-size: 2rem;
+  line-height: 1.25;
+}
+
+.tiptap h2 {
+  font-size: 1.5rem;
+}
+
+.tiptap h3 {
+  font-size: 1.25rem;
+}
+
+.tiptap hr {
+  margin: 1rem 0;
+}
+
+.tiptap code {
+  padding: 0.25rem;
+  font-size: 0.75rem;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
+  border-radius: 0.25rem;
+}
+.tiptap pre code {
+  padding: 0.5rem;
+  display: block;
+  line-height: 2;
+}
+.tiptap ul,
+.tiptap ol {
+  padding-left: 1rem;
+}
+
+.tiptap ul {
+  list-style: disc;
+}
+
+.tiptap ol {
+  list-style: decimal;
+}
+
+.tiptap blockquote {
+  padding: 1rem;
+  background: hsl(var(--accent));
+  border-radius: 0.25rem;
+}
+
+.tiptap blockquote hr {
+  border-color: hsl(var(--foreground));
+}
