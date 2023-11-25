@@ -27,8 +27,6 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
   const debouncedNewSectionTitle = useDebounce(newSectionTitle, 1000);
   const titleHasChanges = section.title !== debouncedNewSectionTitle;
 
-  console.log("Title has changes", titleHasChanges);
-
   // Update the db title when the debounced title value changes
   useEffect(() => {
     if (!titleHasChanges) {
@@ -50,7 +48,6 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
   }, [debouncedNewSectionTitle]);
 
   function handleSaveContent(content: string) {
-    console.log("SAVE CONTENT!");
     try {
       updateModuleSection({
         id: section._id,
