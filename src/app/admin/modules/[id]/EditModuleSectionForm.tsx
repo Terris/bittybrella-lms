@@ -47,20 +47,23 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedNewSectionTitle]);
 
-  function handleSaveContent(content: string) {
-    try {
-      updateModuleSection({
-        id: section._id,
-        content: content,
-      });
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.message,
-      });
-    }
-  }
+  const handleSaveContent = useCallback(
+    (content: string) => {
+      try {
+        updateModuleSection({
+          id: section._id,
+          content: content,
+        });
+      } catch (error: any) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: error.message,
+        });
+      }
+    },
+    [section._id, toast, updateModuleSection]
+  );
 
   return (
     <>

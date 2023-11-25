@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Loader } from "@/lib/ui";
+import { Button, Loader, Text } from "@/lib/ui";
 import { Editor, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import {
@@ -27,26 +27,29 @@ import { useEffect, useState } from "react";
 // define your extension array
 const extensions = [StarterKit];
 
+const emptyJSON = '""';
 interface ContentEditorProps {
   initialContent?: string;
   onChange?: (content: string) => void;
+  editable?: boolean;
 }
 
 export const ContentEditor = ({
-  initialContent,
+  initialContent = emptyJSON,
   onChange,
+  editable = true,
 }: ContentEditorProps) => {
   const [ready, setReady] = useState(false);
 
   const editor = useEditor({
     extensions,
-    content: JSON.parse(initialContent ?? "null"),
+    content: JSON.parse(initialContent === "" ? emptyJSON : initialContent),
   });
 
-  const editorJSON = editor?.getJSON();
-  const editorString = JSON.stringify(editorJSON);
-  const debouncedContent = useDebounce(editorString, 1000);
-  const hasChanges = editorString !== debouncedContent;
+  const contentString = JSON.stringify(editor?.getJSON());
+  const debouncedContent = useDebounce(contentString, 1000);
+  const hasChanges = initialContent !== debouncedContent;
+  const loading = !ready || hasChanges || contentString !== debouncedContent;
 
   // set the state to ready when the initialContent and debouncedContent are in sync
   useEffect(() => {
@@ -60,23 +63,25 @@ export const ContentEditor = ({
     }
   }, [ready, initialContent, debouncedContent]);
 
+  // Fire onChange when the debouncedContent changes
   useEffect(() => {
-    if (ready && hasChanges) {
-      onChange?.(debouncedContent);
-    }
-  }, [debouncedContent, hasChanges, onChange, ready]);
+    if (!ready || !hasChanges || !editable) return;
+    onChange?.(debouncedContent);
+  }, [debouncedContent, editable, hasChanges, onChange, ready]);
 
   return (
     <div className="border rounded">
-      <ToolBar editor={editor} />
+      {editable && <ToolBar editor={editor} />}
       <EditorContent editor={editor} className="p-4" />
-      <div className="flex border-t p-2 justify-end">
-        {!ready || hasChanges ? (
-          <Loader className="h-3 w-3 text-yellow-300" />
-        ) : (
-          <Check className="h-3 w-3 text-primary" />
-        )}
-      </div>
+      {editable && (
+        <div className="sticky bottom-0 z-50 bg-background flex border-t p-2 justify-end">
+          {loading ? (
+            <Loader className="h-3 w-3 text-yellow-300" />
+          ) : (
+            <Check className="h-3 w-3 text-primary" />
+          )}
+        </div>
+      )}
     </div>
   );
 };
@@ -87,7 +92,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
   }
 
   return (
-    <div className="sticky top-0 z-50 bg-background flex flex-wrap gap-1 items-center p-2 mb-4 border-b">
+    <div className="sticky top-0 z-50 bg-background flex flex-wrap gap-1 items-center p-2 border-b">
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}

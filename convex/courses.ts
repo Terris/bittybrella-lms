@@ -1,5 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { notEmpty } from "../lib/utils";
+import { Doc } from "./_generated/dataModel";
 
 export const get = query({
   args: { id: v.id("courses") },
@@ -12,11 +14,15 @@ export const getWithModules = query({
   args: { id: v.id("courses") },
   handler: async (ctx, { id }) => {
     const course = await ctx.db.get(id);
-    if (course?.moduleIds === undefined) return course;
+    if (course?.moduleIds === undefined)
+      return { ...course, modules: undefined };
     const courseModules = await Promise.all(
-      (course?.moduleIds ?? []).map((moduleId) => ctx.db.get(moduleId))
+      (course?.moduleIds).map((moduleId) => ctx.db.get(moduleId))
     );
-    return { ...course, courseModules };
+    const filteredCourseModules: Doc<"modules">[] =
+      courseModules.filter(notEmpty);
+
+    return { ...course, modules: filteredCourseModules };
   },
 });
 

@@ -49,25 +49,27 @@ export default function AdminModulePage({ params }: AdminModulePageProps) {
         </div>
         <hr />
         <div className="flex flex-col lg:flex-row">
-          <aside className="lg:w-1/5 pr-4">
-            <Text className="font-bold pb-4">Module Sections</Text>
-            {moduleData.sections?.map((section) => (
-              <Button
-                key={section?._id}
-                variant={
-                  currentModuleSectionId === section?._id
-                    ? "secondary"
-                    : "ghost"
-                }
-                onClick={() => setCurrentModuleSectionId(section?._id)}
-                className="w-full mb-4 text-left"
-              >
-                <div className="w-full text-left truncate">
-                  {section?.title ?? "Untitled section"}
-                </div>
-              </Button>
-            ))}
-            <CreateModuleSectionForm moduleId={params.id as Id<"modules">} />
+          <aside className="sticky top-0 lg:w-1/5 lg:pr-4">
+            <div className="sticky top-0">
+              <Text className="font-bold pt-2 pb-4">Module Sections</Text>
+              {moduleData.sections?.map((section) => (
+                <Button
+                  key={section?._id}
+                  variant={
+                    currentModuleSectionId === section?._id
+                      ? "secondary"
+                      : "ghost"
+                  }
+                  onClick={() => setCurrentModuleSectionId(section?._id)}
+                  className="w-full mb-4 text-left"
+                >
+                  <div className="w-full text-left truncate">
+                    {section?.title ?? "Untitled section"}
+                  </div>
+                </Button>
+              ))}
+              <CreateModuleSectionForm moduleId={params.id as Id<"modules">} />
+            </div>
           </aside>
           <div className="flex-1 lg:w-4/5 pl-4">
             {currentModuleSectionId && (

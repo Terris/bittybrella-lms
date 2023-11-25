@@ -1,10 +1,14 @@
 import "./globals.css";
-import { Source_Sans_3 as FontSans } from "next/font/google";
+import { Cabin as FontSans } from "next/font/google";
 import { AppProviders } from "@/lib/providers";
 import { Masthead, Main } from "@/lib/layout";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/lib/ui";
 
+/* FONT FAVORITES
+  Gabarito
+  Hanken Grotesk
+*/
 export const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
