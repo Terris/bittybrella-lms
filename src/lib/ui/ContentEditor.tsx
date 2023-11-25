@@ -1,10 +1,11 @@
 "use client";
 
-import { Button } from "@/lib/ui";
+import { Button, Loader } from "@/lib/ui";
 import { Editor, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import {
   Bold,
+  Check,
   Code,
   Heading1,
   Heading2,
@@ -20,6 +21,8 @@ import {
   Strikethrough,
   Undo,
 } from "lucide-react";
+import { useDebounce } from "../hooks/useDebounce";
+import { useEffect, useState } from "react";
 
 // define your extension array
 const extensions = [StarterKit];
@@ -33,18 +36,47 @@ export const ContentEditor = ({
   initialContent,
   onChange,
 }: ContentEditorProps) => {
+  const [ready, setReady] = useState(false);
+
   const editor = useEditor({
     extensions,
-    content: JSON.parse(initialContent ?? "{}"),
-    onUpdate: ({ editor }) => {
-      onChange?.(JSON.stringify(editor.getJSON()));
-    },
+    content: JSON.parse(initialContent ?? "null"),
   });
 
+  const editorJSON = editor?.getJSON();
+  const editorString = JSON.stringify(editorJSON);
+  const debouncedContent = useDebounce(editorString, 1000);
+  const hasChanges = editorString !== debouncedContent;
+
+  // set the state to ready when the initialContent and debouncedContent are in sync
+  useEffect(() => {
+    if (ready) return;
+    if (
+      !initialContent ||
+      initialContent === '""' ||
+      initialContent === debouncedContent
+    ) {
+      setReady(true);
+    }
+  }, [ready, initialContent, debouncedContent]);
+
+  useEffect(() => {
+    if (ready && hasChanges) {
+      onChange?.(debouncedContent);
+    }
+  }, [debouncedContent, hasChanges, onChange, ready]);
+
   return (
-    <div className="p-4 border rounded">
+    <div className="border rounded">
       <ToolBar editor={editor} />
-      <EditorContent editor={editor} />
+      <EditorContent editor={editor} className="p-4" />
+      <div className="flex border-t p-2 justify-end">
+        {!ready || hasChanges ? (
+          <Loader className="h-3 w-3 text-yellow-300" />
+        ) : (
+          <Check className="h-3 w-3 text-primary" />
+        )}
+      </div>
     </div>
   );
 };
@@ -55,7 +87,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
   }
 
   return (
-    <div className="flex flex-wrap gap-1 items-center pb-2 mb-4 border-b">
+    <div className="sticky top-0 z-50 bg-background flex flex-wrap gap-1 items-center p-2 mb-4 border-b">
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
@@ -149,20 +181,21 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
       >
         <Minus className="w-4 h-4" />
       </ToolbarButton>
+      <div>
+        <ToolbarButton
+          onClick={() => editor.chain().focus().undo().run()}
+          disabled={!editor.can().chain().focus().undo().run()}
+        >
+          <Undo className="w-4 h-4" />
+        </ToolbarButton>
 
-      <ToolbarButton
-        onClick={() => editor.chain().focus().undo().run()}
-        disabled={!editor.can().chain().focus().undo().run()}
-      >
-        <Undo className="w-4 h-4" />
-      </ToolbarButton>
-
-      <ToolbarButton
-        onClick={() => editor.chain().focus().redo().run()}
-        disabled={!editor.can().chain().focus().redo().run()}
-      >
-        <Redo className="w-4 h-4" />
-      </ToolbarButton>
+        <ToolbarButton
+          onClick={() => editor.chain().focus().redo().run()}
+          disabled={!editor.can().chain().focus().redo().run()}
+        >
+          <Redo className="w-4 h-4" />
+        </ToolbarButton>
+      </div>
     </div>
   );
 };

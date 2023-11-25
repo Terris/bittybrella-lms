@@ -27,7 +27,7 @@ export const create = mutation({
       moduleId,
       type,
       title: defaultSectionTitle,
-      content: "{}",
+      content: '""',
     });
 
     return await ctx.db.patch(moduleId, {

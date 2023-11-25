@@ -25,32 +25,13 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
   const updateModuleSection = useMutation(api.moduleSections.update);
   const [newSectionTitle, setNewSectionTitle] = useState<string>(section.title);
   const debouncedNewSectionTitle = useDebounce(newSectionTitle, 1000);
-  const [newSectionContent, setNewSectionContent] = useState<
-    string | undefined
-  >(section.content);
-  const debouncedNewSectionContent = useDebounce(newSectionContent, 1000);
-  const [status, setStatus] = useState<"SAVING" | "SAVED">("SAVED");
+  const titleHasChanges = section.title !== debouncedNewSectionTitle;
 
-  useEffect(() => {
-    if (
-      newSectionTitle !== debouncedNewSectionTitle ||
-      newSectionContent !== debouncedNewSectionContent
-    ) {
-      setStatus("SAVING");
-    } else {
-      setStatus("SAVED");
-    }
-  }, [
-    debouncedNewSectionContent,
-    debouncedNewSectionTitle,
-    newSectionContent,
-    newSectionTitle,
-    status,
-  ]);
+  console.log("Title has changes", titleHasChanges);
 
   // Update the db title when the debounced title value changes
   useEffect(() => {
-    if (section.title === debouncedNewSectionTitle) {
+    if (!titleHasChanges) {
       return;
     }
     try {
@@ -68,13 +49,12 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedNewSectionTitle]);
 
-  // Update the db content when the debounced content value changes
-  useEffect(() => {
-    if (section.content === debouncedNewSectionContent) return;
+  function handleSaveContent(content: string) {
+    console.log("SAVE CONTENT!");
     try {
       updateModuleSection({
         id: section._id,
-        content: debouncedNewSectionContent,
+        content: content,
       });
     } catch (error: any) {
       toast({
@@ -83,8 +63,7 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
         description: error.message,
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedNewSectionContent]);
+  }
 
   return (
     <>
@@ -98,14 +77,8 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
       </div>
       <ContentEditor
         initialContent={section.content}
-        onChange={(content: string) => setNewSectionContent(content)}
+        onChange={handleSaveContent}
       />
-      <div className="text-right py-4">
-        <Badge className="ml-4">
-          {status === "SAVING" && <Loader className="w-2 h-2 mr-2" />}
-          {status}
-        </Badge>
-      </div>
     </>
   );
 };
