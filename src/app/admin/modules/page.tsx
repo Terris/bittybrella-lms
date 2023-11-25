@@ -3,6 +3,7 @@
 import { PageContent, PageHeader } from "@/lib/layout";
 import { CreateModuleForm } from "./CreateModuleForm";
 import { ModulesForm } from "./ModulesTable";
+import { Text } from "@/lib/ui";
 
 export default function AdminModulesPage() {
   return (
@@ -15,6 +16,8 @@ export default function AdminModulesPage() {
         renderActions={<CreateModuleForm />}
       />
       <PageContent>
+        <Text className="text-2xl font-semibold">Modules</Text>
+        <hr />
         <ModulesForm />
       </PageContent>
     </>

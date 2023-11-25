@@ -9,7 +9,7 @@ interface MainProps {
 
 export function Main({ children }: MainProps) {
   return (
-    <main className="w-full flex flex-col items-start justify-start px-24 py-4 lg:ml-[260px]">
+    <main className="w-full flex flex-col items-start justify-start px-24 py-4 lg:ml-[160px]">
       {children}
     </main>
   );

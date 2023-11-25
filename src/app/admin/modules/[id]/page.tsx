@@ -42,9 +42,7 @@ export default function AdminModulePage({ params }: AdminModulePageProps) {
       />
       <PageContent>
         <div className="space-y-0.5">
-          <Text className="text-2xl font-bold tracking-tight">
-            {moduleData.title}
-          </Text>
+          <Text className="text-2xl font-semibold">{moduleData.title}</Text>
           <Text className="text-muted-foreground">
             {moduleData.description}
           </Text>

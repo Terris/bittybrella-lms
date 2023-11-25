@@ -1,11 +1,15 @@
 import { PageContent, PageHeader } from "@/lib/layout";
+import { Text } from "@/lib/ui";
 
 export default function AdminCoursesPage() {
   return (
     <>
       <PageHeader breadcrumbs={[{ href: "/admin", label: "Admin" }]} />
       <PageContent>
-        <h1>Admin</h1>
+        <div className="space-y-0.5">
+          <Text className="text-2xl font-semibold">Admin</Text>
+        </div>
+        <hr />
       </PageContent>
     </>
   );

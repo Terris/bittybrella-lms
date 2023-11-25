@@ -28,13 +28,11 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
       />
       <PageContent>
         <div className="space-y-0.5">
-          <Text className="text-2xl font-bold tracking-tight">
-            {course.title}
-          </Text>
+          <Text className="text-2xl font-semibold">{course.title}</Text>
           <Text className="text-muted-foreground">{course.description}</Text>
         </div>
         <hr />
-        <div className="flex flex-col lg:flex-row">
+        <div className="flex flex-col md:flex-row">
           <aside className="lg:w-1/5">Modules</aside>
           <div className="flex-1">Module Content</div>
         </div>

@@ -28,12 +28,13 @@ export function Masthead() {
   };
 
   return (
-    <div className="flex flex-row items-center justify-between w-full px-4 py-2 border-b lg:fixed lg:flex-col lg:w-[260px] lg:border-b-0 lg:py-6 lg:px-8 lg:border-r lg:items-start lg:h-screen">
-      <Link href="/">
+    <div className="flex flex-row items-center justify-between w-full px-4 py-2 border-b lg:fixed lg:flex-col lg:w-[160px] lg:border-b-0 lg:py-8 lg:px-8 lg:border-r lg:items-start lg:h-screen">
+      <Link href="/" className="lg:w-full lg:flex lg:justify-center">
         <PocketKnife className="text-emerald-700" />
       </Link>
+
       {isAuthenticated && (
-        <div className="flex flex-row gap-8 lg:flex-col lg:gap-4 lg:mb-auto lg:mt-8">
+        <div className="flex flex-row gap-8 lg:flex-col lg:w-full lg:gap-4 lg:mt-6 lg:border-t lg:pt-4">
           <Link
             href="/my-courses"
             onClick={() => trackNavigationEvent("my courses")}
@@ -43,20 +44,22 @@ export function Masthead() {
         </div>
       )}
       {isAdmin && (
-        <div className="flex flex-row gap-8 items-center lg:items-start lg:flex-col lg:gap-4 lg:mb-8 lg:mt-auto">
-          <Text className="text-xs tracking-widest">ADMIN MENU</Text>
+        <div className="flex flex-row gap-8 items-center lg:flex-col lg:items-start lg:gap-4 lg:mt-16 lg:mb-auto">
+          <Text className="text-xs tracking-widest font-bold">ADMIN MENU</Text>
           <Link href="/admin">Admin</Link>
           <Link href="/admin/courses">Courses</Link>
           <Link href="/admin/modules">Modules</Link>
         </div>
       )}
-      <div className="flex flex-row items-center justify-between gap-4">
+      <div className="flex flex-row items-center justify-between mt-auto gap-4 lg:w-full lg:flex-col">
         <ModeToggle />
-        {isAuthenticated ? (
-          <UserButton afterSignOutUrl="/" />
-        ) : (
-          <SignInButton mode="modal" />
-        )}
+        <div className="lg:w-full lg:flex lg:flex-col items-center lg:border-t lg:py-4">
+          {isAuthenticated ? (
+            <UserButton afterSignOutUrl="/" />
+          ) : (
+            <SignInButton mode="modal" />
+          )}
+        </div>
       </div>
     </div>
   );
@@ -73,7 +76,7 @@ function ModeToggle() {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="center">
         <DropdownMenuItem onClick={() => setTheme("light")}>
           Light
         </DropdownMenuItem>

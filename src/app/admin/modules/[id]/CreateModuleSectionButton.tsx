@@ -21,12 +21,11 @@ export function CreateModuleSectionForm({
 
   return (
     <Button
-      variant="outline"
-      size="sm"
-      className="w-full"
+      variant="ghost"
+      className="w-full text-left"
       onClick={handleCreateNewSection}
     >
-      New Section
+      <div className="w-full text-left italic">+ New Section</div>
     </Button>
   );
 }
