@@ -14,6 +14,8 @@ const DialogPortal = ({ ...props }: DialogPrimitive.DialogPortalProps) => (
 );
 DialogPortal.displayName = DialogPrimitive.Portal.displayName;
 
+const DialogClose = DialogPrimitive.Close;
+
 const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
@@ -110,6 +112,8 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
 export {
   Dialog,
+  DialogPortal,
+  DialogClose,
   DialogTrigger,
   DialogContent,
   DialogHeader,

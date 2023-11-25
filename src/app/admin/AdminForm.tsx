@@ -1,15 +1,15 @@
 import {
   Button,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
   Input,
   Label,
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
   Switch,
   Text,
 } from "@/lib/ui";
@@ -44,8 +44,8 @@ export const AdminForm = <CustomFormValues extends FormikValues>({
     submitButtonLabel,
   } = config;
   return (
-    <Sheet>
-      <SheetTrigger asChild>
+    <Dialog>
+      <DialogTrigger asChild>
         {renderTrigger ? (
           renderTrigger
         ) : (
@@ -53,14 +53,14 @@ export const AdminForm = <CustomFormValues extends FormikValues>({
             {formTitle}
           </Button>
         )}
-      </SheetTrigger>
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle>{formTitle}</SheetTitle>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{formTitle}</DialogTitle>
           {formDescription && (
-            <SheetDescription>{formDescription}</SheetDescription>
+            <DialogDescription>{formDescription}</DialogDescription>
           )}
-        </SheetHeader>
+        </DialogHeader>
         <Formik<CustomFormValues>
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -78,18 +78,18 @@ export const AdminForm = <CustomFormValues extends FormikValues>({
                   />
                 ))}
               </div>
-              <SheetFooter>
-                <SheetClose asChild>
+              <DialogFooter>
+                <DialogClose asChild>
                   <Button type="submit" disabled={isSubmitting}>
                     {submitButtonLabel ?? "Save"}
                   </Button>
-                </SheetClose>
-              </SheetFooter>
+                </DialogClose>
+              </DialogFooter>
             </Form>
           )}
         </Formik>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 };
 
