@@ -1,18 +1,15 @@
 import "./globals.css";
-import { Cabin as FontSans } from "next/font/google";
 import { AppProviders } from "@/lib/providers";
 import { Masthead, Main } from "@/lib/layout";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/lib/ui";
+import { fontSans } from "./fonts";
 
 /* FONT FAVORITES
   Gabarito
   Hanken Grotesk
+  Cabin
 */
-export const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
 
 export const metadata = {
   title: "BittyBrella",
@@ -29,8 +26,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body
         className={cn(
           "min-h-screen bg-background antialiased",
-          fontSans.className,
-          fontSans.variable
+          fontSans.className
         )}
       >
         <AppProviders>

@@ -34,7 +34,7 @@ export function Masthead() {
       </Link>
 
       {isAuthenticated && (
-        <div className="flex flex-row gap-8 lg:flex-col lg:w-full lg:gap-4 lg:mt-6 lg:border-t lg:pt-4">
+        <div className="flex flex-row gap-8 mr-auto ml-4 lg:mx-0 lg:flex-col lg:w-full lg:gap-4 lg:mt-6 lg:border-t lg:pt-4">
           <Link
             href="/my-courses"
             onClick={() => trackNavigationEvent("my courses")}
@@ -44,8 +44,10 @@ export function Masthead() {
         </div>
       )}
       {isAdmin && (
-        <div className="flex flex-row gap-8 items-center lg:flex-col lg:items-start lg:gap-4 lg:mt-16 lg:mb-auto">
-          <Text className="text-xs tracking-widest font-bold">ADMIN MENU</Text>
+        <div className="flex flex-row gap-8 items-center mr-4 lg:mr-0 lg:flex-col lg:items-start lg:gap-4 lg:mt-16 lg:mb-auto">
+          <Text className="text-xs tracking-widest font-bold hidden lg:block">
+            ADMIN MENU
+          </Text>
           <Link href="/admin">Admin</Link>
           <Link href="/admin/courses">Courses</Link>
           <Link href="/admin/modules">Modules</Link>

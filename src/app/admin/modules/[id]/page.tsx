@@ -49,8 +49,8 @@ export default function AdminModulePage({ params }: AdminModulePageProps) {
         </div>
         <hr />
         <div className="flex flex-col lg:flex-row">
-          <aside className="sticky top-0 lg:w-1/5 lg:pr-4">
-            <div className="sticky top-0">
+          <aside className="lg:w-1/4 lg:pr-4">
+            <div className="lg:sticky lg:top-0">
               <Text className="font-bold pt-2 pb-4">Module Sections</Text>
               {moduleData.sections?.map((section) => (
                 <Button
@@ -71,7 +71,7 @@ export default function AdminModulePage({ params }: AdminModulePageProps) {
               <CreateModuleSectionForm moduleId={params.id as Id<"modules">} />
             </div>
           </aside>
-          <div className="flex-1 lg:w-4/5 pl-4">
+          <div className="flex-1 lg:w-3/4 pl-4">
             {currentModuleSectionId && (
               <EditModuleSectionForm id={currentModuleSectionId} />
             )}

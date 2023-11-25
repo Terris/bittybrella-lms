@@ -4,7 +4,16 @@ import { useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
-import { Button, ContentEditor, ContentReader, Text } from "@/lib/ui";
+import {
+  Button,
+  ContentReader,
+  Text,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/lib/ui";
 import { useEffect, useState } from "react";
 
 interface AdminCoursePageProps {
@@ -16,14 +25,13 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
     id: params.id as Id<"courses">,
   });
 
-  const [currentModuleId, setCurrentModuleId] = useState<Id<"modules"> | null>(
-    null
-  );
+  const [selectedModuleId, setSelectedModuleId] =
+    useState<Id<"modules"> | null>(null);
 
   useEffect(() => {
-    if (!course?.modules?.[0]?._id || !!currentModuleId) return;
-    setCurrentModuleId(course?.modules?.[0]._id ?? null);
-  }, [course?.modules, currentModuleId]);
+    if (!course?.modules?.[0]?._id || !!selectedModuleId) return;
+    setSelectedModuleId(course?.modules?.[0]._id ?? null);
+  }, [course?.modules, selectedModuleId]);
 
   if (!course) return null;
 
@@ -46,27 +54,48 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
         </div>
         <hr />
         <div className="flex flex-col lg:flex-row">
-          <aside className="sticky top-0 lg:w-1/5 lg:pr-4">
-            <div className="sticky top-0">
+          <aside className="lg:w-1/4 lg:pr-4">
+            <div className="lg:sticky lg:top-0">
               <Text className="font-bold pt-2 pb-4">Modules</Text>
-              {course.modules?.map((module) => (
-                <Button
-                  key={module?._id}
-                  variant={
-                    currentModuleId === module?._id ? "secondary" : "ghost"
+              <div className="hidden lg:block">
+                {course.modules?.map((module) => (
+                  <Button
+                    key={module?._id}
+                    variant={
+                      selectedModuleId === module?._id ? "secondary" : "ghost"
+                    }
+                    onClick={() => setSelectedModuleId(module._id)}
+                    className="w-full mb-4 text-left"
+                  >
+                    <div className="w-full text-left truncate">
+                      {module?.title ?? "Untitled module"}
+                    </div>
+                  </Button>
+                ))}
+              </div>
+              <div className="block lg:hidden pb-6">
+                <Select
+                  onValueChange={(val) =>
+                    setSelectedModuleId(val as Id<"modules">)
                   }
-                  onClick={() => setCurrentModuleId(module._id)}
-                  className="w-full mb-4 text-left"
+                  value={selectedModuleId as string}
                 >
-                  <div className="w-full text-left truncate">
-                    {module?.title ?? "Untitled module"}
-                  </div>
-                </Button>
-              ))}
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a module" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {course.modules?.map((module) => (
+                      <SelectItem value={module._id} key={module._id}>
+                        {module.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </aside>
-          <div className="flex-1 lg:w-4/5 pl-4">
-            {currentModuleId && <Module id={currentModuleId} />}
+          <div className="flex-1 lg:w-3/4 lg:pl-4">
+            {selectedModuleId && <Module id={selectedModuleId} />}
           </div>
         </div>
       </PageContent>
@@ -83,7 +112,7 @@ function Module({ id }: { id: Id<"modules"> }) {
 
   return (
     <div className="">
-      <Text className="pt-12 pb-16 text-4xl">{courseModule.title}</Text>
+      <Text className="pt-1 pb-11 text-3xl">{courseModule.title}</Text>
       {courseModule.sections?.map((section) => (
         <>
           <Text

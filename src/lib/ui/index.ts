@@ -13,6 +13,7 @@ export * from "./Loader";
 export * from "./LoadingScreen";
 export * from "./Menubar";
 export * from "./Progress";
+export * from "./Select";
 export * from "./Sheet";
 export * from "./Switch";
 export * from "./Table";
