@@ -20,3 +20,9 @@ export async function validateIdentity(ctx: QueryCtx) {
 
   return { identity, user };
 }
+
+export function notEmpty<TValue>(
+  value: TValue | null | undefined
+): value is TValue {
+  return value !== null && value !== undefined;
+}

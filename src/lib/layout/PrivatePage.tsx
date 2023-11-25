@@ -8,7 +8,6 @@ import { useMe } from "../providers";
 export function PrivatePage({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { isAuthenticated, isLoading } = useMe();
-  console.log(isLoading);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {

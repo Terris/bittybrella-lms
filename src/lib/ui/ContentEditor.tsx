@@ -24,12 +24,21 @@ import {
 // define your extension array
 const extensions = [StarterKit];
 
-const content = "<p>Hello World!</p>";
+interface ContentEditorProps {
+  initialContent?: string;
+  onChange?: (content: string) => void;
+}
 
-export const ContentEditor = () => {
+export const ContentEditor = ({
+  initialContent,
+  onChange,
+}: ContentEditorProps) => {
   const editor = useEditor({
     extensions,
-    content,
+    content: JSON.parse(initialContent ?? "{}"),
+    onUpdate: ({ editor }) => {
+      onChange?.(JSON.stringify(editor.getJSON()));
+    },
   });
 
   return (
@@ -46,7 +55,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
   }
 
   return (
-    <div className="flex gap-1 items-center pb-2 mb-4 border-b">
+    <div className="flex flex-wrap gap-1 items-center pb-2 mb-4 border-b">
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}

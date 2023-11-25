@@ -22,5 +22,12 @@ export default defineSchema({
   modules: defineTable({
     title: v.string(),
     description: v.string(),
+    moduleSectionIds: v.optional(v.array(v.id("moduleSections"))),
+  }),
+  moduleSections: defineTable({
+    moduleId: v.id("modules"),
+    type: v.string(),
+    title: v.string(),
+    content: v.optional(v.string()),
   }),
 });
