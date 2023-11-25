@@ -18,7 +18,7 @@ interface User {
 }
 
 interface MeContextProps {
-  loading: boolean;
+  isLoading: boolean;
   error: string | null;
   isAuthenticated: boolean;
   meId: Id<"users"> | null;
@@ -27,7 +27,7 @@ interface MeContextProps {
 }
 
 const initialProps = {
-  loading: false,
+  isLoading: false,
   error: null,
   isAuthenticated: false,
   me: null,
@@ -46,7 +46,7 @@ export const MeProvider = ({ children }: MeProviderProps) => {
   const { user: clerkUser, isLoaded: clerkUserIsLoaded } = useUser();
 
   const [loadingDBUser, setLoadingDBUser] = useState<boolean>(
-    initialProps.loading
+    initialProps.isLoading
   );
   const [meId, setMeId] = useState<Id<"users"> | null>(initialProps.meId);
   const [dbError, setDBError] = useState<string | null>(initialProps.error);
@@ -91,7 +91,7 @@ export const MeProvider = ({ children }: MeProviderProps) => {
         me,
         meId,
         isAdmin,
-        loading:
+        isLoading:
           !dbUserData ||
           !clerkUserIsLoaded ||
           loadingDBUser ||

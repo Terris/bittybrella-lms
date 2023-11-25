@@ -1,4 +1,5 @@
 export * from "./Alert";
+export * from "./Badge";
 export * from "./Button";
 export * from "./Card";
 export * from "./ContentEditor";
@@ -7,7 +8,10 @@ export * from "./Dialog";
 export * from "./DropdownMenu";
 export * from "./Input";
 export * from "./Label";
+export * from "./Loader";
+export * from "./LoadingScreen";
 export * from "./Menubar";
+export * from "./Progress";
 export * from "./Sheet";
 export * from "./Switch";
 export * from "./Table";
