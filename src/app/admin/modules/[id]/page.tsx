@@ -7,7 +7,7 @@ import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
 import { Button, Text } from "@/lib/ui";
 import { EditModuleSectionForm } from "./EditModuleSectionForm";
-import { CreateModuleSectionForm } from "./CreateModuleSectionButton";
+import { CreateModuleSectionButton } from "./CreateModuleSectionButton";
 
 interface AdminModulePageProps {
   params: { id: string };
@@ -68,7 +68,9 @@ export default function AdminModulePage({ params }: AdminModulePageProps) {
                   </div>
                 </Button>
               ))}
-              <CreateModuleSectionForm moduleId={params.id as Id<"modules">} />
+              <CreateModuleSectionButton
+                moduleId={params.id as Id<"modules">}
+              />
             </div>
           </aside>
           <div className="flex-1 lg:w-3/4 pl-4">

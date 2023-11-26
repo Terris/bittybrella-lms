@@ -3,13 +3,13 @@ import { Id } from "../../../../../convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 
-interface CreateModuleSectionFormProps {
+interface CreateModuleSectionButtonProps {
   moduleId: Id<"modules">;
 }
 
-export function CreateModuleSectionForm({
+export function CreateModuleSectionButton({
   moduleId,
-}: CreateModuleSectionFormProps) {
+}: CreateModuleSectionButtonProps) {
   const createModuleSection = useMutation(api.moduleSections.create);
 
   const handleCreateNewSection = () => {

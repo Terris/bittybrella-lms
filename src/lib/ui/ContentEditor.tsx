@@ -70,11 +70,11 @@ export const ContentEditor = ({
   }, [debouncedContent, editable, hasChanges, onChange, ready]);
 
   return (
-    <div className="border rounded">
+    <div className="border rounded-md">
       {editable && <ToolBar editor={editor} />}
       <EditorContent editor={editor} className="p-4" />
       {editable && (
-        <div className="sticky bottom-0 z-50 bg-background flex border-t p-2 justify-end">
+        <div className="sticky bottom-0 z-50 bg-background flex border-t p-2 justify-end rounded-b-md">
           {loading ? (
             <Loader className="h-3 w-3 text-yellow-300" />
           ) : (
@@ -92,7 +92,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
   }
 
   return (
-    <div className="sticky top-0 z-50 bg-background flex flex-wrap gap-1 items-center p-2 border-b">
+    <div className="sticky top-0 z-50 bg-background flex flex-wrap gap-1 items-center p-2 border-b rounded-t-md">
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
