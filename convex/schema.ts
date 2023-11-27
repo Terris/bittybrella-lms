@@ -17,18 +17,11 @@ export default defineSchema({
     title: v.string(),
     description: v.string(),
     isPublished: v.boolean(),
-    moduleIds: v.array(v.id("modules")),
   }),
   modules: defineTable({
     title: v.string(),
     description: v.string(),
-    moduleSectionIds: v.optional(v.array(v.id("moduleSections"))),
-  }),
-  moduleSections: defineTable({
-    moduleId: v.id("modules"),
-    type: v.string(),
-    title: v.string(),
-    content: v.optional(v.string()),
+    isPublished: v.boolean(),
   }),
   courseModules: defineTable({
     courseId: v.id("courses"),
@@ -36,5 +29,13 @@ export default defineSchema({
     order: v.number(),
   })
     .index("by_courseId", ["courseId"])
-    .index("by_moduleId", ["moduleId"]),
+    .index("by_moduleId", ["moduleId"])
+    .index("by_order", ["order"]),
+  moduleSections: defineTable({
+    moduleId: v.id("modules"),
+    type: v.string(),
+    title: v.string(),
+    content: v.string(),
+    order: v.number(),
+  }).index("by_moduleId", ["moduleId"]),
 });

@@ -1,5 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { removeEmptyFromArray } from "./lib/utils";
+import { getManyFrom } from "./lib/relationships";
 
 const defaultSectionTitle = "Untitled section";
 
@@ -20,16 +22,17 @@ export const create = mutation({
   handler: async (ctx, { moduleId, type }) => {
     const existingModule = await ctx.db.get(moduleId);
     if (!existingModule) throw new Error("Module does not exist");
-    const existingModuleSections = existingModule.moduleSectionIds ?? [];
-    const newModuleSectionId = await ctx.db.insert("moduleSections", {
+
+    const existingModuleSections = removeEmptyFromArray(
+      await getManyFrom(ctx.db, "moduleSections", "moduleId", moduleId)
+    );
+
+    return await ctx.db.insert("moduleSections", {
       moduleId,
       type,
       title: defaultSectionTitle,
       content: "",
-    });
-
-    return await ctx.db.patch(moduleId, {
-      moduleSectionIds: [...existingModuleSections, newModuleSectionId],
+      order: existingModuleSections.length + 1,
     });
   },
 });
@@ -40,8 +43,9 @@ export const update = mutation({
     type: v.optional(v.string()),
     title: v.optional(v.string()),
     content: v.optional(v.string()),
+    order: v.optional(v.number()),
   },
-  handler: async (ctx, { id, type, title, content }) => {
+  handler: async (ctx, { id, type, title, content, order }) => {
     const existingSection = await ctx.db.get(id);
     const newTitle = title?.length
       ? title
@@ -52,6 +56,7 @@ export const update = mutation({
       type: type || existingSection?.type || "text",
       title: newTitle,
       content: content ?? existingSection?.content,
+      order: order ?? existingSection?.order,
     });
     return await ctx.db.get(id);
   },

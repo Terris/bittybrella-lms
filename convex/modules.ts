@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { Doc } from "./_generated/dataModel";
-import { notEmpty } from "./lib/utils";
+import { getManyFrom } from "./lib/relationships";
+import { notEmpty, removeEmptyFromArray } from "./lib/utils";
 
 export const getAll = query({
   args: {},
@@ -15,23 +15,11 @@ export const get = query({
     id: v.id("modules"),
   },
   handler: async (ctx, { id }) => {
-    return await ctx.db.get(id);
-  },
-});
-
-export const getWithSections = query({
-  args: { id: v.id("modules") },
-  handler: async (ctx, { id }) => {
-    const theModule = await ctx.db.get(id);
-    if (theModule?.moduleSectionIds === undefined)
-      return { ...theModule, sections: undefined };
-    const moduleSections = await Promise.all(
-      (theModule?.moduleSectionIds).map((sectionId) => ctx.db.get(sectionId))
-    );
-    const filteredModuleSections: Doc<"moduleSections">[] =
-      moduleSections.filter(notEmpty);
-
-    return { ...theModule, sections: filteredModuleSections };
+    const moduleRec = await ctx.db.get(id);
+    const sections = removeEmptyFromArray(
+      await getManyFrom(ctx.db, "moduleSections", "moduleId", id)
+    ).sort((a, b) => a.order - b.order);
+    return { ...moduleRec, sections };
   },
 });
 
@@ -39,11 +27,13 @@ export const create = mutation({
   args: {
     title: v.string(),
     description: v.string(),
+    isPublished: v.boolean(),
   },
-  handler: async (ctx, { title, description }) => {
+  handler: async (ctx, { title, description, isPublished }) => {
     return await ctx.db.insert("modules", {
       title,
       description,
+      isPublished,
     });
   },
 });

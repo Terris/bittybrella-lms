@@ -26,3 +26,9 @@ export function notEmpty<TValue>(
 ): value is TValue {
   return value !== null && value !== undefined;
 }
+
+export function removeEmptyFromArray<TValue>(
+  arr: (TValue | null | undefined)[]
+) {
+  return arr.filter(notEmpty);
+}

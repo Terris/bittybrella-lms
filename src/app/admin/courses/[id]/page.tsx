@@ -22,7 +22,7 @@ interface AdminCoursePageProps {
 }
 
 export default function AdminCoursePage({ params }: AdminCoursePageProps) {
-  const course = useQuery(api.courses.getWithModules, {
+  const course = useQuery(api.courses.get, {
     id: params.id as Id<"courses">,
   });
 
@@ -71,6 +71,7 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
                     <div className="w-full text-left truncate">
                       {module?.title ?? "Untitled module"}
                     </div>
+                    <GripVertical className="w-4 h-4 ml-2" />
                   </Button>
                 ))}
               </div>
@@ -105,7 +106,7 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
 }
 
 function Module({ id }: { id: Id<"modules"> }) {
-  const courseModule = useQuery(api.modules.getWithSections, {
+  const courseModule = useQuery(api.modules.get, {
     id,
   });
 

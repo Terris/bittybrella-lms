@@ -1,33 +1,29 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { notEmpty } from "./lib/utils";
-import { getWithSections } from "./modules";
-
-export const get = query({
-  args: { id: v.id("courses") },
-  handler: async (ctx, { id }) => {
-    return await ctx.db.get(id);
-  },
-});
-
-export const getWithModules = query({
-  args: { id: v.id("courses") },
-  handler: async (ctx, { id }) => {
-    const course = await ctx.db.get(id);
-    const courseModules = await Promise.all(
-      (course?.moduleIds ?? []).map((moduleId) =>
-        getWithSections(ctx, { id: moduleId })
-      )
-    );
-    const filteredCourseModules = courseModules.filter(notEmpty);
-    return { ...course, modules: filteredCourseModules };
-  },
-});
+import { asyncMap, getManyFrom, getManyVia } from "./lib/relationships";
+import { notEmpty, removeEmptyFromArray } from "./lib/utils";
 
 export const getAll = query({
   args: {},
   handler: async (ctx) => {
     return await ctx.db.query("courses").order("desc").take(100);
+  },
+});
+
+export const get = query({
+  args: { id: v.id("courses") },
+  handler: async (ctx, { id }) => {
+    const course = await ctx.db.get(id);
+    const modules = removeEmptyFromArray(
+      await getManyVia(ctx.db, "courseModules", "moduleId", "courseId", id)
+    );
+    const modulesWithSections = await asyncMap(modules, async (module) => {
+      const sections = removeEmptyFromArray(
+        await getManyFrom(ctx.db, "moduleSections", "moduleId", module._id)
+      );
+      return { ...module, sections };
+    });
+    return { ...course, modules: modulesWithSections };
   },
 });
 
@@ -42,7 +38,6 @@ export const create = mutation({
       title,
       description,
       isPublished,
-      moduleIds: [],
     });
   },
 });
@@ -62,8 +57,8 @@ export const update = mutation({
       description: description ?? existingCourse?.description,
       isPublished:
         isPublished === undefined ? existingCourse?.isPublished : isPublished,
-      moduleIds: moduleIds ?? existingCourse?.moduleIds,
     });
+    // TODO: update courseModule docs
     return await ctx.db.get(id);
   },
 });
