@@ -37,7 +37,7 @@ export interface AdminFormProps<CustomFormValues> {
   config: AdminFormConfig<CustomFormValues>;
 }
 
-export const AdminForm = <CustomFormValues extends FormikValues>({
+export const AdminQuickForm = <CustomFormValues extends FormikValues>({
   formTitle,
   renderTrigger,
   formDescription,
@@ -50,9 +50,6 @@ export const AdminForm = <CustomFormValues extends FormikValues>({
     onSubmit,
     submitButtonLabel,
   } = config;
-
-  console.log(fields);
-  console.log("initialValues", initialValues);
 
   return (
     <Dialog>

@@ -1,4 +1,4 @@
-export function sortArrayBySelected(
+export function sortBySelected(
   a: string,
   b: string,
   selectedOptions: string[]

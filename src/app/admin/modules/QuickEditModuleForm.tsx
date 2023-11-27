@@ -3,7 +3,7 @@
 import * as Yup from "yup";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
-import { AdminForm, AdminFormConfig } from "../AdminForm";
+import { AdminQuickForm, AdminFormConfig } from "../AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { Pencil } from "lucide-react";
@@ -38,11 +38,11 @@ const errorMessage = "Something went wrong trying to edit module.";
 // Set the form title
 const formTitle = "Edit module";
 
-interface EditModuleFormProps {
+interface QuickEditModuleFormProps {
   moduleId: Id<"modules">;
 }
 
-export const EditModuleForm = ({ moduleId }: EditModuleFormProps) => {
+export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
   // Fetch the module to edit
   const existingModule = useQuery(api.modules.get, { id: moduleId });
 
@@ -83,7 +83,7 @@ export const EditModuleForm = ({ moduleId }: EditModuleFormProps) => {
   };
 
   return (
-    <AdminForm<Module>
+    <AdminQuickForm<Module>
       config={moduleFormConfig}
       formTitle={formTitle}
       renderTrigger={

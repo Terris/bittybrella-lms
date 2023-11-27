@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { useQuery } from "convex/react";
-import { EditModuleForm } from "./EditModuleForm";
+import { QuickEditModuleForm } from "./QuickEditModuleForm";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { api } from "../../../../convex/_generated/api";
 import { Text, CopyToClipboardButton } from "@/lib/ui";
@@ -47,7 +47,7 @@ const columns: ColumnDef<ModuleRow>[] = [
     id: "edit",
     header: "Quick Edit",
     cell: ({ row }) => (
-      <EditModuleForm moduleId={row.original._id as Id<"modules">} />
+      <QuickEditModuleForm moduleId={row.original._id as Id<"modules">} />
     ),
   },
 ];

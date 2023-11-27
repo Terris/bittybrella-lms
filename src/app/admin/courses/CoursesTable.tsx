@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Check, X } from "lucide-react";
 import { useQuery } from "convex/react";
-import { EditCourseForm } from "./EditCourseForm";
+import { QuickEditCourseForm } from "./QuickEditCourseForm";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { api } from "../../../../convex/_generated/api";
 import { Text, CopyToClipboardButton, Button } from "@/lib/ui";
@@ -65,7 +65,7 @@ const columns: ColumnDef<CourseRow>[] = [
     id: "edit",
     header: "Quick Edit",
     cell: ({ row }) => (
-      <EditCourseForm courseId={row.original._id as Id<"courses">} />
+      <QuickEditCourseForm courseId={row.original._id as Id<"courses">} />
     ),
   },
 ];

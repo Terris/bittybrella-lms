@@ -5,11 +5,9 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import {
   AdminFieldtype,
-  AdminForm,
+  AdminQuickForm,
   AdminFormConfig,
-  AdminFormField,
-  AdminFormFieldOption,
-} from "../AdminForm";
+} from "../AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { Pencil } from "lucide-react";
@@ -20,7 +18,6 @@ export interface Course {
   title: string;
   description: string;
   isPublished: boolean;
-  moduleIds: Id<"modules">[];
 }
 
 // Define the validation schema
@@ -32,7 +29,6 @@ const validationSchema = Yup.object().shape({
     .max(50, "Description must be less than 50 characters")
     .required("Description is required"),
   isPublished: Yup.boolean().optional(),
-  moduleIds: Yup.array().of(Yup.string()),
 });
 
 // Set toast messages for success and error
@@ -46,11 +42,9 @@ interface EditCourseFormProps {
   courseId: Id<"courses">;
 }
 
-export const EditCourseForm = ({ courseId }: EditCourseFormProps) => {
+export const QuickEditCourseForm = ({ courseId }: EditCourseFormProps) => {
   // Fetch the course to edit
   const course = useQuery(api.courses.getWithModules, { id: courseId });
-  // Fetch all modules for course module options
-  const modules = useQuery(api.modules.getAll);
 
   // Define the mutation
   const editCourse = useMutation(api.courses.update);
@@ -66,16 +60,6 @@ export const EditCourseForm = ({ courseId }: EditCourseFormProps) => {
       label: "Published?",
       fieldtype: "switch" as AdminFieldtype,
       initialValue: false,
-    },
-    {
-      name: "moduleIds",
-      label: "Modules",
-      fieldtype: "multiselect" as AdminFieldtype,
-      initialValue: course?.moduleIds,
-      options: modules?.map((module) => ({
-        label: module.title,
-        value: module._id,
-      })),
     },
   ];
 
@@ -102,7 +86,6 @@ export const EditCourseForm = ({ courseId }: EditCourseFormProps) => {
     title: course?.title ?? "",
     description: course?.description ?? "",
     isPublished: course?.isPublished ?? false,
-    moduleIds: course?.moduleIds ?? [],
   };
 
   const courseFormConfig: AdminFormConfig<Course> = {
@@ -113,7 +96,7 @@ export const EditCourseForm = ({ courseId }: EditCourseFormProps) => {
   };
 
   return (
-    <AdminForm<Course>
+    <AdminQuickForm<Course>
       config={courseFormConfig}
       formTitle={formTitle}
       renderTrigger={

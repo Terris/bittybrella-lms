@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/lib/ui";
 import { useEffect, useState } from "react";
+import { GripVertical } from "lucide-react";
 
 interface AdminCoursePageProps {
   params: { id: string };

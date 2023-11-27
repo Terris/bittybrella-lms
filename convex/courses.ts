@@ -53,7 +53,7 @@ export const update = mutation({
     title: v.string(),
     description: v.string(),
     isPublished: v.boolean(),
-    moduleIds: v.array(v.id("modules")),
+    moduleIds: v.optional(v.array(v.id("modules"))),
   },
   handler: async (ctx, { id, title, description, isPublished, moduleIds }) => {
     const existingCourse = await ctx.db.get(id);
