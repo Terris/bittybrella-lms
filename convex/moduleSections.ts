@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { removeEmptyFromArray } from "./lib/utils";
+import { removeEmptyFromArray, validateIdentity } from "./lib/utils";
 import { asyncMap, getManyFrom } from "./lib/relationships";
 
 const defaultSectionTitle = "Untitled section";
@@ -10,6 +10,8 @@ export const findById = query({
     id: v.id("moduleSections"),
   },
   handler: async (ctx, { id }) => {
+    await validateIdentity(ctx);
+
     return await ctx.db.get(id);
   },
 });
@@ -20,6 +22,8 @@ export const create = mutation({
     type: v.string(),
   },
   handler: async (ctx, { moduleId, type }) => {
+    await validateIdentity(ctx);
+
     const existingModule = await ctx.db.get(moduleId);
     if (!existingModule) throw new Error("Module does not exist");
 
@@ -46,6 +50,8 @@ export const update = mutation({
     order: v.optional(v.number()),
   },
   handler: async (ctx, { id, type, title, content, order }) => {
+    await validateIdentity(ctx);
+
     const existingSection = await ctx.db.get(id);
     await ctx.db.patch(id, {
       type: type || existingSection?.type || "text",
@@ -58,38 +64,26 @@ export const update = mutation({
 });
 
 export const updateOrder = mutation({
-  args: { id: v.id("moduleSections"), order: v.number() },
-  handler: async (ctx, { id, order }) => {
-    const sectionToUpdate = await ctx.db.get(id);
-    if (!sectionToUpdate) throw new Error("Section does not exist");
-
-    // first update the section to be moved
-    await ctx.db.patch(id, {
-      order,
-    });
-
-    // update all sections after the moved section
-    const sectionsToUpdate = await ctx.db
-      .query("moduleSections")
-      .filter((q) =>
-        q.and(
-          q.eq(q.field("moduleId"), sectionToUpdate.moduleId),
-          q.gt(q.field("order"), order)
-        )
+  args: {
+    idsInOrder: v.array(v.id("moduleSections")),
+  },
+  handler: async (ctx, { idsInOrder }) => {
+    await validateIdentity(ctx);
+    await Promise.all(
+      idsInOrder.map((sectionId, index) =>
+        ctx.db.patch(sectionId, {
+          order: index + 1,
+        })
       )
-      .collect();
-
-    await asyncMap(sectionsToUpdate, async (section) => {
-      await ctx.db.patch(section._id, {
-        order: section.order + 1,
-      });
-    });
+    );
   },
 });
 
 export const deleteById = mutation({
   args: { id: v.id("moduleSections") },
   handler: async (ctx, { id }) => {
+    await validateIdentity(ctx);
+
     const sectionToDelete = await ctx.db.get(id);
     if (!sectionToDelete) throw new Error("Section does not exist");
     const sectionToDeleteOrder: number = sectionToDelete.order;
