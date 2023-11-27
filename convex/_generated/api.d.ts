@@ -15,6 +15,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as courses from "../courses";
+import type * as lib_utils from "../lib/utils";
 import type * as moduleSections from "../moduleSections";
 import type * as modules from "../modules";
 import type * as tracking from "../tracking";
@@ -30,6 +31,7 @@ import type * as users from "../users";
  */
 declare const fullApi: ApiFromModules<{
   courses: typeof courses;
+  "lib/utils": typeof lib_utils;
   moduleSections: typeof moduleSections;
   modules: typeof modules;
   tracking: typeof tracking;

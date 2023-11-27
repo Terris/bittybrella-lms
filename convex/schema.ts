@@ -30,4 +30,11 @@ export default defineSchema({
     title: v.string(),
     content: v.optional(v.string()),
   }),
+  courseModules: defineTable({
+    courseId: v.id("courses"),
+    moduleId: v.id("modules"),
+    order: v.number(),
+  })
+    .index("by_courseId", ["courseId"])
+    .index("by_moduleId", ["moduleId"]),
 });

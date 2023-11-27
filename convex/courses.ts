@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { notEmpty } from "../lib/utils";
+import { notEmpty } from "./lib/utils";
 import { getWithSections } from "./modules";
 
 export const get = query({
