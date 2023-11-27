@@ -13,7 +13,14 @@ import {
   Switch,
   Text,
 } from "@/lib/ui";
-import { Form, Formik, FormikValues, useField } from "formik";
+import {
+  FieldInputProps,
+  FieldProps,
+  Form,
+  Formik,
+  FormikValues,
+  useField,
+} from "formik";
 
 export interface AdminFormConfig<CustomFormValues> {
   validationSchema: any;
@@ -43,6 +50,10 @@ export const AdminForm = <CustomFormValues extends FormikValues>({
     onSubmit,
     submitButtonLabel,
   } = config;
+
+  console.log(fields);
+  console.log("initialValues", initialValues);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -75,6 +86,7 @@ export const AdminForm = <CustomFormValues extends FormikValues>({
                     name={f.name}
                     label={f.label}
                     fieldtype={f.fieldtype}
+                    options={f.options}
                   />
                 ))}
               </div>
@@ -98,48 +110,174 @@ export type AdminFieldtype =
   | "textarea"
   | "switch"
   | "number"
-  | "checkbox";
+  | "checkbox"
+  | "radio"
+  | "select"
+  | "multiselect";
 
+export interface AdminFormFieldOption {
+  label: string;
+  value: string;
+}
 export interface AdminFormField {
   name: string;
   label?: string;
   fieldtype?: AdminFieldtype;
   initialValue: any;
+  options?: AdminFormFieldOption[];
 }
 
-type AdminFormFieldProps = Pick<AdminFormField, "name" | "label" | "fieldtype">;
+type AdminFormFieldProps = Pick<
+  AdminFormField,
+  "name" | "label" | "fieldtype" | "options"
+>;
 
 export const AdminFormField = ({
   name,
   label,
   fieldtype = "text",
+  options,
 }: AdminFormFieldProps) => {
   const [field, meta, helpers] = useField(name);
 
-  return (
-    <div className="grid grid-cols-4 items-start gap-4">
-      <Label htmlFor={name} className="text-right pt-3">
-        {label ?? name}
-      </Label>
-      <div className="col-span-3">
-        {fieldtype === "switch" ? (
-          <Switch
-            checked={field.value}
-            onCheckedChange={(v) => helpers.setValue(v)}
+  function renderFieldType() {
+    switch (fieldtype) {
+      case "multiselect":
+        return (
+          <MultiSelectInput
+            options={options}
+            value={field.value}
+            setValue={helpers.setValue}
+          />
+        );
+      case "switch":
+        return (
+          <SwitchInput
+            name={field.name}
+            value={field.value}
+            setValue={helpers.setValue}
             className="mt-2"
           />
-        ) : (
-          <Input
-            className={meta.touched && meta.error ? "border-destructive" : ""}
-            {...field}
-          />
-        )}
-        {meta.touched && meta.error ? (
-          <Text className="text-destructive" size="sm">
-            {meta.error}
-          </Text>
-        ) : null}
+        );
+      case "textarea":
+      case "number":
+      case "checkbox":
+      case "radio":
+      case "select":
+      default:
+        return (
+          <TextInput touched={meta.touched} error={meta.error} field={field} />
+        );
+    }
+  }
+
+  return (
+    <FieldWrapper>
+      <FieldLabel name={name} label={label} />
+      <div className="col-span-3">
+        {renderFieldType()}
+        <FieldError touched={meta.touched} error={meta.error} />
       </div>
-    </div>
+    </FieldWrapper>
   );
 };
+
+function FieldWrapper({ children }: { children: React.ReactNode }) {
+  return <div className="grid grid-cols-4 items-start gap-4">{children}</div>;
+}
+
+function FieldLabel({ name, label }: { name: string; label?: string }) {
+  return (
+    <Label htmlFor={name} className="text-right pt-3">
+      {label ?? name}
+    </Label>
+  );
+}
+
+function TextInput({
+  touched,
+  error,
+  field,
+}: {
+  touched: boolean;
+  error?: string;
+  field: FieldInputProps<any>;
+}) {
+  return (
+    <Input
+      className={touched && error ? "border-destructive" : ""}
+      {...field}
+    />
+  );
+}
+
+function SwitchInput({
+  name,
+  value,
+  setValue,
+  className,
+}: {
+  name: string;
+  value: boolean;
+  setValue: (v: boolean) => void;
+  className?: string;
+}) {
+  return (
+    <Switch
+      id={name}
+      checked={value}
+      onCheckedChange={setValue}
+      className={className}
+    />
+  );
+}
+
+function MultiSelectInput({
+  options,
+  value,
+  setValue,
+}: {
+  options: AdminFormField["options"];
+  value: string[];
+  setValue: (v: string[]) => void;
+}) {
+  const handleSetValue = (selected: boolean, optionValue: string) => {
+    if (selected) {
+      setValue([...value, optionValue]);
+    } else {
+      setValue(value.filter((v) => v !== optionValue));
+    }
+  };
+
+  return (
+    <div className="rounded border px-4 max-h-52 overflow-hidden overflow-y-auto">
+      {options?.map((option, index) => {
+        return (
+          <div
+            className="grid grid-cols-4 py-2 items-center gap-4 border-b"
+            key={option.value}
+          >
+            <div className="col-span-3">
+              <Label htmlFor={option.value}>{option.label}</Label>
+            </div>
+            <div className="col-span-1 flex justify-end">
+              <SwitchInput
+                name={option.value}
+                value={value.includes(option.value)}
+                setValue={(v) => handleSetValue(v, option.value)}
+              />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function FieldError({ touched, error }: { touched: boolean; error?: string }) {
+  return touched && error ? (
+    <Text className="text-destructive" size="sm">
+      {error}
+    </Text>
+  ) : null;
+}

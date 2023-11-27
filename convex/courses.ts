@@ -14,10 +14,8 @@ export const getWithModules = query({
   args: { id: v.id("courses") },
   handler: async (ctx, { id }) => {
     const course = await ctx.db.get(id);
-    if (course?.moduleIds === undefined)
-      return { ...course, modules: undefined };
     const courseModules = await Promise.all(
-      (course?.moduleIds).map((moduleId) => ctx.db.get(moduleId))
+      (course?.moduleIds ?? []).map((moduleId) => ctx.db.get(moduleId))
     );
     const filteredCourseModules: Doc<"modules">[] =
       courseModules.filter(notEmpty);
@@ -44,6 +42,7 @@ export const create = mutation({
       title,
       description,
       isPublished,
+      moduleIds: [],
     });
   },
 });
@@ -54,14 +53,16 @@ export const update = mutation({
     title: v.string(),
     description: v.string(),
     isPublished: v.boolean(),
+    moduleIds: v.array(v.id("modules")),
   },
-  handler: async (ctx, { id, title, description, isPublished }) => {
+  handler: async (ctx, { id, title, description, isPublished, moduleIds }) => {
     const existingCourse = await ctx.db.get(id);
     await ctx.db.patch(id, {
       title: title ?? existingCourse?.title,
       description: description ?? existingCourse?.description,
       isPublished:
         isPublished === undefined ? existingCourse?.isPublished : isPublished,
+      moduleIds: moduleIds ?? existingCourse?.moduleIds,
     });
     return await ctx.db.get(id);
   },

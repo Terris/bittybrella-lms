@@ -3,7 +3,13 @@
 import * as Yup from "yup";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
-import { AdminFieldtype, AdminForm, AdminFormConfig } from "../AdminForm";
+import {
+  AdminFieldtype,
+  AdminForm,
+  AdminFormConfig,
+  AdminFormField,
+  AdminFormFieldOption,
+} from "../AdminForm";
 import { useToast } from "@/lib/hooks/useToast";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { Pencil } from "lucide-react";
@@ -14,6 +20,7 @@ export interface Course {
   title: string;
   description: string;
   isPublished: boolean;
+  moduleIds: Id<"modules">[];
 }
 
 // Define the validation schema
@@ -25,19 +32,8 @@ const validationSchema = Yup.object().shape({
     .max(50, "Description must be less than 50 characters")
     .required("Description is required"),
   isPublished: Yup.boolean().optional(),
+  moduleIds: Yup.array().of(Yup.string()),
 });
-
-// Configure the fields for diplay
-const fields = [
-  { name: "title", label: "Title", initialValue: "" },
-  { name: "description", label: "Description", initialValue: "" },
-  {
-    name: "isPublished",
-    label: "Published?",
-    fieldtype: "switch" as AdminFieldtype,
-    initialValue: false,
-  },
-];
 
 // Set toast messages for success and error
 const successMessage = "Course saved.";
@@ -52,16 +48,40 @@ interface EditCourseFormProps {
 
 export const EditCourseForm = ({ courseId }: EditCourseFormProps) => {
   // Fetch the course to edit
-  const course = useQuery(api.courses.get, { id: courseId });
+  const course = useQuery(api.courses.getWithModules, { id: courseId });
+  // Fetch all modules for course module options
+  const modules = useQuery(api.modules.getAll);
 
   // Define the mutation
   const editCourse = useMutation(api.courses.update);
 
   const { toast } = useToast();
 
+  // Configure the fields for diplay
+  const fields = [
+    { name: "title", label: "Title", initialValue: "" },
+    { name: "description", label: "Description", initialValue: "" },
+    {
+      name: "isPublished",
+      label: "Published?",
+      fieldtype: "switch" as AdminFieldtype,
+      initialValue: false,
+    },
+    {
+      name: "moduleIds",
+      label: "Modules",
+      fieldtype: "multiselect" as AdminFieldtype,
+      initialValue: course?.moduleIds,
+      options: modules?.map((module) => ({
+        label: module.title,
+        value: module._id,
+      })),
+    },
+  ];
+
   async function onSubmit(values: Course) {
     if (!course) return;
-    const result = await editCourse({ id: course._id, ...values });
+    const result = await editCourse({ id: courseId, ...values });
 
     if (result) {
       toast({
@@ -82,6 +102,7 @@ export const EditCourseForm = ({ courseId }: EditCourseFormProps) => {
     title: course?.title ?? "",
     description: course?.description ?? "",
     isPublished: course?.isPublished ?? false,
+    moduleIds: course?.moduleIds ?? [],
   };
 
   const courseFormConfig: AdminFormConfig<Course> = {
