@@ -21,11 +21,11 @@ export function CreateModuleSectionButton({
 
   return (
     <Button
-      variant="ghost"
+      variant="outline"
       className="w-full text-left"
       onClick={handleCreateNewSection}
     >
-      <div className="w-full text-left italic">+ New Section</div>
+      <div className="w-full text-left">+ New Section</div>
     </Button>
   );
 }

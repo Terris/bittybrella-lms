@@ -17,6 +17,7 @@
     "@editorjs/editorjs": "^2.28.2",
     "@editorjs/header": "^2.8.1",
     "@editorjs/paragraph": "^2.11.3",
+    "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-label": "^2.0.2",
