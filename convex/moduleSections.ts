@@ -20,9 +20,7 @@ export const create = mutation({
   handler: async (ctx, { moduleId, type }) => {
     const existingModule = await ctx.db.get(moduleId);
     if (!existingModule) throw new Error("Module does not exist");
-
     const existingModuleSections = existingModule.moduleSectionIds ?? [];
-
     const newModuleSectionId = await ctx.db.insert("moduleSections", {
       moduleId,
       type,

@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { notEmpty } from "../lib/utils";
-import { Doc } from "./_generated/dataModel";
+import { getWithSections } from "./modules";
 
 export const get = query({
   args: { id: v.id("courses") },
@@ -15,11 +15,11 @@ export const getWithModules = query({
   handler: async (ctx, { id }) => {
     const course = await ctx.db.get(id);
     const courseModules = await Promise.all(
-      (course?.moduleIds ?? []).map((moduleId) => ctx.db.get(moduleId))
+      (course?.moduleIds ?? []).map((moduleId) =>
+        getWithSections(ctx, { id: moduleId })
+      )
     );
-    const filteredCourseModules: Doc<"modules">[] =
-      courseModules.filter(notEmpty);
-
+    const filteredCourseModules = courseModules.filter(notEmpty);
     return { ...course, modules: filteredCourseModules };
   },
 });
