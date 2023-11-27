@@ -5,7 +5,7 @@ import { getManyFrom } from "./lib/relationships";
 
 const defaultSectionTitle = "Untitled section";
 
-export const get = query({
+export const findById = query({
   args: {
     id: v.id("moduleSections"),
   },
@@ -47,14 +47,9 @@ export const update = mutation({
   },
   handler: async (ctx, { id, type, title, content, order }) => {
     const existingSection = await ctx.db.get(id);
-    const newTitle = title?.length
-      ? title
-      : existingSection?.title.length
-      ? existingSection.title
-      : defaultSectionTitle;
     await ctx.db.patch(id, {
       type: type || existingSection?.type || "text",
-      title: newTitle,
+      title: title || existingSection?.title || defaultSectionTitle,
       content: content ?? existingSection?.content,
       order: order ?? existingSection?.order,
     });

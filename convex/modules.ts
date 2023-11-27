@@ -3,14 +3,14 @@ import { mutation, query } from "./_generated/server";
 import { getManyFrom } from "./lib/relationships";
 import { notEmpty, removeEmptyFromArray } from "./lib/utils";
 
-export const getAll = query({
+export const all = query({
   args: {},
   handler: async (ctx) => {
     return await ctx.db.query("modules").collect();
   },
 });
 
-export const get = query({
+export const findById = query({
   args: {
     id: v.id("modules"),
   },

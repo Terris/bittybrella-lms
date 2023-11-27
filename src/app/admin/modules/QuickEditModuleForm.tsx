@@ -13,6 +13,7 @@ import { Button } from "@/lib/ui";
 export interface Module {
   title: string;
   description: string;
+  isPublished: boolean;
 }
 
 // Define the validation schema
@@ -23,17 +24,19 @@ const validationSchema = Yup.object().shape({
   description: Yup.string()
     .max(50, "Description must be less than 50 characters")
     .required("Description is required"),
+  isPublished: Yup.boolean().optional(),
 });
 
 // Configure the fields for diplay
 const fields = [
   { name: "title", label: "Title", initialValue: "" },
   { name: "description", label: "Description", initialValue: "" },
+  { name: "isPublished", label: "Published", initialValue: false },
 ];
 
 // Set toast messages for success and error
 const successMessage = "Module saved.";
-const errorMessage = "Something went wrong trying to edit module.";
+const errorMessage = "Error saving module. Please try again.";
 
 // Set the form title
 const formTitle = "Edit module";
@@ -44,7 +47,7 @@ interface QuickEditModuleFormProps {
 
 export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
   // Fetch the module to edit
-  const existingModule = useQuery(api.modules.get, { id: moduleId });
+  const existingModule = useQuery(api.modules.findById, { id: moduleId });
 
   // Define the mutation
   const editModule = useMutation(api.modules.update);
@@ -53,7 +56,7 @@ export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
 
   async function onSubmit(values: Module) {
     if (!existingModule) return;
-    const result = await editModule({ id: existingModule._id, ...values });
+    const result = await editModule({ id: moduleId, ...values });
 
     if (result) {
       toast({
@@ -73,6 +76,7 @@ export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
   const initialValues = {
     title: existingModule?.title ?? "",
     description: existingModule?.description ?? "",
+    isPublished: existingModule?.isPublished ?? false,
   };
 
   const moduleFormConfig: AdminFormConfig<Module> = {

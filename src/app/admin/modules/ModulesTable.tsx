@@ -53,7 +53,7 @@ const columns: ColumnDef<ModuleRow>[] = [
 ];
 
 export const ModulesForm = () => {
-  const modulesData = useQuery(api.modules.getAll);
+  const modulesData = useQuery(api.modules.all);
   if (!modulesData) return null;
   return <AdminTable columns={columns} data={modulesData} />;
 };

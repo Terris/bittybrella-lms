@@ -3,13 +3,18 @@
 import * as Yup from "yup";
 import { useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
-import { AdminQuickForm, AdminFormConfig } from "../AdminQuickForm";
+import {
+  AdminQuickForm,
+  AdminFormConfig,
+  AdminFieldtype,
+} from "../AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
 
 // Define the fields
 export interface Module {
   title: string;
   description: string;
+  isPublished: boolean;
 }
 
 // Define the validation schema
@@ -26,11 +31,17 @@ const ModuleFormSchema = Yup.object().shape({
 const fields = [
   { name: "title", label: "Title", initialValue: "" },
   { name: "description", label: "Description", initialValue: "" },
+  {
+    name: "isPublished",
+    label: "Published?",
+    fieldtype: "switch" as AdminFieldtype,
+    initialValue: false,
+  },
 ];
 
 // Set toast messages for success and error
 const successMessage = "Saved new module.";
-const errorMessage = "Something went wrong trying to create a new module.";
+const errorMessage = "Error saving module. Please try again.";
 
 // Set the form title
 const formTitle = "Create new module";
@@ -62,6 +73,7 @@ export const CreateModuleForm = () => {
   const initialValues = {
     title: "",
     description: "",
+    isPublished: false,
   };
 
   const config: AdminFormConfig<Module> = {

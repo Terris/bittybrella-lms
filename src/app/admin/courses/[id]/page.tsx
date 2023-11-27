@@ -22,7 +22,7 @@ interface AdminCoursePageProps {
 }
 
 export default function AdminCoursePage({ params }: AdminCoursePageProps) {
-  const course = useQuery(api.courses.get, {
+  const course = useQuery(api.courses.findById, {
     id: params.id as Id<"courses">,
   });
 
@@ -106,7 +106,7 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
 }
 
 function Module({ id }: { id: Id<"modules"> }) {
-  const courseModule = useQuery(api.modules.get, {
+  const courseModule = useQuery(api.modules.findById, {
     id,
   });
 

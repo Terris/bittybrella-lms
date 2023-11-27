@@ -1,16 +1,16 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { asyncMap, getManyFrom, getManyVia } from "./lib/relationships";
-import { notEmpty, removeEmptyFromArray } from "./lib/utils";
+import { removeEmptyFromArray } from "./lib/utils";
 
-export const getAll = query({
+export const all = query({
   args: {},
   handler: async (ctx) => {
     return await ctx.db.query("courses").order("desc").take(100);
   },
 });
 
-export const get = query({
+export const findById = query({
   args: { id: v.id("courses") },
   handler: async (ctx, { id }) => {
     const course = await ctx.db.get(id);
@@ -48,9 +48,8 @@ export const update = mutation({
     title: v.string(),
     description: v.string(),
     isPublished: v.boolean(),
-    moduleIds: v.optional(v.array(v.id("modules"))),
   },
-  handler: async (ctx, { id, title, description, isPublished, moduleIds }) => {
+  handler: async (ctx, { id, title, description, isPublished }) => {
     const existingCourse = await ctx.db.get(id);
     await ctx.db.patch(id, {
       title: title ?? existingCourse?.title,
@@ -58,7 +57,6 @@ export const update = mutation({
       isPublished:
         isPublished === undefined ? existingCourse?.isPublished : isPublished,
     });
-    // TODO: update courseModule docs
     return await ctx.db.get(id);
   },
 });

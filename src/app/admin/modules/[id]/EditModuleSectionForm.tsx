@@ -5,14 +5,13 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { useDebounce } from "@/lib/hooks/useDebounce";
 import { useToast } from "@/lib/hooks/useToast";
-import { Loader } from "@/lib/ui/Loader";
 
 interface ModuleSectionProps {
   id: Id<"moduleSections">;
 }
 
 export function EditModuleSectionForm({ id }: ModuleSectionProps) {
-  const moduleSectionData = useQuery(api.moduleSections.get, {
+  const moduleSectionData = useQuery(api.moduleSections.findById, {
     id,
   });
 

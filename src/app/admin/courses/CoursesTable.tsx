@@ -71,7 +71,7 @@ const columns: ColumnDef<CourseRow>[] = [
 ];
 
 export const CoursesTable = () => {
-  const coursesData = useQuery(api.courses.getAll);
+  const coursesData = useQuery(api.courses.all);
   if (!coursesData) return null;
   return <AdminTable columns={columns} data={coursesData} />;
 };

@@ -44,7 +44,7 @@ interface EditCourseFormProps {
 
 export const QuickEditCourseForm = ({ courseId }: EditCourseFormProps) => {
   // Fetch the course to edit
-  const course = useQuery(api.courses.get, { id: courseId });
+  const course = useQuery(api.courses.findById, { id: courseId });
 
   // Define the mutation
   const editCourse = useMutation(api.courses.update);

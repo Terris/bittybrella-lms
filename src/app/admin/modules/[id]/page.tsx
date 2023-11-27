@@ -14,7 +14,7 @@ interface AdminModulePageProps {
 }
 
 export default function AdminModulePage({ params }: AdminModulePageProps) {
-  const moduleData = useQuery(api.modules.get, {
+  const moduleData = useQuery(api.modules.findById, {
     id: params.id as Id<"modules">,
   });
 
