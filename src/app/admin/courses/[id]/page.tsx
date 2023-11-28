@@ -1,8 +1,8 @@
 "use client";
 
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
-import { Id } from "../../../../../convex/_generated/dataModel";
+import { Doc, Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
 import {
   Button,
@@ -16,6 +16,10 @@ import {
 } from "@/lib/ui";
 import { useEffect, useState } from "react";
 import { GripVertical } from "lucide-react";
+import {
+  SortableList,
+  SortableListItem,
+} from "@/lib/providers/SortableListProvider";
 
 interface AdminCoursePageProps {
   params: { id: string };
@@ -56,44 +60,14 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
         <hr />
         <div className="flex flex-col lg:flex-row">
           <aside className="lg:w-1/4 lg:pr-4">
-            <div className="lg:sticky lg:top-0">
-              <Text className="font-bold pt-2 pb-4">Modules</Text>
-              <div className="hidden lg:block">
-                {course.modules?.map((module) => (
-                  <Button
-                    key={module?._id}
-                    variant={
-                      selectedModuleId === module?._id ? "secondary" : "ghost"
-                    }
-                    onClick={() => setSelectedModuleId(module._id)}
-                    className="w-full mb-4 text-left"
-                  >
-                    <div className="w-full text-left truncate">
-                      {module?.title ?? "Untitled module"}
-                    </div>
-                    <GripVertical className="w-4 h-4 ml-2" />
-                  </Button>
-                ))}
-              </div>
-              <div className="block lg:hidden pb-6">
-                <Select
-                  onValueChange={(val) =>
-                    setSelectedModuleId(val as Id<"modules">)
-                  }
-                  value={selectedModuleId as string}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a module" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {course.modules?.map((module) => (
-                      <SelectItem value={module._id} key={module._id}>
-                        {module.title}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+            <div className="flex flex-col gap-4 lg:sticky lg:top-0">
+              <Text className="font-bold pt-2">Course Modules</Text>
+              <ModuleNav
+                courseId={params.id as Id<"courses">}
+                modules={course.modules}
+                selectedModuleId={selectedModuleId}
+                setSelectedModuleId={setSelectedModuleId}
+              />
             </div>
           </aside>
           <div className="flex-1 lg:w-3/4 lg:pl-4">
@@ -101,6 +75,104 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
           </div>
         </div>
       </PageContent>
+    </>
+  );
+}
+
+interface CourseModule extends Doc<"modules"> {
+  sections: Doc<"moduleSections">[];
+  order: number;
+  courseModuleId: Id<"courseModules">;
+}
+
+function ModuleNav({
+  courseId,
+  modules,
+  selectedModuleId,
+  setSelectedModuleId,
+}: {
+  courseId: Id<"courses">;
+  modules: CourseModule[];
+  selectedModuleId: Id<"modules"> | null;
+  setSelectedModuleId: (id: Id<"modules">) => void;
+}) {
+  const sortItems = modules.map((module) => module.courseModuleId);
+
+  const updateCourseModulesOrder = useMutation(
+    api.courseModules.updateOrder
+  ).withOptimisticUpdate((localStore, args) => {
+    const { idsInOrder } = args;
+
+    const updatedModules = modules
+      .map((module) => ({
+        ...module,
+        order: idsInOrder.indexOf(module.courseModuleId) + 1,
+      }))
+      .sort((a, b) => a.order - b.order);
+    const currentValue = localStore.getQuery(api.courses.findById, {
+      id: courseId,
+    });
+    if (currentValue !== undefined) {
+      localStore.setQuery(
+        api.courses.findById,
+        {
+          id: courseId,
+        },
+        { ...currentValue, modules: updatedModules }
+      );
+    }
+  });
+
+  function handleOnUpdate(updatedItems: string[]) {
+    updateCourseModulesOrder({
+      idsInOrder: updatedItems as Id<"courseModules">[],
+    });
+  }
+
+  return (
+    <>
+      <div className="hidden lg:block">
+        <SortableList items={sortItems} onUpdate={handleOnUpdate}>
+          <div className="flex flex-col gap-2">
+            {modules.map((module) => (
+              <SortableListItem
+                key={module.courseModuleId}
+                id={module.courseModuleId}
+              >
+                <Button
+                  key={module._id}
+                  variant={
+                    selectedModuleId === module?._id ? "secondary" : "ghost"
+                  }
+                  onClick={() => setSelectedModuleId(module?._id)}
+                  className="flex-1 truncate"
+                >
+                  <div className="w-full text-left truncate">
+                    {module.order}. {module.title ?? "Untitled section"}
+                  </div>
+                </Button>
+              </SortableListItem>
+            ))}
+          </div>
+        </SortableList>
+      </div>
+      <div className="block lg:hidden pb-6">
+        <Select
+          onValueChange={(val) => setSelectedModuleId(val as Id<"modules">)}
+          value={selectedModuleId as string}
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select a module" />
+          </SelectTrigger>
+          <SelectContent>
+            {modules.map((module) => (
+              <SelectItem value={module._id} key={module._id}>
+                {module.title}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
     </>
   );
 }
@@ -113,20 +185,17 @@ function Module({ id }: { id: Id<"modules"> }) {
   if (!courseModule) return null;
 
   return (
-    <div className="">
+    <>
       <Text className="pt-1 pb-11 text-3xl">{courseModule.title}</Text>
       {courseModule.sections?.map((section) => (
-        <>
-          <Text
-            key={section._id}
-            className=" font-semibold uppercase tracking-[0.2rem] pb-8"
-          >
+        <div key={section._id}>
+          <Text className=" font-semibold uppercase tracking-[0.2rem] pb-8">
             {section.title}
           </Text>
           <ContentReader content={section.content} />
           <hr className="my-8" />
-        </>
+        </div>
       ))}
-    </div>
+    </>
   );
 }

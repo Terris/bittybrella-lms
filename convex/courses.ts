@@ -14,16 +14,37 @@ export const findById = query({
   args: { id: v.id("courses") },
   handler: async (ctx, { id }) => {
     const course = await ctx.db.get(id);
+
+    const courseModules = removeEmptyFromArray(
+      await getManyFrom(ctx.db, "courseModules", "courseId", id)
+    );
+
     const modules = removeEmptyFromArray(
       await getManyVia(ctx.db, "courseModules", "moduleId", "courseId", id)
     );
     const modulesWithSections = await asyncMap(modules, async (module) => {
+      const moduleCourseModule = courseModules.find(
+        (mcm) => mcm.moduleId === module._id
+      );
+      if (!moduleCourseModule) {
+        throw new Error("Could not find moduleCourseModule");
+      }
       const sections = removeEmptyFromArray(
         await getManyFrom(ctx.db, "moduleSections", "moduleId", module._id)
       );
-      return { ...module, sections };
+      return {
+        ...module,
+        sections,
+        order: moduleCourseModule.order,
+        courseModuleId: moduleCourseModule._id,
+      };
     });
-    return { ...course, modules: modulesWithSections };
+    return {
+      ...course,
+      something: "test",
+      courseModules,
+      modules: modulesWithSections,
+    };
   },
 });
 

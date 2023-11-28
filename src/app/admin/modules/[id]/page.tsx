@@ -5,7 +5,15 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
-import { Button, Text } from "@/lib/ui";
+import {
+  Button,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Text,
+} from "@/lib/ui";
 import { EditModuleSectionForm } from "./EditModuleSectionForm";
 import { CreateModuleSectionButton } from "./CreateModuleSectionButton";
 import {
@@ -131,25 +139,48 @@ function ModuleSectionNav({
   }
 
   return (
-    <SortableList items={sortItems} onUpdate={handleOnUpdate}>
-      <div className="flex flex-col gap-2">
-        {sections.map((section) => (
-          <SortableListItem key={section._id} id={section._id}>
-            <Button
-              key={section?._id}
-              variant={
-                selectedModuleSectionId === section?._id ? "secondary" : "ghost"
-              }
-              onClick={() => setSelectedModuleSectionId(section?._id)}
-              className="flex-1 truncate"
-            >
-              <div className="w-full text-left truncate">
-                {section.order}. {section?.title ?? "Untitled section"}
-              </div>
-            </Button>
-          </SortableListItem>
-        ))}
+    <>
+      <SortableList items={sortItems} onUpdate={handleOnUpdate}>
+        <div className="flex flex-col gap-2">
+          {sections.map((section) => (
+            <SortableListItem key={section._id} id={section._id}>
+              <Button
+                key={section?._id}
+                variant={
+                  selectedModuleSectionId === section?._id
+                    ? "secondary"
+                    : "ghost"
+                }
+                onClick={() => setSelectedModuleSectionId(section?._id)}
+                className="flex-1 truncate"
+              >
+                <div className="w-full text-left truncate">
+                  {section.order}. {section?.title ?? "Untitled section"}
+                </div>
+              </Button>
+            </SortableListItem>
+          ))}
+        </div>
+      </SortableList>
+      <div className="block lg:hidden pb-6">
+        <Select
+          onValueChange={(val) =>
+            setSelectedModuleSectionId(val as Id<"moduleSections">)
+          }
+          value={selectedModuleSectionId as string}
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select a module" />
+          </SelectTrigger>
+          <SelectContent>
+            {sections.map((section) => (
+              <SelectItem value={section._id} key={section._id}>
+                {section.title}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
-    </SortableList>
+    </>
   );
 }
