@@ -9,23 +9,10 @@ import { Button, Text } from "@/lib/ui";
 import { EditModuleSectionForm } from "./EditModuleSectionForm";
 import { CreateModuleSectionButton } from "./CreateModuleSectionButton";
 import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragOverlay,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { GripVertical } from "lucide-react";
+  SortableList,
+  SortableListItem,
+} from "@/lib/providers/SortableListProvider";
+
 interface AdminModulePageProps {
   params: { id: string };
 }
@@ -38,10 +25,12 @@ export default function AdminModulePage({ params }: AdminModulePageProps) {
   const [selectedModuleSectionId, setSelectedModuleSectionId] =
     useState<Id<"moduleSections"> | null>(null);
 
+  // set the default selected section to the first section
+  // on load and when a section is deleted
   useEffect(() => {
     if (
       (selectedModuleSectionId &&
-        moduleData?.sections.some((s) => s._id === selectedModuleSectionId)) || // If the current section is still in the list
+        moduleData?.sections.some((s) => s._id === selectedModuleSectionId)) ||
       !moduleData?.sections?.[0]?._id
     ) {
       return;
@@ -49,6 +38,7 @@ export default function AdminModulePage({ params }: AdminModulePageProps) {
     setSelectedModuleSectionId(moduleData?.sections?.[0]._id ?? null);
   }, [moduleData?.sections, selectedModuleSectionId]);
 
+  // TODO: handle loading state
   if (!moduleData) return null;
 
   return (
@@ -86,7 +76,7 @@ export default function AdminModulePage({ params }: AdminModulePageProps) {
               />
             </div>
           </aside>
-          <div className="flex-1 lg:w-3/4 pl-4">
+          <div className="flex-1 lg:w-3/4 lg:pl-4">
             {selectedModuleSectionId && (
               <EditModuleSectionForm id={selectedModuleSectionId} />
             )}
@@ -108,6 +98,8 @@ function ModuleSectionNav({
   selectedModuleSectionId: Id<"moduleSections"> | null;
   setSelectedModuleSectionId: (id: Id<"moduleSections">) => void;
 }) {
+  const sortItems = sections.map((section) => section._id);
+
   const updateSectionsOrder = useMutation(
     api.moduleSections.updateOrder
   ).withOptimisticUpdate((localStore, args) => {
@@ -132,85 +124,32 @@ function ModuleSectionNav({
     }
   });
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
-  const items = sections.map((section) => section._id);
-
-  function handleDragEnd(event: any) {
-    const { active, over } = event;
-    if (active.id === over.id) return;
-
-    const oldIndex = items.indexOf(active.id);
-    const newIndex = items.indexOf(over.id);
-    const newOrder = arrayMove(items, oldIndex, newIndex);
+  function handleOnUpdate(updatedItems: string[]) {
     updateSectionsOrder({
-      idsInOrder: newOrder,
+      idsInOrder: updatedItems as Id<"moduleSections">[],
     });
   }
 
   return (
-    <div>
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext items={items} strategy={verticalListSortingStrategy}>
-          <div className="flex flex-col gap-2">
-            {sections.map((section) => (
-              <SortableItem key={section._id} id={section._id}>
-                <Button
-                  key={section?._id}
-                  variant={
-                    selectedModuleSectionId === section?._id
-                      ? "secondary"
-                      : "ghost"
-                  }
-                  onClick={() => setSelectedModuleSectionId(section?._id)}
-                  className="flex-1 truncate"
-                >
-                  <div className="w-full text-left truncate">
-                    {section.order}. {section?.title ?? "Untitled section"}
-                  </div>
-                </Button>
-              </SortableItem>
-            ))}
-          </div>
-        </SortableContext>
-      </DndContext>
-    </div>
-  );
-}
-
-function SortableItem({
-  id,
-  children,
-}: {
-  id: number | string;
-  children: React.ReactNode;
-}) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      className="w-full flex flex-row items-center"
-    >
-      <GripVertical className="flex-shrink-0 w-3 h-3 mr-2" {...listeners} />
-      {children}
-    </div>
+    <SortableList items={sortItems} onUpdate={handleOnUpdate}>
+      <div className="flex flex-col gap-2">
+        {sections.map((section) => (
+          <SortableListItem key={section._id} id={section._id}>
+            <Button
+              key={section?._id}
+              variant={
+                selectedModuleSectionId === section?._id ? "secondary" : "ghost"
+              }
+              onClick={() => setSelectedModuleSectionId(section?._id)}
+              className="flex-1 truncate"
+            >
+              <div className="w-full text-left truncate">
+                {section.order}. {section?.title ?? "Untitled section"}
+              </div>
+            </Button>
+          </SortableListItem>
+        ))}
+      </div>
+    </SortableList>
   );
 }
