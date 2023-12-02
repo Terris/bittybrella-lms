@@ -22,6 +22,7 @@ export default defineSchema({
     title: v.string(),
     description: v.string(),
     isPublished: v.boolean(),
+    draftModuleId: v.optional(v.id("modules")),
   }),
   courseModules: defineTable({
     courseId: v.id("courses"),

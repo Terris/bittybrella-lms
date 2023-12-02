@@ -7,6 +7,7 @@ import { Text, CopyToClipboardButton } from "@/lib/ui";
 import { AdminTable } from "../AdminTable";
 import Link from "next/link";
 import { Check, X } from "lucide-react";
+import { DeleteModuleButton } from "./DeleteModuleButton";
 
 interface ModuleRow {
   _id: string;
@@ -65,6 +66,13 @@ const columns: ColumnDef<ModuleRow>[] = [
     header: "Quick Edit",
     cell: ({ row }) => (
       <QuickEditModuleForm moduleId={row.original._id as Id<"modules">} />
+    ),
+  },
+  {
+    id: "delete",
+    header: "Delete",
+    cell: ({ row }) => (
+      <DeleteModuleButton id={row.original._id as Id<"modules">} />
     ),
   },
 ];
