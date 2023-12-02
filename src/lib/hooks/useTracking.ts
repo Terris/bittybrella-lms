@@ -5,7 +5,7 @@ import { api } from "../../../convex/_generated/api";
 import { useMe } from "../providers";
 
 export function useTracking() {
-  const { currentUser } = useMe();
+  const { me } = useMe();
   const trackMutation = useMutation(api.tracking.track);
 
   const trackEvent = async ({
@@ -17,13 +17,13 @@ export function useTracking() {
     originatedFrom: string;
     metaData?: any;
   }) => {
-    if (!currentUser) {
+    if (!me) {
       return;
     }
 
     // all lowercase to normalize the data
     trackMutation({
-      userId: currentUser.id,
+      userId: me.id,
       event: event.toLocaleLowerCase(),
       originatedFrom: originatedFrom.toLocaleLowerCase(),
       metaData,
