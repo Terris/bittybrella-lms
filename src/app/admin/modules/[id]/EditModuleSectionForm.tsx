@@ -5,6 +5,8 @@ import { api } from "../../../../../convex/_generated/api";
 import { useDebounce } from "@/lib/hooks/useDebounce";
 import { useToast } from "@/lib/hooks/useToast";
 import {
+  Alert,
+  AlertDescription,
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -14,10 +16,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
+  AlertTitle,
   Button,
   ContentEditor,
   Input,
 } from "@/lib/ui";
+import { AlertCircle } from "lucide-react";
 
 interface ModuleSectionProps {
   id: Id<"moduleSections">;
@@ -105,7 +109,9 @@ export function DeleteSectionButton({ id }: { id: Id<"moduleSections"> }) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive">Delete section</Button>
+        <Button variant="destructive" size="sm">
+          Delete section
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

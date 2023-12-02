@@ -92,3 +92,26 @@ export const update = mutation({
     return await ctx.db.get(id);
   },
 });
+
+export const deleteById = mutation({
+  args: { id: v.id("courses") },
+  handler: async (ctx, { id }) => {
+    await validateIdentity(ctx, { requireAdminRole: true });
+
+    const sectionToDelete = await ctx.db.get(id);
+    if (!sectionToDelete) throw new Error("Course does not exist");
+
+    // Delete all related courseModules
+    const courseModulesToDelete = await ctx.db
+      .query("courseModules")
+      .filter((q) => q.eq(q.field("courseId"), id))
+      .collect();
+
+    await asyncMap(courseModulesToDelete, async (courseModule) => {
+      await ctx.db.delete(courseModule._id);
+    });
+
+    // Finally, delete course
+    await ctx.db.delete(id);
+  },
+});
