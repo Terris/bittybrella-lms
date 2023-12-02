@@ -1,4 +1,5 @@
 ## Third Party Documentation
 
-[Lucide Icons](https://lucide.dev/guide/packages/lucide-react)
-[Clerk](https://clerk.com/docs/quickstarts/nextjs)
+- [Convex](https://docs.convex.dev/home)
+- [Clerk](https://clerk.com/docs/quickstarts/nextjs)
+- [Lucide Icons](https://lucide.dev/guide/packages/lucide-react)
