@@ -2,10 +2,18 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { getManyFrom } from "./lib/relationships";
 import { removeEmptyFromArray } from "./lib/utils";
+import { validateIdentity } from "./lib/authorization";
+
+/* PUBLIC 
+======================================= */
+
+/* ADMIN ONLY
+======================================= */
 
 export const all = query({
   args: {},
   handler: async (ctx) => {
+    await validateIdentity(ctx, { requireAdminRole: true });
     return await ctx.db.query("modules").collect();
   },
 });
@@ -15,6 +23,7 @@ export const findById = query({
     id: v.id("modules"),
   },
   handler: async (ctx, { id }) => {
+    await validateIdentity(ctx, { requireAdminRole: true });
     const moduleRec = await ctx.db.get(id);
     const sections = removeEmptyFromArray(
       await getManyFrom(ctx.db, "moduleSections", "moduleId", id)
@@ -30,6 +39,7 @@ export const create = mutation({
     isPublished: v.boolean(),
   },
   handler: async (ctx, { title, description, isPublished }) => {
+    await validateIdentity(ctx, { requireAdminRole: true });
     return await ctx.db.insert("modules", {
       title,
       description,
@@ -46,6 +56,7 @@ export const update = mutation({
     isPublished: v.optional(v.boolean()),
   },
   handler: async (ctx, { id, title, description, isPublished }) => {
+    await validateIdentity(ctx, { requireAdminRole: true });
     const existingCourse = await ctx.db.get(id);
     await ctx.db.patch(id, {
       title: title ?? existingCourse?.title,
