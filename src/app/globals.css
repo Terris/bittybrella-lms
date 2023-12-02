@@ -58,6 +58,10 @@
   }
 }
 
+body {
+  font-family: var(--font-sans);
+}
+
 .tiptap {
   outline: none;
 }
