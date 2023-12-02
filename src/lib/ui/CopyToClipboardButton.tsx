@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, ButtonProps } from "@/lib/ui/Button";
+import { Button, ButtonProps } from "./Button";
 import { ClipboardCopy, ClipboardCheck, ClipboardX } from "lucide-react";
 import { useState } from "react";
 
