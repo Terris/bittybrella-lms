@@ -7,6 +7,7 @@ import { api } from "../../../../convex/_generated/api";
 import { Text, CopyToClipboardButton, Button } from "@/lib/ui";
 import { AdminTable } from "../AdminTable";
 import Link from "next/link";
+import { DeleteCourseButton } from "./DeleteCourseButton";
 
 interface CourseRow {
   _id: string;
@@ -66,6 +67,13 @@ const columns: ColumnDef<CourseRow>[] = [
     header: "Quick Edit",
     cell: ({ row }) => (
       <QuickEditCourseForm courseId={row.original._id as Id<"courses">} />
+    ),
+  },
+  {
+    id: "delete",
+    header: "Delete",
+    cell: ({ row }) => (
+      <DeleteCourseButton id={row.original._id as Id<"courses">} />
     ),
   },
 ];

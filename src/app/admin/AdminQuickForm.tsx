@@ -1,4 +1,7 @@
 import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
   Button,
   Dialog,
   DialogClose,
@@ -21,6 +24,8 @@ import {
   FormikValues,
   useField,
 } from "formik";
+import { AlertCircle } from "lucide-react";
+import { useState } from "react";
 
 export interface AdminFormConfig<CustomFormValues> {
   validationSchema: any;
@@ -43,6 +48,9 @@ export const AdminQuickForm = <CustomFormValues extends FormikValues>({
   formDescription,
   config,
 }: AdminFormProps<CustomFormValues>) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [serverError, setServerError] = useState<string | null>(null);
+
   const {
     validationSchema,
     initialValues,
@@ -51,8 +59,18 @@ export const AdminQuickForm = <CustomFormValues extends FormikValues>({
     submitButtonLabel,
   } = config;
 
+  const handleSubmit = async (values: CustomFormValues) => {
+    setServerError(null);
+    try {
+      await onSubmit(values);
+      setIsOpen(false);
+    } catch (error: any) {
+      setServerError(error.message);
+    }
+  };
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
       <DialogTrigger asChild>
         {renderTrigger ? (
           renderTrigger
@@ -72,10 +90,17 @@ export const AdminQuickForm = <CustomFormValues extends FormikValues>({
         <Formik<CustomFormValues>
           initialValues={initialValues}
           validationSchema={validationSchema}
-          onSubmit={onSubmit}
+          onSubmit={handleSubmit}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, isValid, touched }) => (
             <Form>
+              {serverError && (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Oops, something went wrong...</AlertTitle>
+                  <AlertDescription>{serverError}</AlertDescription>
+                </Alert>
+              )}
               <div className="grid gap-4 py-4">
                 {fields.map((f) => (
                   <AdminFormField
@@ -88,11 +113,9 @@ export const AdminQuickForm = <CustomFormValues extends FormikValues>({
                 ))}
               </div>
               <DialogFooter>
-                <DialogClose asChild>
-                  <Button type="submit" disabled={isSubmitting}>
-                    {submitButtonLabel ?? "Save"}
-                  </Button>
-                </DialogClose>
+                <Button type="submit" disabled={isSubmitting}>
+                  {submitButtonLabel ?? "Save"}
+                </Button>
               </DialogFooter>
             </Form>
           )}
