@@ -16,6 +16,7 @@ import type {
 } from "convex/server";
 import type * as courseModules from "../courseModules";
 import type * as courses from "../courses";
+import type * as lib_authorization from "../lib/authorization";
 import type * as lib_relationships from "../lib/relationships";
 import type * as lib_utils from "../lib/utils";
 import type * as moduleSections from "../moduleSections";
@@ -34,6 +35,7 @@ import type * as users from "../users";
 declare const fullApi: ApiFromModules<{
   courseModules: typeof courseModules;
   courses: typeof courses;
+  "lib/authorization": typeof lib_authorization;
   "lib/relationships": typeof lib_relationships;
   "lib/utils": typeof lib_utils;
   moduleSections: typeof moduleSections;

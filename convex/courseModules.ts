@@ -1,13 +1,21 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { removeEmptyFromArray, validateIdentity } from "./lib/utils";
+import { removeEmptyFromArray } from "./lib/utils";
 import { getManyFrom } from "./lib/relationships";
+import { validateIdentity } from "./lib/authorization";
+
+/* PUBLIC 
+======================================= */
+
+/* ADMIN ONLY
+======================================= */
 
 export const findById = query({
   args: {
     id: v.id("courseModules"),
   },
   handler: async (ctx, { id }) => {
+    await validateIdentity(ctx, { requireAdminRole: true });
     return await ctx.db.get(id);
   },
 });
@@ -17,6 +25,7 @@ export const findByCourseId = query({
     courseId: v.id("courses"),
   },
   handler: async (ctx, { courseId }) => {
+    await validateIdentity(ctx, { requireAdminRole: true });
     return removeEmptyFromArray(
       await getManyFrom(ctx.db, "courseModules", "courseId", courseId)
     );
@@ -29,6 +38,8 @@ export const updateAllByCourseId = mutation({
     moduleIds: v.array(v.id("modules")),
   },
   handler: async (ctx, { courseId, moduleIds }) => {
+    await validateIdentity(ctx, { requireAdminRole: true });
+
     // get existing courseModules
     const existingCourseModules = removeEmptyFromArray(
       await getManyFrom(ctx.db, "courseModules", "courseId", courseId)
@@ -76,7 +87,7 @@ export const updateOrder = mutation({
     idsInOrder: v.array(v.id("courseModules")),
   },
   handler: async (ctx, { idsInOrder }) => {
-    await validateIdentity(ctx);
+    await validateIdentity(ctx, { requireAdminRole: true });
     await Promise.all(
       idsInOrder.map((courseModuleId, index) =>
         ctx.db.patch(courseModuleId, {

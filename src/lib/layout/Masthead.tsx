@@ -57,7 +57,14 @@ export function Masthead() {
         <ModeToggle />
         <div className="lg:w-full lg:flex lg:flex-col items-center lg:border-t lg:py-4">
           {isAuthenticated ? (
-            <UserButton afterSignOutUrl="/" />
+            <UserButton
+              afterSignOutUrl="/"
+              appearance={{
+                elements: {
+                  userButtonPopoverCard: "rounded shadow-md",
+                },
+              }}
+            />
           ) : (
             <SignInButton mode="modal" />
           )}
