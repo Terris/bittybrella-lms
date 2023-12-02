@@ -6,6 +6,7 @@ import { api } from "../../../../convex/_generated/api";
 import { Text, CopyToClipboardButton } from "@/lib/ui";
 import { AdminTable } from "../AdminTable";
 import Link from "next/link";
+import { Check, X } from "lucide-react";
 
 interface ModuleRow {
   _id: string;
@@ -28,6 +29,22 @@ const columns: ColumnDef<ModuleRow>[] = [
   {
     accessorKey: "description",
     header: "Description",
+  },
+  {
+    accessorKey: "isPublished",
+    header: "Published?",
+    cell: ({ row }) => {
+      const isPublished: boolean = row.getValue("isPublished");
+      return (
+        <div className="">
+          {isPublished ? (
+            <Check className="h-4 w-4 text-primary" />
+          ) : (
+            <X className="h-4 w-4 text-destructive" />
+          )}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "_id",

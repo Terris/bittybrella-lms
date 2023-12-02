@@ -5,12 +5,6 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/lib/ui";
 import { fontSans } from "./fonts";
 
-/* FONT FAVORITES
-  Gabarito
-  Hanken Grotesk
-  Cabin
-*/
-
 export const metadata = {
   title: "BittyBrella",
   description: "Learn things, whoot.",

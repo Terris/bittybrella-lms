@@ -72,7 +72,7 @@ export default function AdminModulePage({ params }: AdminModulePageProps) {
         <div className="flex flex-col lg:flex-row">
           <aside className="lg:w-1/4 lg:pr-4">
             <div className="flex flex-col gap-4 lg:sticky lg:top-0">
-              <Text className="font-bold pt-2">Module Sections</Text>
+              <Text className="font-bold pt-2">Module Sections (slides)</Text>
               <ModuleSectionNav
                 moduleId={params.id as Id<"modules">}
                 sections={moduleData.sections}

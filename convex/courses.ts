@@ -22,6 +22,7 @@ export const findById = query({
     const modules = removeEmptyFromArray(
       await getManyVia(ctx.db, "courseModules", "moduleId", "courseId", id)
     );
+
     const modulesWithSections = await asyncMap(modules, async (module) => {
       const moduleCourseModule = courseModules.find(
         (mcm) => mcm.moduleId === module._id
@@ -42,8 +43,7 @@ export const findById = query({
     return {
       ...course,
       something: "test",
-      courseModules,
-      modules: modulesWithSections,
+      modules: modulesWithSections.sort((a, b) => a.order - b.order),
     };
   },
 });

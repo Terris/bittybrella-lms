@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { getManyFrom } from "./lib/relationships";
-import { notEmpty, removeEmptyFromArray } from "./lib/utils";
+import { removeEmptyFromArray } from "./lib/utils";
 
 export const all = query({
   args: {},
@@ -43,12 +43,14 @@ export const update = mutation({
     id: v.id("modules"),
     title: v.optional(v.string()),
     description: v.optional(v.string()),
+    isPublished: v.optional(v.boolean()),
   },
-  handler: async (ctx, { id, title, description }) => {
+  handler: async (ctx, { id, title, description, isPublished }) => {
     const existingCourse = await ctx.db.get(id);
     await ctx.db.patch(id, {
       title: title ?? existingCourse?.title,
       description: description ?? existingCourse?.description,
+      isPublished: isPublished ?? existingCourse?.isPublished,
     });
     return await ctx.db.get(id);
   },

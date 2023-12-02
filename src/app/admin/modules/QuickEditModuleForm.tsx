@@ -3,7 +3,11 @@
 import * as Yup from "yup";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
-import { AdminQuickForm, AdminFormConfig } from "../AdminQuickForm";
+import {
+  AdminQuickForm,
+  AdminFormConfig,
+  AdminFieldtype,
+} from "../AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { Pencil } from "lucide-react";
@@ -31,7 +35,12 @@ const validationSchema = Yup.object().shape({
 const fields = [
   { name: "title", label: "Title", initialValue: "" },
   { name: "description", label: "Description", initialValue: "" },
-  { name: "isPublished", label: "Published", initialValue: false },
+  {
+    name: "isPublished",
+    label: "Published",
+    initialValue: false,
+    fieldtype: "switch" as AdminFieldtype,
+  },
 ];
 
 // Set toast messages for success and error

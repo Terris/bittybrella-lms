@@ -20,6 +20,7 @@ import {
   SortableList,
   SortableListItem,
 } from "@/lib/providers/SortableListProvider";
+import { QuickEditCourseModulesForm } from "./QuickEditCourseModulesForm";
 
 interface AdminCoursePageProps {
   params: { id: string };
@@ -59,7 +60,7 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
         </div>
         <hr />
         <div className="flex flex-col lg:flex-row">
-          <aside className="lg:w-1/4 lg:pr-4">
+          <aside className="lg:w-1/4 lg:pr-8">
             <div className="flex flex-col gap-4 lg:sticky lg:top-0">
               <Text className="font-bold pt-2">Course Modules</Text>
               <ModuleNav
@@ -68,10 +69,15 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
                 selectedModuleId={selectedModuleId}
                 setSelectedModuleId={setSelectedModuleId}
               />
+              <QuickEditCourseModulesForm
+                courseId={params.id as Id<"courses">}
+              />
             </div>
           </aside>
-          <div className="flex-1 lg:w-3/4 lg:pl-4">
-            {selectedModuleId && <Module id={selectedModuleId} />}
+          <div className="flex-1 lg:w-3/4 lg:pl-8">
+            {selectedModuleId && (
+              <Module courseTitle={course.title ?? ""} id={selectedModuleId} />
+            )}
           </div>
         </div>
       </PageContent>
@@ -177,7 +183,13 @@ function ModuleNav({
   );
 }
 
-function Module({ id }: { id: Id<"modules"> }) {
+function Module({
+  courseTitle,
+  id,
+}: {
+  courseTitle: string;
+  id: Id<"modules">;
+}) {
   const courseModule = useQuery(api.modules.findById, {
     id,
   });
@@ -186,12 +198,15 @@ function Module({ id }: { id: Id<"modules"> }) {
 
   return (
     <>
-      <Text className="pt-1 pb-11 text-3xl">{courseModule.title}</Text>
+      <Text className="text-center uppercase text-xs tracking-[0.2rem] pt-8 pb-4">
+        {courseTitle}
+      </Text>
+      <Text className="pt-1 pb-16 text-4xl text-center font-bold">
+        {courseModule.title}
+      </Text>
       {courseModule.sections?.map((section) => (
         <div key={section._id}>
-          <Text className=" font-semibold uppercase tracking-[0.2rem] pb-8">
-            {section.title}
-          </Text>
+          <Text className="text-2xl pb-8">{section.title}</Text>
           <ContentReader content={section.content} />
           <hr className="my-8" />
         </div>

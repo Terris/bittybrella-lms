@@ -120,7 +120,6 @@ export interface AdminFormField {
   name: string;
   label?: string;
   fieldtype?: AdminFieldtype;
-  initialValue: any;
   options?: AdminFormFieldOption[];
 }
 
@@ -248,7 +247,7 @@ function MultiSelectInput({
 
   return (
     <div className="rounded border px-4 max-h-52 overflow-hidden overflow-y-auto">
-      {options?.map((option, index) => {
+      {options?.map((option) => {
         return (
           <div
             className="grid grid-cols-4 py-2 items-center gap-4 border-b"

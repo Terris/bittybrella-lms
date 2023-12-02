@@ -1,7 +1,13 @@
 import {
-  Cabin as FontSans,
+  Murecho as FontSans,
   Bricolage_Grotesque as FontDisplay,
 } from "next/font/google";
+
+/* FONT FAVORITES
+  Gabarito
+  Cabin
+  Murecho
+*/
 
 export const fontSans = FontSans({
   subsets: ["latin"],
