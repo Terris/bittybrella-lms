@@ -21,15 +21,8 @@ export function CreateModuleSectionButton({
   };
 
   return (
-    <Button
-      variant="ghost"
-      size="sm"
-      className="w-full text-left mb-4"
-      onClick={handleCreateNewSection}
-    >
-      <div className="w-full text-left flex items-center gap-2">
-        <PlusSquare className="w-4 h-4" /> New Section
-      </div>
+    <Button variant="ghost" size="sm" onClick={handleCreateNewSection}>
+      <PlusSquare className="w-4 h-4" />
     </Button>
   );
 }

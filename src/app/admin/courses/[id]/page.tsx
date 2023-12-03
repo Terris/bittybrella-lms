@@ -61,7 +61,7 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
         <hr />
         <div className="flex flex-col lg:flex-row">
           <aside className="lg:w-1/4 lg:pr-8">
-            <div className="flex flex-col gap-4 lg:sticky lg:top-0 lg:pb-4 lg:max-h-screen lg:overflow-auto">
+            <div className="flex flex-col gap-4 lg:sticky lg:top-0">
               <div className="flex justify-between items-center">
                 <Text className="font-bold">Course Modules</Text>
                 <QuickEditCourseModulesForm
@@ -78,9 +78,7 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
             </div>
           </aside>
           <div className="flex-1 lg:w-3/4 lg:pl-8">
-            {selectedModuleId && (
-              <Module courseTitle={course.title ?? ""} id={selectedModuleId} />
-            )}
+            {selectedModuleId && <Module id={selectedModuleId} />}
           </div>
         </div>
       </PageContent>
@@ -201,13 +199,7 @@ function ModuleNav({
   );
 }
 
-function Module({
-  courseTitle,
-  id,
-}: {
-  courseTitle: string;
-  id: Id<"modules">;
-}) {
+function Module({ id }: { id: Id<"modules"> }) {
   const courseModule = useQuery(api.modules.findById, {
     id,
   });
@@ -216,9 +208,6 @@ function Module({
 
   return (
     <>
-      <Text className="uppercase text-xs tracking-[0.2rem] pt-8 pb-4">
-        {courseTitle}
-      </Text>
       <Text className="pt-1 pb-16 text-4xl font-bold">
         {courseModule.title}
       </Text>
