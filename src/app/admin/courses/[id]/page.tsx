@@ -61,16 +61,19 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
         <hr />
         <div className="flex flex-col lg:flex-row">
           <aside className="lg:w-1/4 lg:pr-8">
-            <div className="flex flex-col gap-4 lg:sticky lg:top-0">
-              <Text className="font-bold pt-2">Course Modules</Text>
+            <div className="flex flex-col gap-4 lg:sticky lg:top-0 lg:pb-4 lg:max-h-screen lg:overflow-auto">
+              <div className="flex justify-between items-center">
+                <Text className="font-bold">Course Modules</Text>
+                <QuickEditCourseModulesForm
+                  courseId={params.id as Id<"courses">}
+                />
+              </div>
+
               <ModuleNav
                 courseId={params.id as Id<"courses">}
                 modules={course.modules}
                 selectedModuleId={selectedModuleId}
                 setSelectedModuleId={setSelectedModuleId}
-              />
-              <QuickEditCourseModulesForm
-                courseId={params.id as Id<"courses">}
               />
             </div>
           </aside>
@@ -145,18 +148,33 @@ function ModuleNav({
                 key={module.courseModuleId}
                 id={module.courseModuleId}
               >
-                <Button
-                  key={module._id}
-                  variant={
-                    selectedModuleId === module?._id ? "secondary" : "ghost"
-                  }
-                  onClick={() => setSelectedModuleId(module?._id)}
-                  className="flex-1 truncate"
-                >
-                  <div className="w-full text-left truncate">
-                    {module.order}. {module.title ?? "Untitled section"}
-                  </div>
-                </Button>
+                <div className="flex flex-col flex-1 truncate">
+                  <Button
+                    key={module._id}
+                    variant={
+                      selectedModuleId === module?._id ? "secondary" : "ghost"
+                    }
+                    onClick={() => setSelectedModuleId(module?._id)}
+                    className="flex-1 truncate"
+                  >
+                    <div className="w-full text-left truncate">
+                      {module.order}. {module.title ?? "Untitled section"}
+                    </div>
+                  </Button>
+                  {selectedModuleId === module?._id && (
+                    <div className="pl-4">
+                      {module.sections.map((section) => (
+                        <Text
+                          key={section._id}
+                          size="sm"
+                          className="py-2 truncate"
+                        >
+                          {section.title}
+                        </Text>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </SortableListItem>
             ))}
           </div>
@@ -198,10 +216,10 @@ function Module({
 
   return (
     <>
-      <Text className="text-center uppercase text-xs tracking-[0.2rem] pt-8 pb-4">
+      <Text className="uppercase text-xs tracking-[0.2rem] pt-8 pb-4">
         {courseTitle}
       </Text>
-      <Text className="pt-1 pb-16 text-4xl text-center font-bold">
+      <Text className="pt-1 pb-16 text-4xl font-bold">
         {courseModule.title}
       </Text>
       {courseModule.sections?.map((section) => (

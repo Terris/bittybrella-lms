@@ -66,9 +66,12 @@ export function SortableListItem({
       ref={setNodeRef}
       style={style}
       {...attributes}
-      className="w-full flex flex-row items-center"
+      className="w-full flex flex-row items-start"
     >
-      <GripVertical className="flex-shrink-0 w-3 h-3 mr-2" {...listeners} />
+      <GripVertical
+        className="flex-shrink-0 w-3 h-3 mr-2 mt-3.5"
+        {...listeners}
+      />
       {children}
     </div>
   );

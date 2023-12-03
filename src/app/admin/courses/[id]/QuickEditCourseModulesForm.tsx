@@ -10,6 +10,8 @@ import {
   AdminFieldtype,
 } from "../../AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
+import { Settings } from "lucide-react";
+import { Button } from "@/lib/ui";
 
 // Define the fields
 export interface CourseModule {
@@ -89,5 +91,15 @@ export const QuickEditCourseModulesForm = ({
 
   if (!allModules || !courseModules) return null;
 
-  return <AdminQuickForm<CourseModule> config={config} formTitle={formTitle} />;
+  return (
+    <AdminQuickForm<CourseModule>
+      config={config}
+      formTitle={formTitle}
+      renderTrigger={
+        <Button variant="ghost" size="sm">
+          <Settings className="w-3 h-3" />
+        </Button>
+      }
+    />
+  );
 };
