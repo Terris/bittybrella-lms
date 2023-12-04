@@ -18,7 +18,6 @@ import {
   ContentEditor,
   Input,
 } from "@/lib/ui";
-import { AlertCircle } from "lucide-react";
 
 interface ModuleSectionProps {
   id: Id<"moduleSections">;
