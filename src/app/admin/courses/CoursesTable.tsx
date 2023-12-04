@@ -4,7 +4,7 @@ import { useQuery } from "convex/react";
 import { QuickEditCourseForm } from "./QuickEditCourseForm";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { api } from "../../../../convex/_generated/api";
-import { Text, CopyToClipboardButton, Button } from "@/lib/ui";
+import { Text, CopyToClipboardButton } from "@/lib/ui";
 import { AdminTable } from "../AdminTable";
 import Link from "next/link";
 import { DeleteCourseButton } from "./DeleteCourseButton";
