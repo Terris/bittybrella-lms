@@ -68,7 +68,6 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
                   courseId={params.id as Id<"courses">}
                 />
               </div>
-
               <ModuleNav
                 courseId={params.id as Id<"courses">}
                 modules={course.modules}

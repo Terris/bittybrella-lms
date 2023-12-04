@@ -38,5 +38,32 @@ export default defineSchema({
     title: v.string(),
     content: v.string(),
     order: v.number(),
-  }).index("by_moduleId", ["moduleId"]),
+    contentBlockIds: v.optional(
+      v.union(v.id("article"), v.id("video"), v.id("assessment"))
+    ),
+  })
+    .index("by_moduleId", ["moduleId"])
+    .index("by_order", ["order"]),
+  article: defineTable({
+    title: v.string(),
+    content: v.string(),
+  }),
+  video: defineTable({
+    title: v.string(),
+    url: v.string(),
+  }),
+  assessment: defineTable({
+    title: v.string(),
+    questions: v.array(
+      v.object({
+        question: v.string(),
+        options: v.array(
+          v.object({
+            text: v.string(),
+            isCorrect: v.boolean(),
+          })
+        ),
+      })
+    ),
+  }),
 });
