@@ -8,6 +8,8 @@ export * from "./ContentReader";
 export * from "./CopyToClipboardButton";
 export * from "./Dialog";
 export * from "./DropdownMenu";
+export * from "./FlexColumn";
+export * from "./FlexRow";
 export * from "./Input";
 export * from "./Label";
 export * from "./Loader";

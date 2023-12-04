@@ -5,7 +5,7 @@
 
 import { FieldTypeFromFieldPath, Indexes, NamedTableInfo } from "convex/server";
 import { DataModel, Doc, Id, TableNames } from "../_generated/dataModel";
-import { DatabaseReader, mutation } from "../_generated/server";
+import { DatabaseReader } from "../_generated/server";
 
 /**
  * asyncMap returns the results of applying an async function over an list.
