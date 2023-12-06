@@ -3,6 +3,8 @@
 import { Button, Loader, Text } from "@/lib/ui";
 import { Editor, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Image from "@tiptap/extension-image";
+import Youtube from "@tiptap/extension-youtube";
 import {
   Bold,
   Check,
@@ -11,6 +13,7 @@ import {
   Heading2,
   Heading3,
   Italic,
+  Image as ImageIcon,
   List,
   ListOrdered,
   Minus,
@@ -20,12 +23,20 @@ import {
   SquareCode,
   Strikethrough,
   Undo,
+  Youtube as YouTubeIcon,
 } from "lucide-react";
 import { useDebounce } from "../hooks/useDebounce";
 import { useEffect, useState } from "react";
 
 // define your extension array
-const extensions = [StarterKit];
+const extensions = [
+  StarterKit,
+  Image,
+  Youtube.configure({
+    nocookie: true,
+    modestBranding: true,
+  }),
+];
 
 const emptyJSON = '""';
 interface ContentEditorProps {
@@ -90,6 +101,26 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
   if (!editor) {
     return null;
   }
+
+  const addYoutubeVideo = () => {
+    const url = prompt("Enter YouTube URL");
+
+    if (url) {
+      editor.commands.setYoutubeVideo({
+        src: url,
+        width: 640,
+        height: 480,
+      });
+    }
+  };
+
+  const addImage = () => {
+    const url = window.prompt("URL");
+
+    if (url) {
+      editor.chain().focus().setImage({ src: url }).run();
+    }
+  };
 
   return (
     <div className="sticky top-0 z-50 bg-background flex flex-wrap gap-1 items-center p-2 border-b rounded-t-md">
@@ -186,6 +217,18 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
       >
         <Minus className="w-4 h-4" />
       </ToolbarButton>
+
+      <ToolbarButton onClick={addImage} isActive={editor.isActive("image")}>
+        <ImageIcon className="w-4 h-4" />
+      </ToolbarButton>
+
+      <ToolbarButton
+        onClick={addYoutubeVideo}
+        isActive={editor.isActive("youtube")}
+      >
+        <YouTubeIcon className="w-4 h-4" />
+      </ToolbarButton>
+
       <div>
         <ToolbarButton
           onClick={() => editor.chain().focus().undo().run()}
