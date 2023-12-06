@@ -2,8 +2,19 @@
 
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Image from "@tiptap/extension-image";
+import Typography from "@tiptap/extension-typography";
+import Youtube from "@tiptap/extension-youtube";
 
-const extensions = [StarterKit];
+const extensions = [
+  Image,
+  Typography,
+  StarterKit,
+  Youtube.configure({
+    nocookie: true,
+    modestBranding: true,
+  }),
+];
 
 const emptyJSON = '""';
 

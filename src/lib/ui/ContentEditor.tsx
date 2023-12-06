@@ -4,6 +4,7 @@ import { Button, Loader, Text } from "@/lib/ui";
 import { Editor, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
+import Typography from "@tiptap/extension-typography";
 import Youtube from "@tiptap/extension-youtube";
 import {
   Bold,
@@ -30,8 +31,9 @@ import { useEffect, useState } from "react";
 
 // define your extension array
 const extensions = [
-  StarterKit,
   Image,
+  Typography,
+  StarterKit,
   Youtube.configure({
     nocookie: true,
     modestBranding: true,
