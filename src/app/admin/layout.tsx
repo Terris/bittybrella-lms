@@ -15,5 +15,5 @@ export default function AdminLayout({
   if (!me?.isAdmin) {
     router.push("/");
   }
-  return <PrivatePage>{children}</PrivatePage>;
+  return <PrivatePage authorizedRoles={["admin"]}>{children}</PrivatePage>;
 }
