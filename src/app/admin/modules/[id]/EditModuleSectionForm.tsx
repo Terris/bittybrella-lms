@@ -17,6 +17,7 @@ import {
   Button,
   ContentEditor,
   Input,
+  Label,
 } from "@/lib/ui";
 
 interface ModuleSectionProps {
@@ -80,6 +81,7 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
 
   return (
     <div className="flex flex-col gap-4">
+      <Label htmlFor="section-title">Section title</Label>
       <Input
         name="section-title"
         placeholder="Section title"
