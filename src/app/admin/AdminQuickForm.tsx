@@ -16,6 +16,7 @@ import {
   Switch,
   Text,
 } from "@/lib/ui";
+import { cn } from "@/lib/utils";
 import { FieldInputProps, Form, Formik, FormikValues, useField } from "formik";
 import { AlertCircle } from "lucide-react";
 import { useState } from "react";
@@ -272,10 +273,13 @@ function MultiSelectInput({
 
   return (
     <div className="rounded border px-4 max-h-52 overflow-hidden overflow-y-auto">
-      {options?.map((option) => {
+      {options?.map((option, index) => {
         return (
           <div
-            className="grid grid-cols-4 py-2 items-center gap-4 border-b"
+            className={cn(
+              "grid grid-cols-4 py-2 items-center gap-4",
+              index < options.length - 1 ? "border-b" : ""
+            )}
             key={option.value}
           >
             <div className="col-span-3">

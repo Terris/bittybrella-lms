@@ -20,7 +20,24 @@ export const findById = query({
   },
 });
 
+export const findByModuleId = query({
+  args: {
+    moduleId: v.id("modules"),
+  },
+  handler: async (ctx, { moduleId }) => {
+    await validateIdentity(ctx, { requireAdminRole: true });
+    const moduleSections = await ctx.db
+      .query("moduleSections")
+      .filter((q) => q.eq(q.field("moduleId"), moduleId))
+      .collect();
+    return removeEmptyFromArray(moduleSections).sort(
+      (a, b) => a.order - b.order
+    );
+  },
+});
+
 const defaultSectionTitle = "Untitled section";
+
 export const create = mutation({
   args: {
     moduleId: v.id("modules"),

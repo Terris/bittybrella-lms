@@ -27,15 +27,6 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
   const [selectedModuleSectionId, setSelectedModuleSectionId] =
     useState<Id<"moduleSections"> | null>(null);
 
-  const moduleData = useQuery(
-    api.modules.findById,
-    selectedModuleId
-      ? {
-          id: selectedModuleId,
-        }
-      : "skip"
-  );
-
   useEffect(() => {
     if (!course?.modules?.[0]?._id || !!selectedModuleId) return;
     setSelectedModuleId(course?.modules?.[0]._id ?? null);
@@ -65,29 +56,19 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
         </FlexRow>
         <hr />
         <div className="flex flex-col lg:flex-row lg:h-full">
-          <aside className="lg:w-1/4 lg:pr-4 xl:w-1/6">
+          <aside className="lg:w-1/4 lg:pr-4">
             <div className="flex flex-col gap-4 lg:sticky lg:top-0">
               <CourseModulesNav
                 courseId={params.id as Id<"courses">}
                 modules={course.modules}
                 selectedModuleId={selectedModuleId}
                 setSelectedModuleId={setSelectedModuleId}
+                selectedModuleSectionId={selectedModuleSectionId}
+                setSelectedModuleSectionId={setSelectedModuleSectionId}
               />
             </div>
           </aside>
-          {moduleData && (
-            <aside className="lg:w-1/4 lg:px-4 xl:w-1/6">
-              <div className="flex flex-col gap-4 lg:sticky lg:top-0">
-                <ModuleSectionsNav
-                  moduleId={selectedModuleId as Id<"modules">}
-                  sections={moduleData.sections}
-                  selectedModuleSectionId={selectedModuleSectionId}
-                  setSelectedModuleSectionId={setSelectedModuleSectionId}
-                />
-              </div>
-            </aside>
-          )}
-          <div className="flex-1 lg:w-3/4 lg:pl-4 xl:w-4/6">
+          <div className="flex-1 lg:w-3/4 lg:pl-4">
             {selectedModuleSectionId && (
               <EditModuleSectionForm id={selectedModuleSectionId} />
             )}

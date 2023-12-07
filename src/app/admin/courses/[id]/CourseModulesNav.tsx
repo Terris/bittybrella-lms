@@ -23,6 +23,7 @@ import { QuickEditCourseModulesForm } from "./QuickEditCourseModulesForm";
 import { MoreVertical } from "lucide-react";
 import { useState } from "react";
 import { DropdownMenuPortal } from "@radix-ui/react-dropdown-menu";
+import { ModuleSectionsNav } from "../../modules/[id]/ModuleSectionsNav";
 
 export interface CourseModule extends Doc<"modules"> {
   sections: Doc<"moduleSections">[];
@@ -35,11 +36,15 @@ export function CourseModulesNav({
   modules,
   selectedModuleId,
   setSelectedModuleId,
+  selectedModuleSectionId,
+  setSelectedModuleSectionId,
 }: {
   courseId: Id<"courses">;
   modules: CourseModule[];
   selectedModuleId: Id<"modules"> | null;
   setSelectedModuleId: (id: Id<"modules">) => void;
+  selectedModuleSectionId: Id<"moduleSections"> | null;
+  setSelectedModuleSectionId: (id: Id<"moduleSections">) => void;
 }) {
   const sortItems = modules.map((module) => module.courseModuleId);
 
@@ -108,12 +113,20 @@ export function CourseModulesNav({
                       selectedModuleId === module?._id ? "secondary" : "ghost"
                     }
                     onClick={() => setSelectedModuleId(module?._id)}
-                    className="flex-1 truncate"
+                    className="flex-1 truncate mb-1"
                   >
                     <div className="w-full text-left truncate">
                       {module.title ?? "Untitled section"}
                     </div>
                   </Button>
+                  {selectedModuleId === module?._id && (
+                    <ModuleSectionsNav
+                      moduleId={selectedModuleId as Id<"modules">}
+                      selectedModuleSectionId={selectedModuleSectionId}
+                      setSelectedModuleSectionId={setSelectedModuleSectionId}
+                      hideHeader
+                    />
+                  )}
                 </div>
               </SortableListItem>
             ))}
