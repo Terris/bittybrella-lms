@@ -81,13 +81,15 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Label htmlFor="section-title">Section title</Label>
-      <Input
-        name="section-title"
-        placeholder="Section title"
-        value={newSectionTitle}
-        onChange={(e) => setNewSectionTitle(e.target.value)}
-      />
+      <div>
+        <Label htmlFor="section-title">Section title</Label>
+        <Input
+          name="section-title"
+          placeholder="Section title"
+          value={newSectionTitle}
+          onChange={(e) => setNewSectionTitle(e.target.value)}
+        />
+      </div>
 
       <ContentEditor
         initialContent={section.content}
