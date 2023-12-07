@@ -91,35 +91,40 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Label htmlFor="section-title">Section title</Label>
-
-      <Input
-        name="section-title"
-        placeholder="Section title"
-        value={newSectionTitle}
-        onChange={(e) => setNewSectionTitle(e.target.value)}
-      />
-
-      <Select
-        onValueChange={(val) => setSelectedContentType(val)}
-        value={selectedContentType}
-      >
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select a content type" />
-        </SelectTrigger>
-        <SelectContent>
-          {sectionContentTypes.map((type) => (
-            <SelectItem value={type} key={type}>
-              {type}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div>
+        <Label htmlFor="section-title">Section title</Label>
+        <Input
+          name="section-title"
+          placeholder="Section title"
+          value={newSectionTitle}
+          onChange={(e) => setNewSectionTitle(e.target.value)}
+        />
+      </div>
+      <div>
+        <Label htmlFor="content-type">Content type</Label>
+        <Select
+          name="content-type"
+          onValueChange={(val) => setSelectedContentType(val)}
+          value={selectedContentType}
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select a content type" />
+          </SelectTrigger>
+          <SelectContent>
+            {sectionContentTypes.map((type) => (
+              <SelectItem value={type} key={type}>
+                {type}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
       {/* <ContentEditor
         initialContent={section.content}
         onChange={handleSaveContent}
       /> */}
+      <hr className="mt-96" />
 
       <div className="flex justify-end">
         <DeleteSectionButton id={section._id} />
