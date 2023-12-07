@@ -20,25 +20,25 @@ import {
   Label,
 } from "@/lib/ui";
 
-interface EditArticleFormProps {
-  id: Id<"articles">;
+interface ModuleSectionProps {
+  id: Id<"moduleSections">;
 }
 
-export function EditArticleForm({ id }: EditArticleFormProps) {
-  const articleData = useQuery(api.articles.findById, {
+export function EditModuleSectionForm({ id }: ModuleSectionProps) {
+  const moduleSectionData = useQuery(api.moduleSections.findById, {
     id,
   });
 
-  if (!articleData) return null;
-  return <Form article={articleData} />;
+  if (!moduleSectionData) return null;
+  return <Form section={moduleSectionData} />;
 }
 
-const Form = ({ article }: { article: Doc<"articles"> }) => {
+const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
   const { toast } = useToast();
-  const updateArticle = useMutation(api.articles.update);
-  const [newArticleTitle, setNewArticleTitle] = useState<string>(article.title);
-  const debouncedNewArticleTitle = useDebounce(newArticleTitle, 1000);
-  const titleHasChanges = article.title !== debouncedNewArticleTitle;
+  const updateModuleSection = useMutation(api.moduleSections.update);
+  const [newSectionTitle, setNewSectionTitle] = useState<string>(section.title);
+  const debouncedNewSectionTitle = useDebounce(newSectionTitle, 1000);
+  const titleHasChanges = section.title !== debouncedNewSectionTitle;
 
   // Update the db title when the debounced title value changes
   useEffect(() => {
@@ -46,9 +46,9 @@ const Form = ({ article }: { article: Doc<"articles"> }) => {
       return;
     }
     try {
-      updateArticle({
-        id: article._id,
-        title: debouncedNewArticleTitle,
+      updateModuleSection({
+        id: section._id,
+        title: debouncedNewSectionTitle,
       });
     } catch (error: any) {
       toast({
@@ -58,14 +58,14 @@ const Form = ({ article }: { article: Doc<"articles"> }) => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedNewArticleTitle]);
+  }, [debouncedNewSectionTitle]);
 
   const handleSaveContent = useCallback(
     (content: string) => {
-      if (!article._id) return;
+      if (!section._id) return;
       try {
-        updateArticle({
-          id: article._id,
+        updateModuleSection({
+          id: section._id,
           content: content,
         });
       } catch (error: any) {
@@ -76,44 +76,39 @@ const Form = ({ article }: { article: Doc<"articles"> }) => {
         });
       }
     },
-    [article._id, toast, updateArticle]
+    [section._id, toast, updateModuleSection]
   );
 
   return (
     <div className="flex flex-col gap-4">
-      <div>
-        <Input
-          name="section-title"
-          placeholder="Article title"
-          value={newArticleTitle}
-          onChange={(e) => setNewArticleTitle(e.target.value)}
-        />
-      </div>
+      <Label htmlFor="section-title">Section title</Label>
+      <Input
+        name="section-title"
+        placeholder="Section title"
+        value={newSectionTitle}
+        onChange={(e) => setNewSectionTitle(e.target.value)}
+      />
 
       <ContentEditor
-        initialContent={article.content}
+        initialContent={section.content}
         onChange={handleSaveContent}
       />
 
       <div className="flex justify-end">
-        <DeleteArticleButton articleId={article._id} />
+        <DeleteSectionButton id={section._id} />
       </div>
     </div>
   );
 };
 
-export function DeleteArticleButton({
-  articleId,
-}: {
-  articleId: Id<"articles">;
-}) {
-  const deleteArticle = useMutation(api.articles.deleteById);
+export function DeleteSectionButton({ id }: { id: Id<"moduleSections"> }) {
+  const deleteModuleSection = useMutation(api.moduleSections.deleteById);
 
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button variant="destructive" size="sm">
-          Delete Article
+          Delete section
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -121,7 +116,7 @@ export function DeleteArticleButton({
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete this
-            article in all courses and modules that use it.
+            section.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -129,7 +124,7 @@ export function DeleteArticleButton({
           <AlertDialogAction asChild>
             <Button
               variant="destructive"
-              onClick={() => deleteArticle({ id: articleId })}
+              onClick={() => deleteModuleSection({ id })}
             >
               Yes, I&lsquo;m sure.
             </Button>

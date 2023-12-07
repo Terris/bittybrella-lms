@@ -16,7 +16,7 @@ export function CreateModuleSectionButton({
   const handleCreateNewSection = () => {
     createModuleSection({
       moduleId,
-      type: "article",
+      type: "text",
     });
   };
 

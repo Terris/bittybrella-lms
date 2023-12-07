@@ -1,8 +1,8 @@
 "use client";
 
 import { PageContent, PageHeader } from "@/lib/layout";
-import { CreateCourseForm } from "../../../lib/forms/admin/Courses/CreateCourseForm";
-import { CoursesTable } from "../../../lib/views/admin/Courses/CoursesTable";
+import { CreateCourseForm } from "./CreateCourseForm";
+import { CoursesTable } from "./CoursesTable";
 import { Text } from "@/lib/ui";
 
 export default function AdminCoursesPage() {
