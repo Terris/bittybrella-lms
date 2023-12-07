@@ -12,6 +12,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
   Button,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
 } from "@/lib/ui";
 import { Trash2 } from "lucide-react";
 
@@ -20,11 +23,16 @@ export function DeleteModuleButton({ id }: { id: Id<"modules"> }) {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="ghost">
-          <Trash2 className="h-4 w-4 text-destructive" />
-        </Button>
-      </AlertDialogTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <AlertDialogTrigger asChild>
+            <Button variant="ghost">
+              <Trash2 className="h-4 w-4 text-destructive" />
+            </Button>
+          </AlertDialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent>Delete module</TooltipContent>
+      </Tooltip>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>

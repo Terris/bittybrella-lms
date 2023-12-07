@@ -1,6 +1,13 @@
 "use client";
 
-import { Button, Loader, Text } from "@/lib/ui";
+import {
+  Button,
+  Loader,
+  Text,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/lib/ui";
 import { Editor, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
@@ -130,6 +137,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
         isActive={editor.isActive("bold")}
+        helpText="Bold"
       >
         <Bold className="w-4 h-4" />
       </ToolbarButton>
@@ -138,6 +146,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
         onClick={() => editor.chain().focus().toggleItalic().run()}
         disabled={!editor.can().chain().focus().toggleItalic().run()}
         isActive={editor.isActive("italic")}
+        helpText="Italic"
       >
         <Italic className="w-4 h-4" />
       </ToolbarButton>
@@ -146,6 +155,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
         onClick={() => editor.chain().focus().toggleStrike().run()}
         disabled={!editor.can().chain().focus().toggleStrike().run()}
         isActive={editor.isActive("strike")}
+        helpText="Strike"
       >
         <Strikethrough className="w-4 h-4" />
       </ToolbarButton>
@@ -154,6 +164,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
         onClick={() => editor.chain().focus().toggleCode().run()}
         disabled={!editor.can().chain().focus().toggleCode().run()}
         isActive={editor.isActive("code")}
+        helpText="Inline code"
       >
         <Code className="w-4 h-4" />
       </ToolbarButton>
@@ -161,6 +172,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
       <ToolbarButton
         onClick={() => editor.chain().focus().setParagraph().run()}
         isActive={editor.isActive("paragraph")}
+        helpText="Paragraph"
       >
         <Pilcrow className="w-4 h-4" />
       </ToolbarButton>
@@ -168,6 +180,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
         isActive={editor.isActive("heading", { level: 1 })}
+        helpText="Heading 1"
       >
         <Heading1 className="w-4 h-4" />
       </ToolbarButton>
@@ -175,6 +188,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
         isActive={editor.isActive("heading", { level: 2 })}
+        helpText="Heading 2"
       >
         <Heading2 className="w-4 h-4" />
       </ToolbarButton>
@@ -182,6 +196,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
         isActive={editor.isActive("heading", { level: 3 })}
+        helpText="Heading 3"
       >
         <Heading3 className="w-4 h-4" />
       </ToolbarButton>
@@ -189,6 +204,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         isActive={editor.isActive("bulletList")}
+        helpText="Bullet list"
       >
         <List className="w-4 h-4" />
       </ToolbarButton>
@@ -196,6 +212,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
         isActive={editor.isActive("orderedList")}
+        helpText="Numbered list"
       >
         <ListOrdered className="w-4 h-4" />
       </ToolbarButton>
@@ -203,6 +220,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
         isActive={editor.isActive("codeBlock")}
+        helpText="Code block"
       >
         <SquareCode className="w-4 h-4" />
       </ToolbarButton>
@@ -210,23 +228,30 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
         isActive={editor.isActive("blockquote")}
+        helpText="Blockquote"
       >
         <Quote className="w-4 h-4" />
       </ToolbarButton>
 
       <ToolbarButton
         onClick={() => editor.chain().focus().setHorizontalRule().run()}
+        helpText="Divider"
       >
         <Minus className="w-4 h-4" />
       </ToolbarButton>
 
-      <ToolbarButton onClick={addImage} isActive={editor.isActive("image")}>
+      <ToolbarButton
+        onClick={addImage}
+        isActive={editor.isActive("image")}
+        helpText="Image"
+      >
         <ImageIcon className="w-4 h-4" />
       </ToolbarButton>
 
       <ToolbarButton
         onClick={addYoutubeVideo}
         isActive={editor.isActive("youtube")}
+        helpText="YouTube video"
       >
         <YouTubeIcon className="w-4 h-4" />
       </ToolbarButton>
@@ -235,6 +260,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
         <ToolbarButton
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editor.can().chain().focus().undo().run()}
+          helpText="Undo"
         >
           <Undo className="w-4 h-4" />
         </ToolbarButton>
@@ -242,6 +268,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
         <ToolbarButton
           onClick={() => editor.chain().focus().redo().run()}
           disabled={!editor.can().chain().focus().redo().run()}
+          helpText="Redo"
         >
           <Redo className="w-4 h-4" />
         </ToolbarButton>
@@ -255,6 +282,7 @@ interface ToolbarButtonProps {
   onClick: () => void;
   disabled?: boolean;
   isActive?: boolean;
+  helpText?: string;
 }
 
 const ToolbarButton = ({
@@ -262,14 +290,21 @@ const ToolbarButton = ({
   onClick,
   disabled,
   isActive,
+  helpText,
 }: ToolbarButtonProps) => {
   return (
-    <Button
-      onClick={onClick}
-      size="sm"
-      variant={isActive ? "secondary" : "ghost"}
-    >
-      {children}
-    </Button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          onClick={onClick}
+          size="sm"
+          variant={isActive ? "secondary" : "ghost"}
+          disabled={disabled}
+        >
+          {children}
+        </Button>
+      </TooltipTrigger>
+      {helpText && <TooltipContent>{helpText}</TooltipContent>}
+    </Tooltip>
   );
 };

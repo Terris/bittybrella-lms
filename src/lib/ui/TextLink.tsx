@@ -8,10 +8,7 @@ interface TextLinkProps extends LinkProps {
 
 export function TextLink({ children, className, ...rest }: TextLinkProps) {
   return (
-    <Link
-      className={cn("color-primary hover:color-secondary", className)}
-      {...rest}
-    >
+    <Link className={cn("underline hover:text-primary", className)} {...rest}>
       {children}
     </Link>
   );

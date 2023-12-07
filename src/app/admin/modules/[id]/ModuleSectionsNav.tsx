@@ -15,6 +15,9 @@ import {
   SelectTrigger,
   SelectValue,
   Text,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
 } from "@/lib/ui";
 import {
   SortableList,
@@ -116,6 +119,7 @@ export function ModuleSectionsNav({
                       ? "secondary"
                       : "ghost"
                   }
+                  size="sm"
                   onClick={() => setSelectedModuleSectionId(section?._id)}
                   className="flex-1 truncate"
                 >
@@ -125,14 +129,19 @@ export function ModuleSectionsNav({
                 </Button>
               </SortableListItem>
             ))}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleCreateNewSection}
-              className="ml-5"
-            >
-              <PlusCircle className="h-4 w-4" />
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleCreateNewSection}
+                  className="ml-5"
+                >
+                  <PlusCircle className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Add module section</TooltipContent>
+            </Tooltip>
           </div>
         </SortableList>
       </div>

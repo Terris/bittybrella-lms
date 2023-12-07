@@ -11,7 +11,7 @@ import {
 import { useToast } from "@/lib/hooks/useToast";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { Pencil } from "lucide-react";
-import { Button } from "@/lib/ui";
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@/lib/ui";
 
 // Define the fields that can be edited
 export interface Module {
@@ -101,7 +101,12 @@ export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
       formTitle={formTitle}
       renderTrigger={
         <Button variant="ghost" size="sm">
-          <Pencil className="h-4 w-4" />
+          <Tooltip>
+            <TooltipTrigger>
+              <Pencil className="h-4 w-4" />
+            </TooltipTrigger>
+            <TooltipContent>Edit module settings</TooltipContent>
+          </Tooltip>
         </Button>
       }
     />

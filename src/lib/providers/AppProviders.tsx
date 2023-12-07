@@ -6,6 +6,7 @@ import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { ClerkProvider, useAuth } from "@clerk/clerk-react";
 import { ThemeProvider } from "@/lib/providers/ThemeProvider";
 import { MeProvider } from ".";
+import { TooltipProvider } from "../ui";
 
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
@@ -17,7 +18,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
       <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
         <MeProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {children}
+            <TooltipProvider>{children}</TooltipProvider>
           </ThemeProvider>
         </MeProvider>
       </ConvexProviderWithClerk>

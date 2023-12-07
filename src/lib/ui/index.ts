@@ -24,3 +24,4 @@ export * from "./Text";
 export * from "./TextLink";
 export * from "./Toast";
 export * from "./Toaster";
+export * from "./Tooltip";

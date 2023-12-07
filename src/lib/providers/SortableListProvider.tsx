@@ -13,6 +13,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui";
 
 interface SortableListProps {
   children: React.ReactNode;
@@ -68,10 +69,15 @@ export function SortableListItem({
       {...attributes}
       className="w-full flex flex-row items-start"
     >
-      <GripVertical
-        className="flex-shrink-0 w-3 h-3 mr-2 mt-3.5"
-        {...listeners}
-      />
+      <Tooltip>
+        <TooltipTrigger>
+          <GripVertical
+            className="flex-shrink-0 w-3 h-3 mr-2 mt-3.5"
+            {...listeners}
+          />
+        </TooltipTrigger>
+        <TooltipContent>Drag to rearrange</TooltipContent>
+      </Tooltip>
       {children}
     </div>
   );

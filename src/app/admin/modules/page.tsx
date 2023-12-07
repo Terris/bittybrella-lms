@@ -2,7 +2,7 @@
 
 import { PageContent, PageHeader } from "@/lib/layout";
 import { CreateModuleForm } from "./CreateModuleForm";
-import { ModulesForm } from "./ModulesTable";
+import { ModulesTable } from "./ModulesTable";
 import { Text } from "@/lib/ui";
 
 export default function AdminModulesPage() {
@@ -18,7 +18,7 @@ export default function AdminModulesPage() {
       <PageContent>
         <Text className="text-2xl font-semibold">Modules</Text>
         <hr />
-        <ModulesForm />
+        <ModulesTable />
       </PageContent>
     </>
   );

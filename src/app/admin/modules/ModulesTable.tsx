@@ -3,7 +3,14 @@ import { useQuery } from "convex/react";
 import { QuickEditModuleForm } from "./QuickEditModuleForm";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { api } from "../../../../convex/_generated/api";
-import { Text, CopyToClipboardButton } from "@/lib/ui";
+import {
+  Text,
+  CopyToClipboardButton,
+  TextLink,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/lib/ui";
 import { AdminTable } from "../AdminTable";
 import Link from "next/link";
 import { Check, X } from "lucide-react";
@@ -21,9 +28,9 @@ const columns: ColumnDef<ModuleRow>[] = [
     header: "Title",
     cell: ({ row }) => {
       return (
-        <Link href={`/admin/modules/${row.original._id}`}>
+        <TextLink href={`/admin/modules/${row.original._id}`}>
           {row.original.title}
-        </Link>
+        </TextLink>
       );
     },
   },
@@ -37,13 +44,18 @@ const columns: ColumnDef<ModuleRow>[] = [
     cell: ({ row }) => {
       const isPublished: boolean = row.getValue("isPublished");
       return (
-        <div className="">
-          {isPublished ? (
-            <Check className="h-4 w-4 text-primary" />
-          ) : (
-            <X className="h-4 w-4 text-destructive" />
-          )}
-        </div>
+        <Tooltip>
+          <TooltipTrigger>
+            {isPublished ? (
+              <Check className="h-4 w-4 text-primary" />
+            ) : (
+              <X className="h-4 w-4 text-destructive" />
+            )}
+          </TooltipTrigger>
+          <TooltipContent>
+            {isPublished ? "Published" : "Not published"}
+          </TooltipContent>
+        </Tooltip>
       );
     },
   },
@@ -53,11 +65,16 @@ const columns: ColumnDef<ModuleRow>[] = [
     cell: ({ row }) => (
       <div className="max-w-[100px] flex items-center justify-between">
         <Text className="truncate pr-2">{row.original._id}</Text>
-        <CopyToClipboardButton
-          textToCopy={row.original._id}
-          variant="ghost"
-          size="sm"
-        />
+        <Tooltip>
+          <TooltipTrigger>
+            <CopyToClipboardButton
+              textToCopy={row.original._id}
+              variant="ghost"
+              size="sm"
+            />
+          </TooltipTrigger>
+          <TooltipContent>Copy ID to clipboard</TooltipContent>
+        </Tooltip>
       </div>
     ),
   },
@@ -77,7 +94,7 @@ const columns: ColumnDef<ModuleRow>[] = [
   },
 ];
 
-export const ModulesForm = () => {
+export const ModulesTable = () => {
   const modulesData = useQuery(api.modules.all);
   if (!modulesData) return null;
   return <AdminTable columns={columns} data={modulesData} />;

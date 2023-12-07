@@ -12,6 +12,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
   Button,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
 } from "@/lib/ui";
 import { Trash2 } from "lucide-react";
 
@@ -20,17 +23,22 @@ export function DeleteCourseButton({ id }: { id: Id<"courses"> }) {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="ghost">
-          <Trash2 className="h-4 w-4 text-destructive" />
-        </Button>
-      </AlertDialogTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <AlertDialogTrigger asChild>
+            <Button variant="ghost">
+              <Trash2 className="h-4 w-4 text-destructive" />
+            </Button>
+          </AlertDialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent>Delete course</TooltipContent>
+      </Tooltip>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete this
-            module in all courses that use it.
+            This action will permanently delete this module in all courses that
+            use it and cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
