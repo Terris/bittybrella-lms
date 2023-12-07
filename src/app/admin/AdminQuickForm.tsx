@@ -33,6 +33,7 @@ export interface AdminFormProps<CustomFormValues> {
   renderTrigger?: React.ReactNode;
   formDescription?: string;
   config: AdminFormConfig<CustomFormValues>;
+  onCloseForm?: () => void;
 }
 
 export const AdminQuickForm = <CustomFormValues extends FormikValues>({
@@ -40,6 +41,7 @@ export const AdminQuickForm = <CustomFormValues extends FormikValues>({
   renderTrigger,
   formDescription,
   config,
+  onCloseForm,
 }: AdminFormProps<CustomFormValues>) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [serverError, setServerError] = useState<string | null>(null);
@@ -52,18 +54,23 @@ export const AdminQuickForm = <CustomFormValues extends FormikValues>({
     submitButtonLabel,
   } = config;
 
+  function handleOnSetOpen(open: boolean) {
+    setIsOpen(open);
+    if (!open) onCloseForm?.();
+  }
+
   const handleSubmit = async (values: CustomFormValues) => {
     setServerError(null);
     try {
       await onSubmit(values);
-      setIsOpen(false);
+      handleOnSetOpen(false);
     } catch (error: any) {
       setServerError(error.message);
     }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
+    <Dialog open={isOpen} onOpenChange={handleOnSetOpen}>
       <DialogTrigger asChild>
         {renderTrigger ? (
           renderTrigger

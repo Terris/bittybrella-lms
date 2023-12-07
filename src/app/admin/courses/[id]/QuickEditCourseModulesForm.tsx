@@ -10,9 +10,7 @@ import {
   AdminFieldtype,
 } from "../../AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
-import { Settings } from "lucide-react";
 import { Button } from "@/lib/ui";
-import { useEffect } from "react";
 
 // Define the fields
 export interface CourseModule {
@@ -33,10 +31,10 @@ const formTitle = "Edit Course Modules";
 
 export const QuickEditCourseModulesForm = ({
   courseId,
-  initCallback,
+  onCloseForm,
 }: {
   courseId: Id<"courses">;
-  initCallback?: () => void;
+  onCloseForm?: () => void;
 }) => {
   const allModules = useQuery(api.modules.all);
   const courseModules = useQuery(api.courseModules.findByCourseId, {
@@ -92,10 +90,6 @@ export const QuickEditCourseModulesForm = ({
     onSubmit,
   };
 
-  useEffect(() => {
-    initCallback?.();
-  });
-
   if (!allModules || !courseModules) return null;
 
   return (
@@ -107,6 +101,7 @@ export const QuickEditCourseModulesForm = ({
           Edit course modules
         </Button>
       }
+      onCloseForm={onCloseForm}
     />
   );
 };

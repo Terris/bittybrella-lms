@@ -73,22 +73,24 @@ export function CourseModulesNav({
       idsInOrder: updatedItems as Id<"courseModules">[],
     });
   }
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
 
   return (
     <>
       <FlexRow className="justify-between">
         <Text className="font-bold">Course Modules</Text>
-        <DropdownMenu>
+        <DropdownMenu open={menuIsOpen} onOpenChange={setMenuIsOpen}>
           <DropdownMenuTrigger>
             <MoreVertical className="w-4 h-4" />
           </DropdownMenuTrigger>
-          <DropdownMenuPortal>
-            <DropdownMenuContent>
-              <DropdownMenuItem asChild>
-                <QuickEditCourseModulesForm courseId={courseId} />
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenuPortal>
+          <DropdownMenuContent>
+            <DropdownMenuItem asChild onSelect={(e) => e.preventDefault()}>
+              <QuickEditCourseModulesForm
+                courseId={courseId}
+                onCloseForm={() => setMenuIsOpen(false)}
+              />
+            </DropdownMenuItem>
+          </DropdownMenuContent>
         </DropdownMenu>
       </FlexRow>
       <div className="hidden lg:block">

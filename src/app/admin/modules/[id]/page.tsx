@@ -7,7 +7,6 @@ import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
 import { FlexRow, Text } from "@/lib/ui";
 import { EditModuleSectionForm } from "./EditModuleSectionForm";
-import { CreateModuleSectionButton } from "./CreateModuleSectionButton";
 import { ModuleSectionsNav } from "./ModuleSectionsNav";
 import { QuickEditModuleForm } from "../QuickEditModuleForm";
 
@@ -65,12 +64,6 @@ export default function AdminModulePage({ params }: AdminModulePageProps) {
         <div className="flex flex-col lg:flex-row">
           <aside className="lg:w-1/4 lg:pr-4">
             <div className="flex flex-col gap-4 lg:sticky lg:top-0">
-              <div className="flex items-center justify-between">
-                <Text className="font-bold">Module Sections</Text>
-                <CreateModuleSectionButton
-                  moduleId={params.id as Id<"modules">}
-                />
-              </div>
               <ModuleSectionsNav
                 moduleId={params.id as Id<"modules">}
                 sections={moduleData.sections}

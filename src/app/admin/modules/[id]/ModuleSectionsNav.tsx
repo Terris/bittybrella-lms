@@ -7,6 +7,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuPortal,
   DropdownMenuTrigger,
   Select,
   SelectContent,
@@ -20,7 +21,6 @@ import {
   SortableListItem,
 } from "@/lib/providers/SortableListProvider";
 import { MoreVertical } from "lucide-react";
-import { CreateModuleSectionButton } from "./CreateModuleSectionButton";
 
 export function ModuleSectionsNav({
   moduleId,
@@ -33,6 +33,8 @@ export function ModuleSectionsNav({
   selectedModuleSectionId: Id<"moduleSections"> | null;
   setSelectedModuleSectionId: (id: Id<"moduleSections">) => void;
 }) {
+  const createModuleSection = useMutation(api.moduleSections.create);
+
   const sortItems = sections.map((section) => section._id);
 
   const updateSectionsOrder = useMutation(
@@ -65,6 +67,13 @@ export function ModuleSectionsNav({
     });
   }
 
+  const handleCreateNewSection = () => {
+    createModuleSection({
+      moduleId,
+      type: "text",
+    });
+  };
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -73,11 +82,13 @@ export function ModuleSectionsNav({
           <DropdownMenuTrigger>
             <MoreVertical className="w-4 h-4" />
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem>
-              <CreateModuleSectionButton moduleId={moduleId} />
-            </DropdownMenuItem>
-          </DropdownMenuContent>
+          <DropdownMenuPortal>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => handleCreateNewSection()}>
+                Add module section
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenuPortal>
         </DropdownMenu>
       </div>
       <div className="hidden lg:block">
@@ -96,7 +107,7 @@ export function ModuleSectionsNav({
                   className="flex-1 truncate"
                 >
                   <div className="w-full text-left truncate">
-                    {section.order}. {section?.title ?? "Untitled section"}
+                    {section?.title ?? "Untitled section"}
                   </div>
                 </Button>
               </SortableListItem>

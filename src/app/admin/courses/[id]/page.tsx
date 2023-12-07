@@ -4,12 +4,13 @@ import { useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
-import { Text } from "@/lib/ui";
+import { FlexRow, Text } from "@/lib/ui";
 import { useEffect, useState } from "react";
 import { QuickEditCourseModulesForm } from "./QuickEditCourseModulesForm";
 import { CourseModulesNav } from "./CourseModulesNav";
 import { ModuleSectionsNav } from "../../modules/[id]/ModuleSectionsNav";
 import { EditModuleSectionForm } from "../../modules/[id]/EditModuleSectionForm";
+import { QuickEditCourseForm } from "../QuickEditCourseForm";
 
 interface AdminCoursePageProps {
   params: { id: string };
@@ -55,13 +56,16 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
         ]}
       />
       <PageContent>
-        <div className="space-y-0.5">
-          <Text className="text-2xl font-semibold">{course.title}</Text>
-          <Text className="text-muted-foreground">{course.description}</Text>
-        </div>
+        <FlexRow className="justify-between">
+          <div className="space-y-0.5">
+            <Text className="text-2xl font-semibold">{course.title}</Text>
+            <Text className="text-muted-foreground">{course.description}</Text>
+          </div>
+          <QuickEditCourseForm courseId={params.id as Id<"courses">} />
+        </FlexRow>
         <hr />
         <div className="flex flex-col lg:flex-row lg:h-full">
-          <aside className="lg:w-1/4 lg:pr-4 xl:w-1/6 lg:border-r">
+          <aside className="lg:w-1/4 lg:pr-4 xl:w-1/6">
             <div className="flex flex-col gap-4 lg:sticky lg:top-0">
               <CourseModulesNav
                 courseId={params.id as Id<"courses">}
@@ -72,7 +76,7 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
             </div>
           </aside>
           {moduleData && (
-            <aside className="lg:w-1/4 lg:px-4 xl:w-1/6 lg:border-r">
+            <aside className="lg:w-1/4 lg:px-4 xl:w-1/6">
               <div className="flex flex-col gap-4 lg:sticky lg:top-0">
                 <ModuleSectionsNav
                   moduleId={selectedModuleId as Id<"modules">}

@@ -89,7 +89,6 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <Label htmlFor="section-title">Section title</Label>
         <FlexRow>
           <Input
             name="section-title"
@@ -97,18 +96,7 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
             value={newSectionTitle}
             onChange={(e) => setNewSectionTitle(e.target.value)}
           />
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <MoreVertical className="w-4 h-4" />
-            </DropdownMenuTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuContent>
-                <DropdownMenuItem asChild>
-                  <DeleteSectionButton id={section._id} />
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenuPortal>
-          </DropdownMenu>
+          <ModuleSectionSettingsMenu moduleSectionId={section._id} />
         </FlexRow>
       </div>
 
@@ -120,32 +108,53 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
   );
 };
 
-export function DeleteSectionButton({ id }: { id: Id<"moduleSections"> }) {
+function ModuleSectionSettingsMenu({
+  moduleSectionId,
+}: {
+  moduleSectionId: Id<"moduleSections">;
+}) {
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+
   const deleteModuleSection = useMutation(api.moduleSections.deleteById);
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger>Delete section</AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete this
-            section.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction asChild>
-            <Button
-              variant="destructive"
-              onClick={() => deleteModuleSection({ id })}
-            >
-              Yes, I&lsquo;m sure.
-            </Button>
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <DropdownMenu open={menuIsOpen} onOpenChange={(o) => setMenuIsOpen(o)}>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="ml-2">
+          <MoreVertical className="w-4 h-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuPortal>
+        <DropdownMenuContent>
+          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+            <AlertDialog onOpenChange={(open) => setMenuIsOpen(open)}>
+              <AlertDialogTrigger>Delete section</AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete
+                    this section.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction asChild>
+                    <Button
+                      variant="destructive"
+                      onClick={() =>
+                        deleteModuleSection({ id: moduleSectionId })
+                      }
+                    >
+                      Yes, I&lsquo;m sure.
+                    </Button>
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenuPortal>
+    </DropdownMenu>
   );
 }
