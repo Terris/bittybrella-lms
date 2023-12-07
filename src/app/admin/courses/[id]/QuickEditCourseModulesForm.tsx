@@ -12,6 +12,7 @@ import {
 import { useToast } from "@/lib/hooks/useToast";
 import { Settings } from "lucide-react";
 import { Button } from "@/lib/ui";
+import { useEffect } from "react";
 
 // Define the fields
 export interface CourseModule {
@@ -32,8 +33,10 @@ const formTitle = "Edit Course Modules";
 
 export const QuickEditCourseModulesForm = ({
   courseId,
+  initCallback,
 }: {
   courseId: Id<"courses">;
+  initCallback?: () => void;
 }) => {
   const allModules = useQuery(api.modules.all);
   const courseModules = useQuery(api.courseModules.findByCourseId, {
@@ -89,6 +92,10 @@ export const QuickEditCourseModulesForm = ({
     onSubmit,
   };
 
+  useEffect(() => {
+    initCallback?.();
+  });
+
   if (!allModules || !courseModules) return null;
 
   return (
@@ -97,7 +104,7 @@ export const QuickEditCourseModulesForm = ({
       formTitle={formTitle}
       renderTrigger={
         <Button variant="ghost" size="sm">
-          <Settings className="w-3 h-3" />
+          Edit course modules
         </Button>
       }
     />

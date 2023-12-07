@@ -4,12 +4,11 @@ import { useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
-import { ContentReader, Text } from "@/lib/ui";
+import { Text } from "@/lib/ui";
 import { useEffect, useState } from "react";
 import { QuickEditCourseModulesForm } from "./QuickEditCourseModulesForm";
 import { CourseModulesNav } from "./CourseModulesNav";
 import { ModuleSectionsNav } from "../../modules/[id]/ModuleSectionsNav";
-import { CreateModuleSectionButton } from "../../modules/[id]/CreateModuleSectionButton";
 import { EditModuleSectionForm } from "../../modules/[id]/EditModuleSectionForm";
 
 interface AdminCoursePageProps {
@@ -61,15 +60,9 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
           <Text className="text-muted-foreground">{course.description}</Text>
         </div>
         <hr />
-        <div className="flex flex-col lg:flex-row">
-          <aside className="lg:w-1/4 lg:pr-8">
+        <div className="flex flex-col lg:flex-row lg:h-full">
+          <aside className="lg:w-1/4 lg:pr-4 xl:w-1/6 lg:border-r">
             <div className="flex flex-col gap-4 lg:sticky lg:top-0">
-              <div className="flex justify-between items-center">
-                <Text className="font-bold">Course Modules</Text>
-                <QuickEditCourseModulesForm
-                  courseId={params.id as Id<"courses">}
-                />
-              </div>
               <CourseModulesNav
                 courseId={params.id as Id<"courses">}
                 modules={course.modules}
@@ -79,14 +72,8 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
             </div>
           </aside>
           {moduleData && (
-            <aside className="lg:w-1/4 lg:pr-4">
+            <aside className="lg:w-1/4 lg:px-4 xl:w-1/6 lg:border-r">
               <div className="flex flex-col gap-4 lg:sticky lg:top-0">
-                <div className="flex items-center justify-between">
-                  <Text className="font-bold">Module Sections</Text>
-                  <CreateModuleSectionButton
-                    moduleId={selectedModuleId as Id<"modules">}
-                  />
-                </div>
                 <ModuleSectionsNav
                   moduleId={selectedModuleId as Id<"modules">}
                   sections={moduleData.sections}
@@ -96,8 +83,7 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
               </div>
             </aside>
           )}
-
-          <div className="flex-1 lg:w-3/4 lg:pl-4">
+          <div className="flex-1 lg:w-3/4 lg:pl-4 xl:w-4/6">
             {selectedModuleSectionId && (
               <EditModuleSectionForm id={selectedModuleSectionId} />
             )}

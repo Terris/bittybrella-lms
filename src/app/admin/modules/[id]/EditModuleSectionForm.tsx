@@ -16,9 +16,16 @@ import {
   AlertDialogTrigger,
   Button,
   ContentEditor,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuTrigger,
+  FlexRow,
   Input,
   Label,
 } from "@/lib/ui";
+import { MoreVertical } from "lucide-react";
 
 interface ModuleSectionProps {
   id: Id<"moduleSections">;
@@ -83,22 +90,32 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
     <div className="flex flex-col gap-4">
       <div>
         <Label htmlFor="section-title">Section title</Label>
-        <Input
-          name="section-title"
-          placeholder="Section title"
-          value={newSectionTitle}
-          onChange={(e) => setNewSectionTitle(e.target.value)}
-        />
+        <FlexRow>
+          <Input
+            name="section-title"
+            placeholder="Section title"
+            value={newSectionTitle}
+            onChange={(e) => setNewSectionTitle(e.target.value)}
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <MoreVertical className="w-4 h-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuContent>
+                <DropdownMenuItem asChild>
+                  <DeleteSectionButton id={section._id} />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenuPortal>
+          </DropdownMenu>
+        </FlexRow>
       </div>
 
       <ContentEditor
         initialContent={section.content}
         onChange={handleSaveContent}
       />
-
-      <div className="flex justify-end">
-        <DeleteSectionButton id={section._id} />
-      </div>
     </div>
   );
 };
@@ -108,11 +125,7 @@ export function DeleteSectionButton({ id }: { id: Id<"moduleSections"> }) {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="destructive" size="sm">
-          Delete section
-        </Button>
-      </AlertDialogTrigger>
+      <AlertDialogTrigger>Delete section</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>

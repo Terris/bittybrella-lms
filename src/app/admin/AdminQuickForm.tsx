@@ -8,6 +8,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogPortal,
   DialogTitle,
   DialogTrigger,
   Input,
@@ -72,47 +73,49 @@ export const AdminQuickForm = <CustomFormValues extends FormikValues>({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{formTitle}</DialogTitle>
-          {formDescription && (
-            <DialogDescription>{formDescription}</DialogDescription>
-          )}
-        </DialogHeader>
-        <Formik<CustomFormValues>
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
-          {({ isSubmitting, isValid, touched }) => (
-            <Form>
-              {serverError && (
-                <Alert variant="destructive">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertTitle>Oops, something went wrong...</AlertTitle>
-                  <AlertDescription>{serverError}</AlertDescription>
-                </Alert>
-              )}
-              <div className="grid gap-4 py-4">
-                {fields.map((f) => (
-                  <AdminFormField
-                    key={`form-field-${f.name}`}
-                    name={f.name}
-                    label={f.label}
-                    fieldtype={f.fieldtype}
-                    options={f.options}
-                  />
-                ))}
-              </div>
-              <DialogFooter>
-                <Button type="submit" disabled={isSubmitting}>
-                  {submitButtonLabel ?? "Save"}
-                </Button>
-              </DialogFooter>
-            </Form>
-          )}
-        </Formik>
-      </DialogContent>
+      <DialogPortal>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{formTitle}</DialogTitle>
+            {formDescription && (
+              <DialogDescription>{formDescription}</DialogDescription>
+            )}
+          </DialogHeader>
+          <Formik<CustomFormValues>
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ isSubmitting, isValid, touched }) => (
+              <Form>
+                {serverError && (
+                  <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Oops, something went wrong...</AlertTitle>
+                    <AlertDescription>{serverError}</AlertDescription>
+                  </Alert>
+                )}
+                <div className="grid gap-4 py-4">
+                  {fields.map((f) => (
+                    <AdminFormField
+                      key={`form-field-${f.name}`}
+                      name={f.name}
+                      label={f.label}
+                      fieldtype={f.fieldtype}
+                      options={f.options}
+                    />
+                  ))}
+                </div>
+                <DialogFooter>
+                  <Button type="submit" disabled={isSubmitting}>
+                    {submitButtonLabel ?? "Save"}
+                  </Button>
+                </DialogFooter>
+              </Form>
+            )}
+          </Formik>
+        </DialogContent>
+      </DialogPortal>
     </Dialog>
   );
 };

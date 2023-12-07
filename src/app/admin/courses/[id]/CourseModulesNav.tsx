@@ -3,16 +3,26 @@ import { api } from "../../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../../convex/_generated/dataModel";
 import {
   Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  FlexRow,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Text,
 } from "@/lib/ui";
 import {
   SortableList,
   SortableListItem,
 } from "@/lib/providers/SortableListProvider";
+import { QuickEditCourseModulesForm } from "./QuickEditCourseModulesForm";
+import { MoreVertical } from "lucide-react";
+import { useState } from "react";
+import { DropdownMenuPortal } from "@radix-ui/react-dropdown-menu";
 
 export interface CourseModule extends Doc<"modules"> {
   sections: Doc<"moduleSections">[];
@@ -66,6 +76,21 @@ export function CourseModulesNav({
 
   return (
     <>
+      <FlexRow className="justify-between">
+        <Text className="font-bold">Course Modules</Text>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <MoreVertical className="w-4 h-4" />
+          </DropdownMenuTrigger>
+          <DropdownMenuPortal>
+            <DropdownMenuContent>
+              <DropdownMenuItem asChild>
+                <QuickEditCourseModulesForm courseId={courseId} />
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenuPortal>
+        </DropdownMenu>
+      </FlexRow>
       <div className="hidden lg:block">
         <SortableList items={sortItems} onUpdate={handleOnUpdate}>
           <div className="flex flex-col gap-2">
@@ -84,7 +109,7 @@ export function CourseModulesNav({
                     className="flex-1 truncate"
                   >
                     <div className="w-full text-left truncate">
-                      {module.order}. {module.title ?? "Untitled section"}
+                      {module.title ?? "Untitled section"}
                     </div>
                   </Button>
                 </div>

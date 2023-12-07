@@ -4,16 +4,23 @@ import { api } from "../../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../../convex/_generated/dataModel";
 import {
   Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Text,
 } from "@/lib/ui";
 import {
   SortableList,
   SortableListItem,
 } from "@/lib/providers/SortableListProvider";
+import { MoreVertical } from "lucide-react";
+import { CreateModuleSectionButton } from "./CreateModuleSectionButton";
 
 export function ModuleSectionsNav({
   moduleId,
@@ -60,6 +67,19 @@ export function ModuleSectionsNav({
 
   return (
     <>
+      <div className="flex items-center justify-between">
+        <Text className="font-bold">Module Sections</Text>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <MoreVertical className="w-4 h-4" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>
+              <CreateModuleSectionButton moduleId={moduleId} />
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
       <div className="hidden lg:block">
         <SortableList items={sortItems} onUpdate={handleOnUpdate}>
           <div className="flex flex-col gap-2">
