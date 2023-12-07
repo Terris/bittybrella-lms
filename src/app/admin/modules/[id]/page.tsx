@@ -66,7 +66,6 @@ export default function AdminModulePage({ params }: AdminModulePageProps) {
             <div className="flex flex-col gap-4 lg:sticky lg:top-0">
               <ModuleSectionsNav
                 moduleId={params.id as Id<"modules">}
-                sections={moduleData.sections}
                 selectedModuleSectionId={selectedModuleSectionId}
                 setSelectedModuleSectionId={setSelectedModuleSectionId}
               />
