@@ -38,21 +38,11 @@ export default defineSchema({
     title: v.string(),
     content: v.string(),
     order: v.number(),
-    contentBlockIds: v.optional(
-      v.union(v.id("article"), v.id("video"), v.id("assessment"))
-    ),
+    assessmentId: v.optional(v.id("assessment")),
   })
     .index("by_moduleId", ["moduleId"])
     .index("by_order", ["order"]),
-  article: defineTable({
-    title: v.string(),
-    content: v.string(),
-  }),
-  video: defineTable({
-    title: v.string(),
-    url: v.string(),
-  }),
-  assessment: defineTable({
+  assessments: defineTable({
     title: v.string(),
     questions: v.array(
       v.object({
