@@ -2,10 +2,10 @@
 
 import * as Yup from "yup";
 import { useMutation, useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "../../../../../convex/_generated/api";
 import { AdminQuickForm, AdminFormConfig } from "../AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { Id } from "../../../../../convex/_generated/dataModel";
 import { Pencil } from "lucide-react";
 import { Button } from "@/lib/ui";
 

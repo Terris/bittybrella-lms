@@ -1,12 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { useQuery } from "convex/react";
-import { QuickEditArticleForm } from "./QuickEditArticleForm";
-import { Id } from "../../../../convex/_generated/dataModel";
-import { api } from "../../../../convex/_generated/api";
+import { QuickEditArticleForm } from "../../../forms/admin/Articles/QuickEditArticleForm";
+import { Id } from "../../../../../convex/_generated/dataModel";
+import { api } from "../../../../../convex/_generated/api";
 import { Text, CopyToClipboardButton } from "@/lib/ui";
 import { AdminTable } from "../AdminTable";
 import Link from "next/link";
-import { DeleteArticleButton } from "./DeleteArticleButton";
+import { DeleteArticleButton } from "../../../forms/admin/Articles/DeleteArticleButton";
 
 interface ArticleRow {
   _id: string;

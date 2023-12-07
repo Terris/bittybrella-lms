@@ -76,7 +76,6 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
       try {
         updateModuleSection({
           id: section._id,
-          content: content,
         });
       } catch (error: any) {
         toast({

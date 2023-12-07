@@ -1,19 +1,16 @@
 "use client";
 
 import * as Yup from "yup";
-import { useMutation, useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
+import { useMutation } from "convex/react";
+import { api } from "../../../../../convex/_generated/api";
 import {
   AdminQuickForm,
   AdminFormConfig,
   AdminFieldtype,
 } from "../AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
-import { Id } from "../../../../convex/_generated/dataModel";
-import { Pencil } from "lucide-react";
-import { Button } from "@/lib/ui";
 
-// Define the fields that can be edited
+// Define the fields
 export interface Module {
   title: string;
   description: string;
@@ -21,14 +18,13 @@ export interface Module {
 }
 
 // Define the validation schema
-const validationSchema = Yup.object().shape({
+const ModuleFormSchema = Yup.object().shape({
   title: Yup.string()
     .max(50, "Title must be less than 50 characters")
     .required("Title is required"),
   description: Yup.string()
     .max(50, "Description must be less than 50 characters")
     .required("Description is required"),
-  isPublished: Yup.boolean().optional(),
 });
 
 // Configure the fields for diplay
@@ -37,35 +33,27 @@ const fields = [
   { name: "description", label: "Description", initialValue: "" },
   {
     name: "isPublished",
-    label: "Published",
-    initialValue: false,
+    label: "Published?",
     fieldtype: "switch" as AdminFieldtype,
+    initialValue: false,
   },
 ];
 
 // Set toast messages for success and error
-const successMessage = "Module saved.";
+const successMessage = "Saved new module.";
 const errorMessage = "Error saving module. Please try again.";
 
 // Set the form title
-const formTitle = "Edit module";
+const formTitle = "Create new module";
 
-interface QuickEditModuleFormProps {
-  moduleId: Id<"modules">;
-}
-
-export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
-  // Fetch the module to edit
-  const existingModule = useQuery(api.modules.findById, { id: moduleId });
-
+export const CreateModuleForm = () => {
   // Define the mutation
-  const editModule = useMutation(api.modules.update);
+  const createModule = useMutation(api.modules.create);
 
   const { toast } = useToast();
 
   async function onSubmit(values: Module) {
-    if (!existingModule) return;
-    const result = await editModule({ id: moduleId, ...values });
+    const result = await createModule(values);
 
     if (result) {
       toast({
@@ -83,27 +71,17 @@ export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
 
   // Set initial values
   const initialValues = {
-    title: existingModule?.title ?? "",
-    description: existingModule?.description ?? "",
-    isPublished: existingModule?.isPublished ?? false,
+    title: "",
+    description: "",
+    isPublished: false,
   };
 
-  const moduleFormConfig: AdminFormConfig<Module> = {
-    validationSchema,
+  const config: AdminFormConfig<Module> = {
+    validationSchema: ModuleFormSchema,
     initialValues,
     fields,
     onSubmit,
   };
 
-  return (
-    <AdminQuickForm<Module>
-      config={moduleFormConfig}
-      formTitle={formTitle}
-      renderTrigger={
-        <Button variant="ghost" size="sm">
-          <Pencil className="h-4 w-4" />
-        </Button>
-      }
-    />
-  );
+  return <AdminQuickForm<Module> config={config} formTitle={formTitle} />;
 };

@@ -6,7 +6,7 @@ import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
 import { Text } from "@/lib/ui";
-import { EditArticleForm } from "./EditArticleForm";
+import { EditArticleForm } from "../../../../lib/forms/admin/Articles/EditArticleForm";
 
 interface AdminArticlePageProps {
   params: { id: string };

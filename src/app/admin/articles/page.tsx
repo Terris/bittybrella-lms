@@ -1,8 +1,8 @@
 "use client";
 
 import { PageContent, PageHeader } from "@/lib/layout";
-import { CreateArticleForm } from "./CreateArticleForm";
-import { ArticlesTable } from "./ArticlesTable";
+import { CreateArticleForm } from "../../../lib/forms/admin/Articles/QuickCreateArticleForm";
+import { ArticlesTable } from "../../../lib/views/admin/Articles/ArticlesTable";
 import { Text } from "@/lib/ui";
 
 export default function AdminArticlesPage() {
