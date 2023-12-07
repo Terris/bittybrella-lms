@@ -6,21 +6,21 @@ import { Doc, Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
 import {
   Button,
-  ContentReader,
   Text,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  FlexRow,
 } from "@/lib/ui";
 import { useEffect, useState } from "react";
-import { GripVertical } from "lucide-react";
 import {
   SortableList,
   SortableListItem,
 } from "@/lib/providers/SortableListProvider";
-import { QuickEditCourseModulesForm } from "./QuickEditCourseModulesForm";
+import { QuickEditCourseModulesForm } from "../../../../lib/forms/admin/CourseModules/QuickEditCourseModulesForm";
+import { QuickEditCourseForm } from "../../../../lib/forms/admin/Courses/QuickEditCourseForm";
 
 interface AdminCoursePageProps {
   params: { id: string };
@@ -33,6 +33,18 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
 
   const [selectedModuleId, setSelectedModuleId] =
     useState<Id<"modules"> | null>(null);
+
+  const [selectedModuleSectionId, setSelectedModuleSectionId] =
+    useState<Id<"moduleSections"> | null>(null);
+
+  const moduleData = useQuery(
+    api.modules.findById,
+    selectedModuleId !== null
+      ? {
+          id: selectedModuleId,
+        }
+      : "skip"
+  );
 
   useEffect(() => {
     if (!course?.modules?.[0]?._id || !!selectedModuleId) return;
@@ -54,10 +66,13 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
         ]}
       />
       <PageContent>
-        <div className="space-y-0.5">
-          <Text className="text-2xl font-semibold">{course.title}</Text>
-          <Text className="text-muted-foreground">{course.description}</Text>
-        </div>
+        <FlexRow className="justify-between">
+          <div className="space-y-0.5">
+            <Text className="text-2xl font-semibold">{course.title}</Text>
+            <Text className="text-muted-foreground">{course.description}</Text>
+          </div>
+          <QuickEditCourseForm courseId={params.id as Id<"courses">} />
+        </FlexRow>
         <hr />
         <div className="flex flex-col lg:flex-row">
           <aside className="lg:w-1/4 lg:pr-8">
@@ -76,8 +91,23 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
               />
             </div>
           </aside>
-          <div className="flex-1 lg:w-3/4 lg:pl-8">
-            {selectedModuleId && <Module id={selectedModuleId} />}
+          <aside className="lg:w-1/4 lg:pr-4">
+            <div className="flex flex-col gap-4 lg:sticky lg:top-0">
+              <div className="flex items-center justify-between">
+                <Text className="font-bold">Module Sections</Text>
+              </div>
+              {moduleData && (
+                <ModuleSectionNav
+                  moduleId={params.id as Id<"modules">}
+                  sections={moduleData.sections}
+                  selectedModuleSectionId={selectedModuleSectionId}
+                  setSelectedModuleSectionId={setSelectedModuleSectionId}
+                />
+              )}
+            </div>
+          </aside>
+          <div className="flex-1 lg:w-1/2 lg:pl-8">
+            {selectedModuleSectionId && <p>{selectedModuleSectionId}</p>}
           </div>
         </div>
       </PageContent>
@@ -158,19 +188,6 @@ function ModuleNav({
                       {module.order}. {module.title ?? "Untitled section"}
                     </div>
                   </Button>
-                  {selectedModuleId === module?._id && (
-                    <div className="pl-4">
-                      {module.sections.map((section) => (
-                        <Text
-                          key={section._id}
-                          size="sm"
-                          className="py-2 truncate"
-                        >
-                          {section.title}
-                        </Text>
-                      ))}
-                    </div>
-                  )}
                 </div>
               </SortableListItem>
             ))}
@@ -198,6 +215,96 @@ function ModuleNav({
   );
 }
 
+function ModuleSectionNav({
+  moduleId,
+  sections,
+  selectedModuleSectionId,
+  setSelectedModuleSectionId,
+}: {
+  moduleId: Id<"modules">;
+  sections: Doc<"moduleSections">[];
+  selectedModuleSectionId: Id<"moduleSections"> | null;
+  setSelectedModuleSectionId: (id: Id<"moduleSections">) => void;
+}) {
+  const sortItems = sections.map((section) => section._id);
+
+  const updateSectionsOrder = useMutation(
+    api.moduleSections.updateOrder
+  ).withOptimisticUpdate((localStore, args) => {
+    const { idsInOrder } = args;
+    const updatedModuleSections = sections
+      .map((section, index) => ({
+        ...section,
+        order: idsInOrder.indexOf(section._id) + 1,
+      }))
+      .sort((a, b) => a.order - b.order);
+    const currentValue = localStore.getQuery(api.modules.findById, {
+      id: moduleId,
+    });
+    if (currentValue !== undefined) {
+      localStore.setQuery(
+        api.modules.findById,
+        {
+          id: moduleId,
+        },
+        { ...currentValue, sections: updatedModuleSections }
+      );
+    }
+  });
+
+  function handleOnUpdate(updatedItems: string[]) {
+    updateSectionsOrder({
+      idsInOrder: updatedItems as Id<"moduleSections">[],
+    });
+  }
+
+  return (
+    <>
+      <SortableList items={sortItems} onUpdate={handleOnUpdate}>
+        <div className="flex flex-col gap-2">
+          {sections.map((section) => (
+            <SortableListItem key={section._id} id={section._id}>
+              <Button
+                key={section?._id}
+                variant={
+                  selectedModuleSectionId === section?._id
+                    ? "secondary"
+                    : "ghost"
+                }
+                onClick={() => setSelectedModuleSectionId(section?._id)}
+                className="flex-1 truncate"
+              >
+                <div className="w-full text-left truncate">
+                  {section.order}. {section?.title ?? "Untitled section"}
+                </div>
+              </Button>
+            </SortableListItem>
+          ))}
+        </div>
+      </SortableList>
+      <div className="block lg:hidden pb-6">
+        <Select
+          onValueChange={(val) =>
+            setSelectedModuleSectionId(val as Id<"moduleSections">)
+          }
+          value={selectedModuleSectionId as string}
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select a module" />
+          </SelectTrigger>
+          <SelectContent>
+            {sections.map((section) => (
+              <SelectItem value={section._id} key={section._id}>
+                {section.title}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </>
+  );
+}
+
 function Module({ id }: { id: Id<"modules"> }) {
   const courseModule = useQuery(api.modules.findById, {
     id,
@@ -213,7 +320,11 @@ function Module({ id }: { id: Id<"modules"> }) {
       {courseModule.sections?.map((section) => (
         <div key={section._id}>
           <Text className="text-2xl pb-8">{section.title}</Text>
-          <ContentReader content={section.content} />
+          {courseModule.sections?.map((section) => (
+            <div key={section._id}>
+              <Text className="text-xl pb-4">{section.title}</Text>
+            </div>
+          ))}
           <hr className="my-8" />
         </div>
       ))}

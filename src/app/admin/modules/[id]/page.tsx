@@ -14,8 +14,8 @@ import {
   SelectValue,
   Text,
 } from "@/lib/ui";
-import { EditModuleSectionForm } from "./EditModuleSectionForm";
-import { CreateModuleSectionButton } from "./CreateModuleSectionButton";
+import { EditModuleSectionForm } from "../../../../lib/forms/admin/Modules/EditModuleSectionForm";
+import { CreateModuleSectionButton } from "../../../../lib/forms/admin/Modules/CreateModuleSectionButton";
 import {
   SortableList,
   SortableListItem,
@@ -78,7 +78,7 @@ export default function AdminModulePage({ params }: AdminModulePageProps) {
                   moduleId={params.id as Id<"modules">}
                 />
               </div>
-              <ModuleSectionNav
+              <AdminModuleSectionNav
                 moduleId={params.id as Id<"modules">}
                 sections={moduleData.sections}
                 selectedModuleSectionId={selectedModuleSectionId}
@@ -97,7 +97,7 @@ export default function AdminModulePage({ params }: AdminModulePageProps) {
   );
 }
 
-function ModuleSectionNav({
+function AdminModuleSectionNav({
   moduleId,
   sections,
   selectedModuleSectionId,

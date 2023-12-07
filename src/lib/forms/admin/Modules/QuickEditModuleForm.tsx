@@ -2,19 +2,19 @@
 
 import * as Yup from "yup";
 import { useMutation, useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "../../../../../convex/_generated/api";
 import {
-  AdminFieldtype,
   AdminQuickForm,
   AdminFormConfig,
+  AdminFieldtype,
 } from "../AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { Id } from "../../../../../convex/_generated/dataModel";
 import { Pencil } from "lucide-react";
 import { Button } from "@/lib/ui";
 
 // Define the fields that can be edited
-export interface Course {
+export interface Module {
   title: string;
   description: string;
   isPublished: boolean;
@@ -31,41 +31,41 @@ const validationSchema = Yup.object().shape({
   isPublished: Yup.boolean().optional(),
 });
 
+// Configure the fields for diplay
+const fields = [
+  { name: "title", label: "Title", initialValue: "" },
+  { name: "description", label: "Description", initialValue: "" },
+  {
+    name: "isPublished",
+    label: "Published",
+    initialValue: false,
+    fieldtype: "switch" as AdminFieldtype,
+  },
+];
+
 // Set toast messages for success and error
-const successMessage = "Course saved.";
-const errorMessage = "Something went wrong trying to edit course.";
+const successMessage = "Module saved.";
+const errorMessage = "Error saving module. Please try again.";
 
 // Set the form title
-const formTitle = "Edit course";
+const formTitle = "Edit module";
 
-interface EditCourseFormProps {
-  courseId: Id<"courses">;
+interface QuickEditModuleFormProps {
+  moduleId: Id<"modules">;
 }
 
-export const QuickEditCourseForm = ({ courseId }: EditCourseFormProps) => {
-  // Fetch the course to edit
-  const course = useQuery(api.courses.findById, { id: courseId });
+export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
+  // Fetch the module to edit
+  const existingModule = useQuery(api.modules.findById, { id: moduleId });
 
   // Define the mutation
-  const editCourse = useMutation(api.courses.update);
+  const editModule = useMutation(api.modules.update);
 
   const { toast } = useToast();
 
-  // Configure the fields for diplay
-  const fields = [
-    { name: "title", label: "Title", initialValue: "" },
-    { name: "description", label: "Description", initialValue: "" },
-    {
-      name: "isPublished",
-      label: "Published?",
-      fieldtype: "switch" as AdminFieldtype,
-      initialValue: false,
-    },
-  ];
-
-  async function onSubmit(values: Course) {
-    if (!course) return;
-    const result = await editCourse({ id: courseId, ...values });
+  async function onSubmit(values: Module) {
+    if (!existingModule) return;
+    const result = await editModule({ id: moduleId, ...values });
 
     if (result) {
       toast({
@@ -83,12 +83,12 @@ export const QuickEditCourseForm = ({ courseId }: EditCourseFormProps) => {
 
   // Set initial values
   const initialValues = {
-    title: course?.title ?? "",
-    description: course?.description ?? "",
-    isPublished: course?.isPublished ?? false,
+    title: existingModule?.title ?? "",
+    description: existingModule?.description ?? "",
+    isPublished: existingModule?.isPublished ?? false,
   };
 
-  const courseFormConfig: AdminFormConfig<Course> = {
+  const moduleFormConfig: AdminFormConfig<Module> = {
     validationSchema,
     initialValues,
     fields,
@@ -96,8 +96,8 @@ export const QuickEditCourseForm = ({ courseId }: EditCourseFormProps) => {
   };
 
   return (
-    <AdminQuickForm<Course>
-      config={courseFormConfig}
+    <AdminQuickForm<Module>
+      config={moduleFormConfig}
       formTitle={formTitle}
       renderTrigger={
         <Button variant="ghost" size="sm">

@@ -1,6 +1,6 @@
 import { useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "../../../../../convex/_generated/api";
+import { Id } from "../../../../../convex/_generated/dataModel";
 import {
   AlertDialogFooter,
   AlertDialogHeader,
@@ -15,7 +15,7 @@ import {
 } from "@/lib/ui";
 import { Trash2 } from "lucide-react";
 
-export function DeleteModuleButton({ id }: { id: Id<"modules"> }) {
+export function DeleteModuleButton({ moduleId }: { moduleId: Id<"modules"> }) {
   const deleteModuleSection = useMutation(api.modules.deleteById);
 
   return (
@@ -38,7 +38,7 @@ export function DeleteModuleButton({ id }: { id: Id<"modules"> }) {
           <AlertDialogAction asChild>
             <Button
               variant="destructive"
-              onClick={() => deleteModuleSection({ id })}
+              onClick={() => deleteModuleSection({ id: moduleId })}
             >
               Yes, I&lsquo;m sure.
             </Button>

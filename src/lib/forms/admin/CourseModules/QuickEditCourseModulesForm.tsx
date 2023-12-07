@@ -8,7 +8,7 @@ import {
   AdminQuickForm,
   AdminFormConfig,
   AdminFieldtype,
-} from "../../AdminQuickForm";
+} from "../AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
 import { Settings } from "lucide-react";
 import { Button } from "@/lib/ui";

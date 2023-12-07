@@ -9,6 +9,7 @@ import { asyncMap, getManyFrom } from "./lib/relationships";
 
 /* ADMIN ONLY
 ======================================= */
+const defaultSectionTitle = "Untitled section";
 
 export const findById = query({
   args: {
@@ -20,7 +21,6 @@ export const findById = query({
   },
 });
 
-const defaultSectionTitle = "Untitled section";
 export const create = mutation({
   args: {
     moduleId: v.id("modules"),
@@ -40,7 +40,6 @@ export const create = mutation({
       moduleId,
       type,
       title: defaultSectionTitle,
-      content: "",
       order: existingModuleSections.length + 1,
     });
   },
@@ -51,17 +50,15 @@ export const update = mutation({
     id: v.id("moduleSections"),
     type: v.optional(v.string()),
     title: v.optional(v.string()),
-    content: v.optional(v.string()),
     order: v.optional(v.number()),
   },
-  handler: async (ctx, { id, type, title, content, order }) => {
+  handler: async (ctx, { id, type, title, order }) => {
     await validateIdentity(ctx, { requireAdminRole: true });
 
     const existingSection = await ctx.db.get(id);
     await ctx.db.patch(id, {
       type: type || existingSection?.type || "text",
       title: title || existingSection?.title || defaultSectionTitle,
-      content: content ?? existingSection?.content,
       order: order ?? existingSection?.order,
     });
     return await ctx.db.get(id);
