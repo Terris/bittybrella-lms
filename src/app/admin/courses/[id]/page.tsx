@@ -213,7 +213,9 @@ function Module({ id }: { id: Id<"modules"> }) {
       {courseModule.sections?.map((section) => (
         <div key={section._id}>
           <Text className="text-2xl pb-8">{section.title}</Text>
-          <ContentReader content={section.content} />
+          {/* {section.type === "article" && (
+            <ContentReader content={section.content} />
+          )} */}
           <hr className="my-8" />
         </div>
       ))}

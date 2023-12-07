@@ -15,8 +15,12 @@ import {
 } from "@/lib/ui";
 import { Trash2 } from "lucide-react";
 
-export function DeleteModuleButton({ moduleId }: { moduleId: Id<"modules"> }) {
-  const deleteModuleSection = useMutation(api.modules.deleteById);
+export function DeleteArticleButton({
+  articleId,
+}: {
+  articleId: Id<"articles">;
+}) {
+  const deleteArticleSection = useMutation(api.articles.deleteById);
 
   return (
     <AlertDialog>
@@ -30,7 +34,7 @@ export function DeleteModuleButton({ moduleId }: { moduleId: Id<"modules"> }) {
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete this
-            module in all courses that use it.
+            article in all courses and modules that use it.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -38,7 +42,7 @@ export function DeleteModuleButton({ moduleId }: { moduleId: Id<"modules"> }) {
           <AlertDialogAction asChild>
             <Button
               variant="destructive"
-              onClick={() => deleteModuleSection({ id: moduleId })}
+              onClick={() => deleteArticleSection({ id: articleId })}
             >
               Yes, I&lsquo;m sure.
             </Button>

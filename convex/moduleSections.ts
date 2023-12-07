@@ -9,6 +9,7 @@ import { asyncMap, getManyFrom } from "./lib/relationships";
 
 /* ADMIN ONLY
 ======================================= */
+const defaultSectionTitle = "Untitled section";
 
 export const findById = query({
   args: {
@@ -20,7 +21,6 @@ export const findById = query({
   },
 });
 
-const defaultSectionTitle = "Untitled section";
 export const create = mutation({
   args: {
     moduleId: v.id("modules"),

@@ -72,12 +72,12 @@ const columns: ColumnDef<ModuleRow>[] = [
     id: "delete",
     header: "Delete",
     cell: ({ row }) => (
-      <DeleteModuleButton id={row.original._id as Id<"modules">} />
+      <DeleteModuleButton moduleId={row.original._id as Id<"modules">} />
     ),
   },
 ];
 
-export const ModulesForm = () => {
+export const ModulesTable = () => {
   const modulesData = useQuery(api.modules.all);
   if (!modulesData) return null;
   return <AdminTable columns={columns} data={modulesData} />;

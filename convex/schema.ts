@@ -6,6 +6,7 @@ export default defineSchema({
     name: v.string(),
     tokenIdentifier: v.string(),
     isAdmin: v.optional(v.boolean()),
+    roles: v.optional(v.array(v.string())),
   }).index("by_token", ["tokenIdentifier"]),
   tracking: defineTable({
     event: v.string(),
@@ -36,23 +37,18 @@ export default defineSchema({
     moduleId: v.id("modules"),
     type: v.string(),
     title: v.string(),
-    content: v.string(),
     order: v.number(),
-    contentBlockIds: v.optional(
+    contentId: v.optional(
       v.union(v.id("article"), v.id("video"), v.id("assessment"))
     ),
   })
     .index("by_moduleId", ["moduleId"])
     .index("by_order", ["order"]),
-  article: defineTable({
+  articles: defineTable({
     title: v.string(),
     content: v.string(),
   }),
-  video: defineTable({
-    title: v.string(),
-    url: v.string(),
-  }),
-  assessment: defineTable({
+  assessments: defineTable({
     title: v.string(),
     questions: v.array(
       v.object({

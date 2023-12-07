@@ -18,37 +18,27 @@ import {
   ContentEditor,
   Input,
   Label,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
 } from "@/lib/ui";
 
-interface ModuleSectionProps {
-  id: Id<"moduleSections">;
+interface EditArticleFormProps {
+  id: Id<"articles">;
 }
 
-const sectionContentTypes = ["article", "video", "assessment"];
-
-export function EditModuleSectionForm({ id }: ModuleSectionProps) {
-  const moduleSectionData = useQuery(api.moduleSections.findById, {
+export function EditArticleForm({ id }: EditArticleFormProps) {
+  const articleData = useQuery(api.articles.findById, {
     id,
   });
 
-  if (!moduleSectionData) return null;
-  return <Form section={moduleSectionData} />;
+  if (!articleData) return null;
+  return <Form article={articleData} />;
 }
 
-const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
+const Form = ({ article }: { article: Doc<"articles"> }) => {
   const { toast } = useToast();
-  const updateModuleSection = useMutation(api.moduleSections.update);
-  const [newSectionTitle, setNewSectionTitle] = useState<string>(section.title);
-  const debouncedNewSectionTitle = useDebounce(newSectionTitle, 1000);
-  const titleHasChanges = section.title !== debouncedNewSectionTitle;
-
-  const [selectedContentType, setSelectedContentType] =
-    useState<string>("article");
+  const updateArticle = useMutation(api.articles.update);
+  const [newArticleTitle, setNewArticleTitle] = useState<string>(article.title);
+  const debouncedNewArticleTitle = useDebounce(newArticleTitle, 1000);
+  const titleHasChanges = article.title !== debouncedNewArticleTitle;
 
   // Update the db title when the debounced title value changes
   useEffect(() => {
@@ -56,9 +46,9 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
       return;
     }
     try {
-      updateModuleSection({
-        id: section._id,
-        title: debouncedNewSectionTitle,
+      updateArticle({
+        id: article._id,
+        title: debouncedNewArticleTitle,
       });
     } catch (error: any) {
       toast({
@@ -68,14 +58,14 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedNewSectionTitle]);
+  }, [debouncedNewArticleTitle]);
 
   const handleSaveContent = useCallback(
     (content: string) => {
-      if (!section._id) return;
+      if (!article._id) return;
       try {
-        updateModuleSection({
-          id: section._id,
+        updateArticle({
+          id: article._id,
           content: content,
         });
       } catch (error: any) {
@@ -86,56 +76,44 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
         });
       }
     },
-    [section._id, toast, updateModuleSection]
+    [article._id, toast, updateArticle]
   );
 
   return (
     <div className="flex flex-col gap-4">
-      <Label htmlFor="section-title">Section title</Label>
+      <div>
+        <Input
+          name="section-title"
+          placeholder="Article title"
+          value={newArticleTitle}
+          onChange={(e) => setNewArticleTitle(e.target.value)}
+        />
+      </div>
 
-      <Input
-        name="section-title"
-        placeholder="Section title"
-        value={newSectionTitle}
-        onChange={(e) => setNewSectionTitle(e.target.value)}
+      <ContentEditor
+        initialContent={article.content}
+        onChange={handleSaveContent}
       />
 
-      <Select
-        onValueChange={(val) => setSelectedContentType(val)}
-        value={selectedContentType}
-      >
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select a content type" />
-        </SelectTrigger>
-        <SelectContent>
-          {sectionContentTypes.map((type) => (
-            <SelectItem value={type} key={type}>
-              {type}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      {/* <ContentEditor
-        initialContent={section.content}
-        onChange={handleSaveContent}
-      /> */}
-
       <div className="flex justify-end">
-        <DeleteSectionButton id={section._id} />
+        <DeleteArticleButton articleId={article._id} />
       </div>
     </div>
   );
 };
 
-export function DeleteSectionButton({ id }: { id: Id<"moduleSections"> }) {
-  const deleteModuleSection = useMutation(api.moduleSections.deleteById);
+export function DeleteArticleButton({
+  articleId,
+}: {
+  articleId: Id<"articles">;
+}) {
+  const deleteArticle = useMutation(api.articles.deleteById);
 
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button variant="destructive" size="sm">
-          Delete section
+          Delete Article
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -143,7 +121,7 @@ export function DeleteSectionButton({ id }: { id: Id<"moduleSections"> }) {
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete this
-            section.
+            article in all courses and modules that use it.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -151,7 +129,7 @@ export function DeleteSectionButton({ id }: { id: Id<"moduleSections"> }) {
           <AlertDialogAction asChild>
             <Button
               variant="destructive"
-              onClick={() => deleteModuleSection({ id })}
+              onClick={() => deleteArticle({ id: articleId })}
             >
               Yes, I&lsquo;m sure.
             </Button>
