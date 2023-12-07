@@ -51,7 +51,6 @@ export function Masthead() {
           <Link href="/admin">Admin</Link>
           <Link href="/admin/courses">Courses</Link>
           <Link href="/admin/modules">Modules</Link>
-          <Link href="/admin/articles">Articles</Link>
         </div>
       )}
       <div className="flex flex-row items-center justify-between mt-auto gap-4 lg:w-full lg:flex-col">
