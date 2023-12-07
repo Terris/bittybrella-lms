@@ -1,9 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   Button,
   Loader,
-  Text,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
@@ -34,7 +34,6 @@ import {
   Youtube as YouTubeIcon,
 } from "lucide-react";
 import { useDebounce } from "../hooks/useDebounce";
-import { useEffect, useState } from "react";
 
 // define your extension array
 const extensions = [
@@ -295,14 +294,17 @@ const ToolbarButton = ({
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button
-          onClick={onClick}
-          size="sm"
-          variant={isActive ? "secondary" : "ghost"}
-          disabled={disabled}
-        >
-          {children}
-        </Button>
+        <span tabIndex={0}>
+          <Button
+            onClick={onClick}
+            size="sm"
+            variant={isActive ? "secondary" : "ghost"}
+            disabled={disabled}
+            style={{ pointerEvents: disabled ? "none" : "auto" }}
+          >
+            {children}
+          </Button>
+        </span>
       </TooltipTrigger>
       {helpText && <TooltipContent>{helpText}</TooltipContent>}
     </Tooltip>
