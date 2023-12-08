@@ -56,17 +56,15 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
         </FlexRow>
         <hr />
         <div className="flex flex-col lg:flex-row lg:h-full">
-          <aside className="lg:w-1/4 lg:pr-4">
-            <div className="flex flex-col gap-4 lg:sticky lg:top-0">
-              <CourseModulesNav
-                courseId={params.id as Id<"courses">}
-                modules={course.modules}
-                selectedModuleId={selectedModuleId}
-                setSelectedModuleId={setSelectedModuleId}
-                selectedModuleSectionId={selectedModuleSectionId}
-                setSelectedModuleSectionId={setSelectedModuleSectionId}
-              />
-            </div>
+          <aside className="lg:w-1/4 lg:pr-4 lg:pt-2">
+            <CourseModulesNav
+              courseId={params.id as Id<"courses">}
+              modules={course.modules}
+              selectedModuleId={selectedModuleId}
+              setSelectedModuleId={setSelectedModuleId}
+              selectedModuleSectionId={selectedModuleSectionId}
+              setSelectedModuleSectionId={setSelectedModuleSectionId}
+            />
           </aside>
           <div className="flex-1 lg:w-3/4 lg:pl-4">
             {selectedModuleSectionId && (

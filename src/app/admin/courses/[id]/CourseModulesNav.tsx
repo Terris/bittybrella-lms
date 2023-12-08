@@ -83,7 +83,7 @@ export function CourseModulesNav({
 
   return (
     <>
-      <FlexRow className="justify-between">
+      <FlexRow className="justify-between pb-4">
         <Text className="font-bold">Course Modules</Text>
         <DropdownMenu open={menuIsOpen} onOpenChange={setMenuIsOpen}>
           <DropdownMenuTrigger>
