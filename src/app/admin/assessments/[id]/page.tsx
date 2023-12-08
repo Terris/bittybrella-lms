@@ -4,12 +4,9 @@ import React from "react";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
 import { FlexRow, Text } from "@/lib/ui";
-import { QuickEditAssessmentForm } from "@/lib/Assessments/QuickEditAssessmentForm";
-import {
-  AssessmentProvider,
-  useAssessment,
-} from "@/lib/Assessments/providers/AssessmentProvider";
-import { AssessmentQuestionsNav } from "@/lib/Assessments/AssessmentQuestionsNav";
+import { QuickEditAssessmentForm } from "../QuickEditAssessmentForm";
+import { AssessmentProvider, useAssessment } from "./AssessmentProvider";
+import { AssessmentQuestionsNav } from "./AssessmentQuestionsNav";
 
 interface AdminModulePageProps {
   params: { id: string };

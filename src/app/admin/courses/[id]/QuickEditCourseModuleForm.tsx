@@ -2,13 +2,13 @@
 
 import * as Yup from "yup";
 import { useMutation, useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import { Id } from "../../../convex/_generated/dataModel";
+import { api } from "../../../../../convex/_generated/api";
+import { Id } from "../../../../../convex/_generated/dataModel";
 import {
   AdminQuickForm,
   AdminFormConfig,
   AdminFieldtype,
-} from "../../app/admin/AdminQuickForm";
+} from "../../AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
 import { Button } from "@/lib/ui";
 

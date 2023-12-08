@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { useQuery } from "convex/react";
-import { Id } from "../../../convex/_generated/dataModel";
-import { api } from "../../../convex/_generated/api";
+import { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "../../../../convex/_generated/api";
 import { QuickEditAssessmentForm } from "./QuickEditAssessmentForm";
 import { DeleteAssessmentButton } from "./DeleteAssessmentButton";
 import {
@@ -12,7 +12,7 @@ import {
   TooltipContent,
   TextLink,
 } from "@/lib/ui";
-import { AdminTable } from "../../app/admin/AdminTable";
+import { AdminTable } from "../AdminTable";
 
 interface AssessmentRow {
   _id: string;

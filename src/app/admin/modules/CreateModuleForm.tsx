@@ -2,12 +2,12 @@
 
 import * as Yup from "yup";
 import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { api } from "../../../../convex/_generated/api";
 import {
   AdminQuickForm,
   AdminFormConfig,
   AdminFieldtype,
-} from "../../app/admin/AdminQuickForm";
+} from "../AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
 
 // Define the fields

@@ -2,22 +2,17 @@
 
 import * as Yup from "yup";
 import { useMutation, useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import {
-  AdminFieldtype,
-  AdminQuickForm,
-  AdminFormConfig,
-} from "../../app/admin/AdminQuickForm";
+import { api } from "../../../../convex/_generated/api";
+import { AdminQuickForm, AdminFormConfig } from "../AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
-import { Id } from "../../../convex/_generated/dataModel";
+import { Id } from "../../../../convex/_generated/dataModel";
 import { Pencil } from "lucide-react";
 import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@/lib/ui";
 
 // Define the fields that can be edited
-export interface Course {
+export interface Assessment {
   title: string;
   description: string;
-  isPublished: boolean;
 }
 
 // Define the validation schema
@@ -28,26 +23,27 @@ const validationSchema = Yup.object().shape({
   description: Yup.string()
     .max(50, "Description must be less than 50 characters")
     .required("Description is required"),
-  isPublished: Yup.boolean().optional(),
 });
 
 // Set toast messages for success and error
-const successMessage = "Course saved.";
-const errorMessage = "Something went wrong trying to edit course.";
+const successMessage = "Assessment saved.";
+const errorMessage = "Something went wrong trying to update assessment.";
 
 // Set the form title
-const formTitle = "Edit course";
+const formTitle = "Edit assessment";
 
-interface EditCourseFormProps {
-  courseId: Id<"courses">;
+interface EditAssessmentFormProps {
+  assessmentId: Id<"assessments">;
 }
 
-export const QuickEditCourseForm = ({ courseId }: EditCourseFormProps) => {
-  // Fetch the course to edit
-  const course = useQuery(api.courses.findById, { id: courseId });
+export const QuickEditAssessmentForm = ({
+  assessmentId,
+}: EditAssessmentFormProps) => {
+  // Fetch the assessment to edit
+  const assessment = useQuery(api.assessments.findById, { id: assessmentId });
 
   // Define the mutation
-  const editCourse = useMutation(api.courses.update);
+  const editAssessment = useMutation(api.assessments.update);
 
   const { toast } = useToast();
 
@@ -55,17 +51,11 @@ export const QuickEditCourseForm = ({ courseId }: EditCourseFormProps) => {
   const fields = [
     { name: "title", label: "Title", initialValue: "" },
     { name: "description", label: "Description", initialValue: "" },
-    {
-      name: "isPublished",
-      label: "Published?",
-      fieldtype: "switch" as AdminFieldtype,
-      initialValue: false,
-    },
   ];
 
-  async function onSubmit(values: Course) {
-    if (!course) return;
-    const result = await editCourse({ id: courseId, ...values });
+  async function onSubmit(values: Assessment) {
+    if (!assessment) return;
+    const result = await editAssessment({ id: assessmentId, ...values });
 
     if (result) {
       toast({
@@ -83,12 +73,11 @@ export const QuickEditCourseForm = ({ courseId }: EditCourseFormProps) => {
 
   // Set initial values
   const initialValues = {
-    title: course?.title ?? "",
-    description: course?.description ?? "",
-    isPublished: course?.isPublished ?? false,
+    title: assessment?.title ?? "",
+    description: assessment?.description ?? "",
   };
 
-  const courseFormConfig: AdminFormConfig<Course> = {
+  const formConfig: AdminFormConfig<Assessment> = {
     validationSchema,
     initialValues,
     fields,
@@ -96,8 +85,8 @@ export const QuickEditCourseForm = ({ courseId }: EditCourseFormProps) => {
   };
 
   return (
-    <AdminQuickForm<Course>
-      config={courseFormConfig}
+    <AdminQuickForm<Assessment>
+      config={formConfig}
       formTitle={formTitle}
       renderTrigger={
         <Button variant="ghost" size="sm">
@@ -105,7 +94,7 @@ export const QuickEditCourseForm = ({ courseId }: EditCourseFormProps) => {
             <TooltipTrigger>
               <Pencil className="h-4 w-4" />
             </TooltipTrigger>
-            <TooltipContent>Edit course settings</TooltipContent>
+            <TooltipContent>Edit assessment settings</TooltipContent>
           </Tooltip>
         </Button>
       }

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
-import { Doc, Id } from "../../../convex/_generated/dataModel";
-import { api } from "../../../convex/_generated/api";
+import { Doc, Id } from "../../../../../convex/_generated/dataModel";
+import { api } from "../../../../../convex/_generated/api";
 import { useDebounce } from "@/lib/hooks/useDebounce";
 import { useToast } from "@/lib/hooks/useToast";
 import {
