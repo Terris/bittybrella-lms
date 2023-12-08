@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../../convex/_generated/dataModel";
 import {
@@ -19,10 +19,9 @@ import {
   SortableList,
   SortableListItem,
 } from "@/lib/providers/SortableListProvider";
-import { QuickEditCourseModulesForm } from "./QuickEditCourseModulesForm";
+import { QuickEditCourseModuleForm } from "./QuickEditCourseModuleForm";
 import { MoreVertical } from "lucide-react";
 import { useState } from "react";
-import { DropdownMenuPortal } from "@radix-ui/react-dropdown-menu";
 import { ModuleSectionsNav } from "../../modules/[id]/ModuleSectionsNav";
 import { cn } from "@/lib/utils";
 
@@ -91,7 +90,7 @@ export function CourseModulesNav({
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem asChild onSelect={(e) => e.preventDefault()}>
-              <QuickEditCourseModulesForm
+              <QuickEditCourseModuleForm
                 courseId={courseId}
                 onCloseForm={() => setMenuIsOpen(false)}
               />
@@ -113,8 +112,8 @@ export function CourseModulesNav({
                     variant="ghost"
                     onClick={() => setSelectedModuleId(module?._id)}
                     className={cn(
-                      "flex-1 truncate mb-2",
-                      selectedModuleId === module?._id && "font-bold"
+                      "flex-1 truncate mb-2 transition-all",
+                      selectedModuleId === module?._id && "font-bold pl-5"
                     )}
                   >
                     <div className="w-full text-left truncate">

@@ -99,11 +99,12 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
           <ModuleSectionSettingsMenu moduleSectionId={section._id} />
         </FlexRow>
       </div>
-
-      <ContentEditor
-        initialContent={section.content}
-        onChange={handleSaveContent}
-      />
+      <div>
+        <ContentEditor
+          initialContent={section.content}
+          onChange={handleSaveContent}
+        />
+      </div>
     </div>
   );
 };

@@ -41,7 +41,8 @@ export const findById = query({
       }
       const sections = removeEmptyFromArray(
         await getManyFrom(ctx.db, "moduleSections", "moduleId", module._id)
-      );
+      ).sort((a, b) => a.order - b.order);
+
       return {
         ...module,
         sections,
@@ -49,6 +50,7 @@ export const findById = query({
         courseModuleId: moduleCourseModule._id,
       };
     });
+
     return {
       ...course,
       something: "test",

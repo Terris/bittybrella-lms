@@ -29,7 +29,7 @@ const errorMessage = "Error saving course modules. Please try again.";
 // Set the form title
 const formTitle = "Edit Course Modules";
 
-export const QuickEditCourseModulesForm = ({
+export const QuickEditCourseModuleForm = ({
   courseId,
   onCloseForm,
 }: {

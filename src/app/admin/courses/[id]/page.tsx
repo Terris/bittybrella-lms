@@ -6,11 +6,10 @@ import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
 import { FlexRow, Text } from "@/lib/ui";
 import { useEffect, useState } from "react";
-import { QuickEditCourseModulesForm } from "./QuickEditCourseModulesForm";
 import { CourseModulesNav } from "./CourseModulesNav";
-import { ModuleSectionsNav } from "../../modules/[id]/ModuleSectionsNav";
 import { EditModuleSectionForm } from "../../modules/[id]/EditModuleSectionForm";
 import { QuickEditCourseForm } from "../QuickEditCourseForm";
+import { QuickEditModuleForm } from "../../modules/QuickEditModuleForm";
 
 interface AdminCoursePageProps {
   params: { id: string };
@@ -24,13 +23,25 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
   const [selectedModuleId, setSelectedModuleId] =
     useState<Id<"modules"> | null>(null);
 
+  const selectedModule = course?.modules.find(
+    (module) => module._id === selectedModuleId
+  );
+
   const [selectedModuleSectionId, setSelectedModuleSectionId] =
     useState<Id<"moduleSections"> | null>(null);
 
+  // Select the first module when no course is selected
   useEffect(() => {
     if (!course?.modules?.[0]?._id || !!selectedModuleId) return;
     setSelectedModuleId(course?.modules?.[0]._id ?? null);
   }, [course?.modules, selectedModuleId]);
+
+  // Select the first module section of the selected module when no module section is selected
+  useEffect(() => {
+    if (!course || !selectedModuleId) return;
+
+    setSelectedModuleSectionId(selectedModule?.sections?.[0]?._id ?? null);
+  }, [course, selectedModule, selectedModuleId]);
 
   if (!course) return null;
 
@@ -66,7 +77,23 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
               setSelectedModuleSectionId={setSelectedModuleSectionId}
             />
           </aside>
-          <div className="flex-1 lg:w-3/4 lg:pl-4">
+          <div className="flex-1 flex flex-col gap-4 lg:w-3/4 lg:pl-4">
+            {selectedModule && (
+              <FlexRow className="justify-between">
+                <div className="space-y-0.5">
+                  <Text className="text-2xl font-semibold">
+                    {selectedModule.title}
+                  </Text>
+                  <Text className="text-muted-foreground">
+                    {selectedModule.description}
+                  </Text>
+                </div>
+                <QuickEditModuleForm
+                  moduleId={selectedModuleId as Id<"modules">}
+                />
+              </FlexRow>
+            )}
+            <hr className="" />
             {selectedModuleSectionId && (
               <EditModuleSectionForm id={selectedModuleSectionId} />
             )}

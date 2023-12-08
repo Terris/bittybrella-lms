@@ -119,8 +119,8 @@ export function ModuleSectionsNav({
                   size="sm"
                   onClick={() => setSelectedModuleSectionId(section?._id)}
                   className={cn(
-                    "flex-1 truncate",
-                    selectedModuleSectionId === section?._id && "font-bold"
+                    "flex-1 truncate pl-4 transition-all",
+                    selectedModuleSectionId === section?._id && "font-bold pl-5"
                   )}
                 >
                   <div className="w-full text-left truncate">
