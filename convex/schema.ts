@@ -46,16 +46,18 @@ export default defineSchema({
   assessments: defineTable({
     title: v.string(),
     description: v.string(),
-    questions: v.array(
+  }),
+  assessmentQuestions: defineTable({
+    assessmentId: v.id("assessments"),
+    question: v.string(),
+    options: v.array(
       v.object({
-        question: v.string(),
-        options: v.array(
-          v.object({
-            text: v.string(),
-            isCorrect: v.boolean(),
-          })
-        ),
+        text: v.string(),
+        isCorrect: v.boolean(),
       })
     ),
-  }),
+    order: v.number(),
+  })
+    .index("by_assessmentId", ["assessmentId"])
+    .index("by_order", ["order"]),
 });

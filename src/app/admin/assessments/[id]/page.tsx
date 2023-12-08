@@ -1,24 +1,29 @@
 "use client";
 
 import React from "react";
-import { useQuery } from "convex/react";
-import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
 import { FlexRow, Text } from "@/lib/ui";
 import { QuickEditAssessmentForm } from "../QuickEditAssessmentForm";
+import { AssessmentProvider, useAssessment } from "./AssessmentProvider";
+import { AssessmentQuestionsNav } from "./AssessmentQuestionsNav";
 
 interface AdminModulePageProps {
   params: { id: string };
 }
 
 export default function AdminAssessmentPage({ params }: AdminModulePageProps) {
-  const assessment = useQuery(api.assessments.findById, {
-    id: params.id as Id<"assessments">,
-  });
+  return (
+    <AssessmentProvider assessmentId={params.id as Id<"assessments">}>
+      <AdminAssessmentPageContent />
+    </AssessmentProvider>
+  );
+}
 
-  // TODO: handle loading state
-  if (!assessment) return null;
+function AdminAssessmentPageContent() {
+  const { isLoading, assessment, selectedQuestionId } = useAssessment();
+
+  if (isLoading || !assessment) return null;
 
   return (
     <>
@@ -27,7 +32,7 @@ export default function AdminAssessmentPage({ params }: AdminModulePageProps) {
           { href: "/admin", label: "Admin" },
           { href: "/admin/assessments", label: "Assessments" },
           {
-            href: `/admin/assessments/${params.id}`,
+            href: `/admin/assessments/${assessment._id}`,
             label: assessment.title ?? "Untitled Assessment",
           },
         ]}
@@ -40,16 +45,14 @@ export default function AdminAssessmentPage({ params }: AdminModulePageProps) {
               {assessment.description}
             </Text>
           </div>
-          <QuickEditAssessmentForm
-            assessmentId={params.id as Id<"assessments">}
-          />
+          <QuickEditAssessmentForm assessmentId={assessment._id} />
         </FlexRow>
         <hr />
         <div className="flex flex-col lg:flex-row">
-          <aside className="lg:w-1/4 lg:pr-4">
-            <div className="flex flex-col gap-4 lg:sticky lg:top-0">[Nav]</div>
+          <aside className="lg:w-1/4 lg:pr-4 lg:pt-2">
+            <AssessmentQuestionsNav />
           </aside>
-          <div className="flex-1 lg:w-3/4 lg:pl-4">[content]</div>
+          <div className="flex-1 lg:w-3/4 lg:pl-4">{selectedQuestionId}</div>
         </div>
       </PageContent>
     </>

@@ -26,10 +26,12 @@ export const findByModuleId = query({
   },
   handler: async (ctx, { moduleId }) => {
     await validateIdentity(ctx, { requireAdminRole: true });
-    const moduleSections = await ctx.db
-      .query("moduleSections")
-      .filter((q) => q.eq(q.field("moduleId"), moduleId))
-      .collect();
+    const moduleSections = await getManyFrom(
+      ctx.db,
+      "moduleSections",
+      "moduleId",
+      moduleId
+    );
     return removeEmptyFromArray(moduleSections).sort(
       (a, b) => a.order - b.order
     );
@@ -75,6 +77,9 @@ export const update = mutation({
     await validateIdentity(ctx, { requireAdminRole: true });
 
     const existingSection = await ctx.db.get(id);
+
+    if (!existingSection) throw new Error("Section does not exist");
+
     await ctx.db.patch(id, {
       type: type || existingSection?.type || "text",
       title: title || existingSection?.title || defaultSectionTitle,

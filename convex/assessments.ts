@@ -1,7 +1,8 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { validateIdentity } from "./lib/authorization";
-import { asyncMap } from "./lib/relationships";
+import { asyncMap, getManyFrom } from "./lib/relationships";
+import { removeEmptyFromArray } from "./lib/utils";
 
 /* ADMIN ONLY
 ======================================= */
@@ -17,7 +18,13 @@ export const findById = query({
   args: { id: v.id("assessments") },
   handler: async (ctx, { id }) => {
     await validateIdentity(ctx, { requireAdminRole: true });
-    return await ctx.db.get(id);
+    const assessment = await ctx.db.get(id);
+    if (!assessment) throw new Error("Assessment does not exist");
+
+    const questions = removeEmptyFromArray(
+      await getManyFrom(ctx.db, "assessmentQuestions", "assessmentId", id)
+    );
+    return { ...assessment, questions };
   },
 });
 
@@ -31,7 +38,6 @@ export const create = mutation({
     return await ctx.db.insert("assessments", {
       title,
       description,
-      questions: [],
     });
   },
 });
@@ -41,27 +47,13 @@ export const update = mutation({
     id: v.id("assessments"),
     title: v.string(),
     description: v.string(),
-    questions: v.optional(
-      v.array(
-        v.object({
-          question: v.string(),
-          options: v.array(
-            v.object({
-              text: v.string(),
-              isCorrect: v.boolean(),
-            })
-          ),
-        })
-      )
-    ),
   },
-  handler: async (ctx, { id, title, description, questions }) => {
+  handler: async (ctx, { id, title, description }) => {
     await validateIdentity(ctx, { requireAdminRole: true });
     const existingAssessment = await ctx.db.get(id);
     await ctx.db.patch(id, {
       title: title ?? existingAssessment?.title,
       description: description ?? existingAssessment?.description,
-      questions: questions ?? existingAssessment?.questions,
     });
     return await ctx.db.get(id);
   },
@@ -81,9 +73,21 @@ export const deleteById = mutation({
       .filter((q) => q.eq(q.field("assessmentId"), id))
       .collect();
 
-    await asyncMap(moduleSectionsWithThisAssessment, async (moduleSection) => {
-      await ctx.db.patch(moduleSection._id, { assessmentId: undefined });
-    });
+    await asyncMap(
+      moduleSectionsWithThisAssessment,
+      async (moduleSection) =>
+        await ctx.db.patch(moduleSection._id, { assessmentId: undefined })
+    );
+
+    // Remove all related assessmentQuestions
+    const asessmentQuestionsToDelete = await ctx.db
+      .query("assessmentQuestions")
+      .filter((q) => q.eq(q.field("assessmentId"), id))
+      .collect();
+    await asyncMap(
+      asessmentQuestionsToDelete,
+      async (assessmentQuestion) => await ctx.db.delete(assessmentQuestion._id)
+    );
 
     // Finally, delete assessment
     await ctx.db.delete(id);
