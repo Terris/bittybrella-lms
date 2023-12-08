@@ -3,7 +3,7 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { useAssessmentLoader } from "../hooks/useAssessmentLoader";
-import { useCreateAssessmentQuestion } from "../hooks/useCreateAssessmentQuestion";
+import { useCreateAssessmentQuestion } from "../../AssessmentQuestions/hooks/useCreateAssessmentQuestion";
 
 export interface Assessment extends Doc<"assessments"> {
   questions: Doc<"assessmentQuestions">[];
