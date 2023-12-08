@@ -1,6 +1,6 @@
 import { useMutation } from "convex/react";
-import { api } from "../../../../../convex/_generated/api";
-import { Doc, Id } from "../../../../../convex/_generated/dataModel";
+import { api } from "../../../convex/_generated/api";
+import { Doc, Id } from "../../../convex/_generated/dataModel";
 import {
   Button,
   FlexColumn,
@@ -17,7 +17,7 @@ import {
   SortableListItem,
 } from "@/lib/providers/SortableListProvider";
 import { cn } from "@/lib/utils";
-import { useAssessment } from "./AssessmentProvider";
+import { useAssessment } from "./providers/AssessmentProvider";
 import { Plus } from "lucide-react";
 
 export function AssessmentQuestionsNav() {

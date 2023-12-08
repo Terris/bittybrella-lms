@@ -1,6 +1,6 @@
 import { useMutation } from "convex/react";
-import { api } from "../../../../../convex/_generated/api";
-import { Doc, Id } from "../../../../../convex/_generated/dataModel";
+import { api } from "../../../convex/_generated/api";
+import { Doc, Id } from "../../../convex/_generated/dataModel";
 import {
   Button,
   DropdownMenu,
@@ -22,7 +22,7 @@ import {
 import { QuickEditCourseModuleForm } from "./QuickEditCourseModuleForm";
 import { MoreVertical } from "lucide-react";
 import { useState } from "react";
-import { ModuleSectionsNav } from "../../modules/[id]/ModuleSectionsNav";
+import { ModuleSectionsNav } from "../Modules/ModuleSectionsNav";
 import { cn } from "@/lib/utils";
 
 export interface CourseModule extends Doc<"modules"> {

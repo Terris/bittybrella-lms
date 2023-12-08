@@ -2,30 +2,29 @@
 
 import * as Yup from "yup";
 import { useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "../../../convex/_generated/api";
 import {
-  AdminFieldtype,
   AdminQuickForm,
   AdminFormConfig,
-} from "../AdminQuickForm";
+  AdminFieldtype,
+} from "../../app/admin/AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
 
 // Define the fields
-export interface Course {
+export interface Module {
   title: string;
   description: string;
   isPublished: boolean;
 }
 
 // Define the validation schema
-const FormSchema = Yup.object().shape({
+const ModuleFormSchema = Yup.object().shape({
   title: Yup.string()
     .max(50, "Title must be less than 50 characters")
     .required("Title is required"),
   description: Yup.string()
     .max(50, "Description must be less than 50 characters")
     .required("Description is required"),
-  isPublished: Yup.boolean().optional(),
 });
 
 // Configure the fields for diplay
@@ -41,20 +40,20 @@ const fields = [
 ];
 
 // Set toast messages for success and error
-const successMessage = "Saved new course.";
-const errorMessage = "Something went wrong trying to create a new course.";
+const successMessage = "Saved new module.";
+const errorMessage = "Error saving module. Please try again.";
 
 // Set the form title
-const formTitle = "Create new course";
+const formTitle = "Create new module";
 
-export const QuickCreateCourseForm = () => {
+export const CreateModuleForm = () => {
   // Define the mutation
-  const createCourse = useMutation(api.courses.create);
+  const createModule = useMutation(api.modules.create);
 
   const { toast } = useToast();
 
-  async function onSubmit(values: Course) {
-    const result = await createCourse(values);
+  async function onSubmit(values: Module) {
+    const result = await createModule(values);
 
     if (result) {
       toast({
@@ -77,12 +76,12 @@ export const QuickCreateCourseForm = () => {
     isPublished: false,
   };
 
-  const config: AdminFormConfig<Course> = {
-    validationSchema: FormSchema,
+  const config: AdminFormConfig<Module> = {
+    validationSchema: ModuleFormSchema,
     initialValues,
     fields,
     onSubmit,
   };
 
-  return <AdminQuickForm<Course> config={config} formTitle={formTitle} />;
+  return <AdminQuickForm<Module> config={config} formTitle={formTitle} />;
 };

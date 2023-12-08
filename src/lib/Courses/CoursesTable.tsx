@@ -2,8 +2,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Check, X } from "lucide-react";
 import { useQuery } from "convex/react";
 import { QuickEditCourseForm } from "./QuickEditCourseForm";
-import { Id } from "../../../../convex/_generated/dataModel";
-import { api } from "../../../../convex/_generated/api";
+import { Id } from "../../../convex/_generated/dataModel";
+import { api } from "../../../convex/_generated/api";
 import {
   Text,
   CopyToClipboardButton,
@@ -12,7 +12,7 @@ import {
   TooltipContent,
   TextLink,
 } from "@/lib/ui";
-import { AdminTable } from "../AdminTable";
+import { AdminTable } from "../../app/admin/AdminTable";
 import { DeleteCourseButton } from "./DeleteCourseButton";
 
 interface CourseRow {

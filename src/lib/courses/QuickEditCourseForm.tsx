@@ -2,19 +2,19 @@
 
 import * as Yup from "yup";
 import { useMutation, useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "../../../convex/_generated/api";
 import {
+  AdminFieldtype,
   AdminQuickForm,
   AdminFormConfig,
-  AdminFieldtype,
-} from "../AdminQuickForm";
+} from "../../app/admin/AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { Id } from "../../../convex/_generated/dataModel";
 import { Pencil } from "lucide-react";
 import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@/lib/ui";
 
 // Define the fields that can be edited
-export interface Module {
+export interface Course {
   title: string;
   description: string;
   isPublished: boolean;
@@ -31,41 +31,41 @@ const validationSchema = Yup.object().shape({
   isPublished: Yup.boolean().optional(),
 });
 
-// Configure the fields for diplay
-const fields = [
-  { name: "title", label: "Title", initialValue: "" },
-  { name: "description", label: "Description", initialValue: "" },
-  {
-    name: "isPublished",
-    label: "Published",
-    initialValue: false,
-    fieldtype: "switch" as AdminFieldtype,
-  },
-];
-
 // Set toast messages for success and error
-const successMessage = "Module saved.";
-const errorMessage = "Error saving module. Please try again.";
+const successMessage = "Course saved.";
+const errorMessage = "Something went wrong trying to edit course.";
 
 // Set the form title
-const formTitle = "Edit module";
+const formTitle = "Edit course";
 
-interface QuickEditModuleFormProps {
-  moduleId: Id<"modules">;
+interface EditCourseFormProps {
+  courseId: Id<"courses">;
 }
 
-export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
-  // Fetch the module to edit
-  const existingModule = useQuery(api.modules.findById, { id: moduleId });
+export const QuickEditCourseForm = ({ courseId }: EditCourseFormProps) => {
+  // Fetch the course to edit
+  const course = useQuery(api.courses.findById, { id: courseId });
 
   // Define the mutation
-  const editModule = useMutation(api.modules.update);
+  const editCourse = useMutation(api.courses.update);
 
   const { toast } = useToast();
 
-  async function onSubmit(values: Module) {
-    if (!existingModule) return;
-    const result = await editModule({ id: moduleId, ...values });
+  // Configure the fields for diplay
+  const fields = [
+    { name: "title", label: "Title", initialValue: "" },
+    { name: "description", label: "Description", initialValue: "" },
+    {
+      name: "isPublished",
+      label: "Published?",
+      fieldtype: "switch" as AdminFieldtype,
+      initialValue: false,
+    },
+  ];
+
+  async function onSubmit(values: Course) {
+    if (!course) return;
+    const result = await editCourse({ id: courseId, ...values });
 
     if (result) {
       toast({
@@ -83,12 +83,12 @@ export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
 
   // Set initial values
   const initialValues = {
-    title: existingModule?.title ?? "",
-    description: existingModule?.description ?? "",
-    isPublished: existingModule?.isPublished ?? false,
+    title: course?.title ?? "",
+    description: course?.description ?? "",
+    isPublished: course?.isPublished ?? false,
   };
 
-  const moduleFormConfig: AdminFormConfig<Module> = {
+  const courseFormConfig: AdminFormConfig<Course> = {
     validationSchema,
     initialValues,
     fields,
@@ -96,8 +96,8 @@ export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
   };
 
   return (
-    <AdminQuickForm<Module>
-      config={moduleFormConfig}
+    <AdminQuickForm<Course>
+      config={courseFormConfig}
       formTitle={formTitle}
       renderTrigger={
         <Button variant="ghost" size="sm">
@@ -105,7 +105,7 @@ export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
             <TooltipTrigger>
               <Pencil className="h-4 w-4" />
             </TooltipTrigger>
-            <TooltipContent>Edit module settings</TooltipContent>
+            <TooltipContent>Edit course settings</TooltipContent>
           </Tooltip>
         </Button>
       }

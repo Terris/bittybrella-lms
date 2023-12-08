@@ -1,34 +1,34 @@
 import { ColumnDef } from "@tanstack/react-table";
+import { Check, X } from "lucide-react";
 import { useQuery } from "convex/react";
-import { QuickEditModuleForm } from "./QuickEditModuleForm";
-import { Id } from "../../../../convex/_generated/dataModel";
-import { api } from "../../../../convex/_generated/api";
+import { QuickEditCourseForm } from "./QuickEditCourseForm";
+import { Id } from "../../../convex/_generated/dataModel";
+import { api } from "../../../convex/_generated/api";
 import {
   Text,
   CopyToClipboardButton,
-  TextLink,
   Tooltip,
   TooltipTrigger,
   TooltipContent,
+  TextLink,
 } from "@/lib/ui";
-import { AdminTable } from "../AdminTable";
-import Link from "next/link";
-import { Check, X } from "lucide-react";
-import { DeleteModuleButton } from "./DeleteModuleButton";
+import { AdminTable } from "../../app/admin/AdminTable";
+import { DeleteCourseButton } from "./DeleteCourseButton";
 
-interface ModuleRow {
+interface CourseRow {
   _id: string;
   title: string;
   description: string;
+  isPublished: boolean;
 }
 
-const columns: ColumnDef<ModuleRow>[] = [
+const columns: ColumnDef<CourseRow>[] = [
   {
     accessorKey: "title",
     header: "Title",
     cell: ({ row }) => {
       return (
-        <TextLink href={`/admin/modules/${row.original._id}`}>
+        <TextLink href={`/admin/courses/${row.original._id}`}>
           {row.original.title}
         </TextLink>
       );
@@ -82,20 +82,20 @@ const columns: ColumnDef<ModuleRow>[] = [
     id: "edit",
     header: "Quick Edit",
     cell: ({ row }) => (
-      <QuickEditModuleForm moduleId={row.original._id as Id<"modules">} />
+      <QuickEditCourseForm courseId={row.original._id as Id<"courses">} />
     ),
   },
   {
     id: "delete",
     header: "Delete",
     cell: ({ row }) => (
-      <DeleteModuleButton id={row.original._id as Id<"modules">} />
+      <DeleteCourseButton id={row.original._id as Id<"courses">} />
     ),
   },
 ];
 
-export const ModulesTable = () => {
-  const modulesData = useQuery(api.modules.all);
-  if (!modulesData) return null;
-  return <AdminTable columns={columns} data={modulesData} />;
+export const CoursesTable = () => {
+  const coursesData = useQuery(api.courses.all);
+  if (!coursesData) return null;
+  return <AdminTable columns={columns} data={coursesData} />;
 };
