@@ -1,8 +1,9 @@
 import { useMutation } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
-import { Id } from "../../../../../convex/_generated/dataModel";
+import { Doc, Id } from "../../../../../convex/_generated/dataModel";
 import {
   Button,
+  FlexColumn,
   FlexRow,
   Select,
   SelectContent,
@@ -77,24 +78,24 @@ export function AssessmentQuestionsNav() {
       </FlexRow>
       <div className="hidden lg:block">
         <SortableList items={sortableListItems} onUpdate={handleOnUpdate}>
-          <div className="flex flex-col gap-2">
+          <FlexColumn className="gap-2">
             {assessmentQuestions.map((question) => (
               <SortableListItem key={question._id} id={question._id}>
-                <div className="flex flex-col flex-1 truncate">
+                <FlexColumn className="flex-1 truncate">
                   <Button
                     key={question._id}
                     variant="ghost"
                     onClick={() => setSelectedQuestionId(question?._id)}
                     className={cn(
-                      "flex-1 truncate mb-2 transition-all",
+                      "flex-1 truncate transition-all",
                       selectedQuestionId === question?._id && "font-bold pl-5"
                     )}
                   >
                     <div className="w-full text-left truncate">
-                      {question.question ?? "Untitled section"}
+                      {question.question}
                     </div>
                   </Button>
-                </div>
+                </FlexColumn>
               </SortableListItem>
             ))}
             <Button
@@ -105,28 +106,46 @@ export function AssessmentQuestionsNav() {
             >
               <Plus className="h-3 w-3 mr-1" /> Add assessment question
             </Button>
-          </div>
+          </FlexColumn>
         </SortableList>
       </div>
       <div className="block lg:hidden pb-6">
-        <Select
-          onValueChange={(val) =>
-            setSelectedQuestionId(val as Id<"assessmentQuestions">)
-          }
-          value={selectedQuestionId as string}
-        >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select a question" />
-          </SelectTrigger>
-          <SelectContent>
-            {assessmentQuestions.map((question) => (
-              <SelectItem value={question._id} key={question._id}>
-                {question.question}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <AssessmentQuestionsNavSelect
+          assessmentQuestions={assessmentQuestions}
+          selectedQuestionId={selectedQuestionId}
+          setSelectedQuestionId={setSelectedQuestionId}
+        />
       </div>
     </>
+  );
+}
+
+function AssessmentQuestionsNavSelect({
+  assessmentQuestions,
+  selectedQuestionId,
+  setSelectedQuestionId,
+}: {
+  assessmentQuestions: Doc<"assessmentQuestions">[];
+  selectedQuestionId: Id<"assessmentQuestions"> | null;
+  setSelectedQuestionId: (id: Id<"assessmentQuestions"> | null) => void;
+}) {
+  return (
+    <Select
+      onValueChange={(val) =>
+        setSelectedQuestionId(val as Id<"assessmentQuestions">)
+      }
+      value={selectedQuestionId as string}
+    >
+      <SelectTrigger className="w-full">
+        <SelectValue placeholder="Select a question" />
+      </SelectTrigger>
+      <SelectContent>
+        {assessmentQuestions.map((question) => (
+          <SelectItem value={question._id} key={question._id}>
+            {question.question}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }
