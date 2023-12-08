@@ -72,7 +72,7 @@ export function SortableListItem({
       <Tooltip>
         <TooltipTrigger>
           <GripVertical
-            className="flex-shrink-0 w-3 h-3 mr-2 mt-3.5"
+            className="flex-shrink-0 w-3 h-3 mr-1.5 mt-3"
             {...listeners}
           />
         </TooltipTrigger>

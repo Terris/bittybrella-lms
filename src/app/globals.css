@@ -55,6 +55,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-size: 18px;
   }
 }
 
@@ -87,15 +88,16 @@ body {
 
 .tiptap code {
   padding: 0.25rem;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   border: 1px solid hsl(var(--border));
-  background: hsl(var(--card));
+  background: hsl(var(--accent));
   border-radius: 0.25rem;
 }
 .tiptap pre code {
   padding: 0.5rem;
   display: block;
-  line-height: 2;
+  line-height: 1.618;
+  background: hsl(var(--accent));
 }
 .tiptap ul,
 .tiptap ol {

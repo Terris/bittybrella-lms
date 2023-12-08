@@ -24,6 +24,7 @@ import { MoreVertical } from "lucide-react";
 import { useState } from "react";
 import { DropdownMenuPortal } from "@radix-ui/react-dropdown-menu";
 import { ModuleSectionsNav } from "../../modules/[id]/ModuleSectionsNav";
+import { cn } from "@/lib/utils";
 
 export interface CourseModule extends Doc<"modules"> {
   sections: Doc<"moduleSections">[];
@@ -109,16 +110,18 @@ export function CourseModulesNav({
                 <div className="flex flex-col flex-1 truncate">
                   <Button
                     key={module._id}
-                    variant={
-                      selectedModuleId === module?._id ? "secondary" : "ghost"
-                    }
+                    variant="ghost"
                     onClick={() => setSelectedModuleId(module?._id)}
-                    className="flex-1 truncate mb-1"
+                    className={cn(
+                      "flex-1 truncate mb-2",
+                      selectedModuleId === module?._id && "font-bold"
+                    )}
                   >
                     <div className="w-full text-left truncate">
                       {module.title ?? "Untitled section"}
                     </div>
                   </Button>
+
                   {selectedModuleId === module?._id && (
                     <ModuleSectionsNav
                       moduleId={selectedModuleId as Id<"modules">}

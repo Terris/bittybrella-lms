@@ -23,7 +23,8 @@ import {
   SortableList,
   SortableListItem,
 } from "@/lib/providers/SortableListProvider";
-import { MoreVertical, PlusCircle } from "lucide-react";
+import { MoreVertical, Plus, PlusSquare } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function ModuleSectionsNav({
   moduleId,
@@ -114,14 +115,13 @@ export function ModuleSectionsNav({
               <SortableListItem key={section._id} id={section._id}>
                 <Button
                   key={section?._id}
-                  variant={
-                    selectedModuleSectionId === section?._id
-                      ? "secondary"
-                      : "ghost"
-                  }
+                  variant={"ghost"}
                   size="sm"
                   onClick={() => setSelectedModuleSectionId(section?._id)}
-                  className="flex-1 truncate"
+                  className={cn(
+                    "flex-1 truncate",
+                    selectedModuleSectionId === section?._id && "font-bold"
+                  )}
                 >
                   <div className="w-full text-left truncate">
                     {section?.title ?? "Untitled section"}
@@ -129,19 +129,14 @@ export function ModuleSectionsNav({
                 </Button>
               </SortableListItem>
             ))}
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleCreateNewSection}
-                  className="ml-5"
-                >
-                  <PlusCircle className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Add module section</TooltipContent>
-            </Tooltip>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleCreateNewSection}
+              className="ml-5 justify-start italic"
+            >
+              <Plus className="h-3 w-3 mr-1" /> Add new module section
+            </Button>
           </div>
         </SortableList>
       </div>

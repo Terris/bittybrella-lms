@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { TextLink } from "../ui";
 
 export interface Breadcrumb {
   href: string;
@@ -11,13 +10,10 @@ export interface BreadcrumbsProps {
 }
 export const Breadcrumbs = ({ breadcrumbs }: BreadcrumbsProps) => {
   return (
-    <div className="text-xs flex gap-4">
-      <TextLink
-        href="/"
-        className={breadcrumbs?.length === 0 ? "font-bold" : ""}
-      >
+    <div className="text-sm flex gap-4">
+      <Link href="/" className={breadcrumbs?.length === 0 ? "font-bold" : ""}>
         Home
-      </TextLink>
+      </Link>
       {breadcrumbs?.length && " / "}
       {breadcrumbs?.map((bc, index) => (
         <span key={bc.href} className="flex gap-4">
