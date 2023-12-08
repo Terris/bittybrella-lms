@@ -1,7 +1,7 @@
 "use client";
 
 import { PageContent, PageHeader } from "@/lib/layout";
-import { CreateCourseForm } from "./CreateCourseForm";
+import { QuickCreateCourseForm } from "./QuickCreateCourseForm";
 import { CoursesTable } from "./CoursesTable";
 import { Text } from "@/lib/ui";
 
@@ -13,7 +13,7 @@ export default function AdminCoursesPage() {
           { href: "/admin", label: "Admin" },
           { href: "/admin/courses", label: "Courses" },
         ]}
-        renderActions={<CreateCourseForm />}
+        renderActions={<QuickCreateCourseForm />}
       />
       <PageContent>
         <Text className="text-2xl font-semibold">Courses</Text>

@@ -18,7 +18,7 @@ export interface Course {
 }
 
 // Define the validation schema
-const CourseFormSchema = Yup.object().shape({
+const FormSchema = Yup.object().shape({
   title: Yup.string()
     .max(50, "Title must be less than 50 characters")
     .required("Title is required"),
@@ -47,7 +47,7 @@ const errorMessage = "Something went wrong trying to create a new course.";
 // Set the form title
 const formTitle = "Create new course";
 
-export const CreateCourseForm = () => {
+export const QuickCreateCourseForm = () => {
   // Define the mutation
   const createCourse = useMutation(api.courses.create);
 
@@ -78,7 +78,7 @@ export const CreateCourseForm = () => {
   };
 
   const config: AdminFormConfig<Course> = {
-    validationSchema: CourseFormSchema,
+    validationSchema: FormSchema,
     initialValues,
     fields,
     onSubmit,

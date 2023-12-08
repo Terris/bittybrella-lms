@@ -38,12 +38,14 @@ export default defineSchema({
     title: v.string(),
     content: v.string(),
     order: v.number(),
-    assessmentId: v.optional(v.id("assessment")),
+    assessmentId: v.optional(v.id("assessments")),
   })
     .index("by_moduleId", ["moduleId"])
-    .index("by_order", ["order"]),
+    .index("by_order", ["order"])
+    .index("by_assessmentId", ["assessmentId"]),
   assessments: defineTable({
     title: v.string(),
+    description: v.string(),
     questions: v.array(
       v.object({
         question: v.string(),

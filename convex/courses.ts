@@ -14,7 +14,7 @@ export const all = query({
   args: {},
   handler: async (ctx) => {
     await validateIdentity(ctx, { requireAdminRole: true });
-    return await ctx.db.query("courses").order("desc").take(100);
+    return await ctx.db.query("courses").collect();
   },
 });
 

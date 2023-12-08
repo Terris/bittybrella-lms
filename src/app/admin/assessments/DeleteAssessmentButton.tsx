@@ -18,8 +18,8 @@ import {
 } from "@/lib/ui";
 import { Trash2 } from "lucide-react";
 
-export function DeleteCourseButton({ id }: { id: Id<"courses"> }) {
-  const deleteModuleSection = useMutation(api.courses.deleteById);
+export function DeleteAssessmentButton({ id }: { id: Id<"assessments"> }) {
+  const deleteAssessment = useMutation(api.assessments.deleteById);
 
   return (
     <AlertDialog>
@@ -31,14 +31,14 @@ export function DeleteCourseButton({ id }: { id: Id<"courses"> }) {
             </Button>
           </AlertDialogTrigger>
         </TooltipTrigger>
-        <TooltipContent>Delete course</TooltipContent>
+        <TooltipContent>Delete assessment</TooltipContent>
       </Tooltip>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action will permanently delete this module and remove it from
-            all courses that use it.
+            This action will permanently delete this assessment and remove it
+            from all courses and modules that use it.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -46,7 +46,7 @@ export function DeleteCourseButton({ id }: { id: Id<"courses"> }) {
           <AlertDialogAction asChild>
             <Button
               variant="destructive"
-              onClick={() => deleteModuleSection({ id })}
+              onClick={() => deleteAssessment({ id })}
             >
               Yes, I&lsquo;m sure.
             </Button>

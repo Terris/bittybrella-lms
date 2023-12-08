@@ -1,9 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Check, X } from "lucide-react";
 import { useQuery } from "convex/react";
-import { QuickEditCourseForm } from "./QuickEditCourseForm";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { api } from "../../../../convex/_generated/api";
+import { QuickEditAssessmentForm } from "./QuickEditAssessmentForm";
+import { DeleteAssessmentButton } from "./DeleteAssessmentButton";
 import {
   Text,
   CopyToClipboardButton,
@@ -13,22 +13,20 @@ import {
   TextLink,
 } from "@/lib/ui";
 import { AdminTable } from "../AdminTable";
-import { DeleteCourseButton } from "./DeleteCourseButton";
 
-interface CourseRow {
+interface AssessmentRow {
   _id: string;
   title: string;
   description: string;
-  isPublished: boolean;
 }
 
-const columns: ColumnDef<CourseRow>[] = [
+const columns: ColumnDef<AssessmentRow>[] = [
   {
     accessorKey: "title",
     header: "Title",
     cell: ({ row }) => {
       return (
-        <TextLink href={`/admin/courses/${row.original._id}`}>
+        <TextLink href={`/admin/assessments/${row.original._id}`}>
           {row.original.title}
         </TextLink>
       );
@@ -37,27 +35,6 @@ const columns: ColumnDef<CourseRow>[] = [
   {
     accessorKey: "description",
     header: "Description",
-  },
-  {
-    accessorKey: "isPublished",
-    header: "Published?",
-    cell: ({ row }) => {
-      const isPublished: boolean = row.getValue("isPublished");
-      return (
-        <Tooltip>
-          <TooltipTrigger>
-            {isPublished ? (
-              <Check className="h-4 w-4 text-primary" />
-            ) : (
-              <X className="h-4 w-4 text-destructive" />
-            )}
-          </TooltipTrigger>
-          <TooltipContent>
-            {isPublished ? "Published" : "Not published"}
-          </TooltipContent>
-        </Tooltip>
-      );
-    },
   },
   {
     accessorKey: "_id",
@@ -82,20 +59,22 @@ const columns: ColumnDef<CourseRow>[] = [
     id: "edit",
     header: "Quick Edit",
     cell: ({ row }) => (
-      <QuickEditCourseForm courseId={row.original._id as Id<"courses">} />
+      <QuickEditAssessmentForm
+        assessmentId={row.original._id as Id<"assessments">}
+      />
     ),
   },
   {
     id: "delete",
     header: "Delete",
     cell: ({ row }) => (
-      <DeleteCourseButton id={row.original._id as Id<"courses">} />
+      <DeleteAssessmentButton id={row.original._id as Id<"assessments">} />
     ),
   },
 ];
 
-export const CoursesTable = () => {
-  const coursesData = useQuery(api.courses.all);
-  if (!coursesData) return null;
-  return <AdminTable columns={columns} data={coursesData} />;
+export const AssessmentsTable = () => {
+  const assessments = useQuery(api.assessments.all);
+  if (!assessments) return null;
+  return <AdminTable columns={columns} data={assessments} />;
 };
