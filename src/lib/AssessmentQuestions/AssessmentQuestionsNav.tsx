@@ -17,7 +17,7 @@ import {
   SortableListItem,
 } from "@/lib/providers/SortableListProvider";
 import { cn } from "@/lib/utils";
-import { useAssessment } from "./providers/AssessmentProvider";
+import { useAssessment } from "../Assessments/providers/AssessmentProvider";
 import { Plus } from "lucide-react";
 
 export function AssessmentQuestionsNav() {

@@ -9,7 +9,7 @@ import {
   AssessmentProvider,
   useAssessment,
 } from "@/lib/Assessments/providers/AssessmentProvider";
-import { AssessmentQuestionsNav } from "@/lib/Assessments/AssessmentQuestionsNav";
+import { AssessmentQuestionsNav } from "@/lib/AssessmentQuestions/AssessmentQuestionsNav";
 
 interface AdminModulePageProps {
   params: { id: string };
