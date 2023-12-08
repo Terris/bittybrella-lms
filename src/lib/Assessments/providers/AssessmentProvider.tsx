@@ -1,9 +1,9 @@
 "use client";
 
 import { createContext, ReactNode, useContext, useState } from "react";
-import { useMutation, useQuery } from "convex/react";
-import { Doc, Id } from "../../../convex/_generated/dataModel";
-import { api } from "../../../convex/_generated/api";
+import { Doc, Id } from "../../../../convex/_generated/dataModel";
+import { useAssessmentLoader } from "../hooks/useAssessmentLoader";
+import { useCreateAssessmentQuestion } from "../hooks/useCreateAssessmentQuestion";
 
 export interface Assessment extends Doc<"assessments"> {
   questions: Doc<"assessmentQuestions">[];
@@ -39,25 +39,19 @@ export const AssessmentProvider = ({
   children,
   assessmentId,
 }: AssessmentProviderProps) => {
-  // Assessment
-  const assessment = useQuery(api.assessments.findById, { id: assessmentId });
-  const isLoading = !assessment;
-  const error = !isLoading && !assessment ? "Error loading assessment" : null;
+  // Loader: Assessment
+  const { assessment, isLoading, error } = useAssessmentLoader({
+    id: assessmentId,
+  });
 
-  // Selected question
+  // State: Selected question
   const [selectedQuestionId, setSelectedQuestionId] =
     useState<Id<"assessmentQuestions"> | null>(null);
 
-  // Create a blank assessment question
-  const createAssessmentQuestionMutation = useMutation(
-    api.assessmentQuestions.create
-  );
-  const createBlankAssessmentQuestion = () =>
-    createAssessmentQuestionMutation({
-      assessmentId,
-      question: "Blank question",
-      options: [],
-    });
+  // Mutation: Create a blank assessment question
+  const { createBlankAssessmentQuestion } = useCreateAssessmentQuestion({
+    assessmentId,
+  });
 
   return (
     <AssessmentContext.Provider

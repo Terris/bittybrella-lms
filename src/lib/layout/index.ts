@@ -3,4 +3,4 @@ export * from "./Main";
 export * from "./Masthead";
 export * from "./PageContent";
 export * from "./PageHeader";
-export * from "../authorization/PrivatePage";
+export * from "../Authorization/PrivatePage";

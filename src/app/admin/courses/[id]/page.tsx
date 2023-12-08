@@ -6,10 +6,10 @@ import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
 import { FlexRow, Text } from "@/lib/ui";
 import { useEffect, useState } from "react";
-import { CourseModulesNav } from "../../../../lib/courses/CourseModulesNav";
-import { EditModuleSectionForm } from "../../../../lib/modules/EditModuleSectionForm";
-import { QuickEditCourseForm } from "../../../../lib/courses/QuickEditCourseForm";
-import { QuickEditModuleForm } from "../../../../lib/modules/QuickEditModuleForm";
+import { CourseModulesNav } from "@/lib/Courses/CourseModulesNav";
+import { EditModuleSectionForm } from "@/lib/Modules/EditModuleSectionForm";
+import { QuickEditCourseForm } from "@/lib/Courses/QuickEditCourseForm";
+import { QuickEditModuleForm } from "@/lib/Modules/QuickEditModuleForm";
 
 interface AdminCoursePageProps {
   params: { id: string };

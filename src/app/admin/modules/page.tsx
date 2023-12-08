@@ -1,8 +1,8 @@
 "use client";
 
 import { PageContent, PageHeader } from "@/lib/layout";
-import { CreateModuleForm } from "../../../lib/modules/CreateModuleForm";
-import { ModulesTable } from "../../../lib/modules/ModulesTable";
+import { CreateModuleForm } from "@/lib/Modules/CreateModuleForm";
+import { ModulesTable } from "@/lib/Modules/ModulesTable";
 import { Text } from "@/lib/ui";
 
 export default function AdminModulesPage() {

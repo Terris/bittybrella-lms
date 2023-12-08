@@ -4,12 +4,12 @@ import React from "react";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
 import { FlexRow, Text } from "@/lib/ui";
-import { QuickEditAssessmentForm } from "../../../../lib/assessments/QuickEditAssessmentForm";
+import { QuickEditAssessmentForm } from "@/lib/Assessments/QuickEditAssessmentForm";
 import {
   AssessmentProvider,
   useAssessment,
-} from "../../../../lib/assessments/AssessmentProvider";
-import { AssessmentQuestionsNav } from "../../../../lib/assessments/AssessmentQuestionsNav";
+} from "@/lib/Assessments/providers/AssessmentProvider";
+import { AssessmentQuestionsNav } from "@/lib/Assessments/AssessmentQuestionsNav";
 
 interface AdminModulePageProps {
   params: { id: string };
