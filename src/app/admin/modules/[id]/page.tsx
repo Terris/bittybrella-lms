@@ -6,9 +6,9 @@ import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
 import { FlexRow, Text } from "@/lib/ui";
-import { EditModuleSectionForm } from "./EditModuleSectionForm";
-import { ModuleSectionsNav } from "./ModuleSectionsNav";
-import { QuickEditModuleForm } from "../QuickEditModuleForm";
+import { EditModuleSectionForm } from "../../../../lib/modules/EditModuleSectionForm";
+import { ModuleSectionsNav } from "../../../../lib/modules/ModuleSectionsNav";
+import { QuickEditModuleForm } from "../../../../lib/modules/QuickEditModuleForm";
 
 interface AdminModulePageProps {
   params: { id: string };

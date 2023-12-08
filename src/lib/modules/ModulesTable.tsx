@@ -1,8 +1,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { useQuery } from "convex/react";
 import { QuickEditModuleForm } from "./QuickEditModuleForm";
-import { Id } from "../../../../convex/_generated/dataModel";
-import { api } from "../../../../convex/_generated/api";
+import { Id } from "../../../convex/_generated/dataModel";
+import { api } from "../../../convex/_generated/api";
 import {
   Text,
   CopyToClipboardButton,
@@ -11,7 +11,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/lib/ui";
-import { AdminTable } from "../AdminTable";
+import { AdminTable } from "../../app/admin/AdminTable";
 import Link from "next/link";
 import { Check, X } from "lucide-react";
 import { DeleteModuleButton } from "./DeleteModuleButton";

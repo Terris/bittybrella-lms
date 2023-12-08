@@ -2,8 +2,8 @@
 
 import { createContext, ReactNode, useContext, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
-import { Doc, Id } from "../../../../../convex/_generated/dataModel";
-import { api } from "../../../../../convex/_generated/api";
+import { Doc, Id } from "../../../convex/_generated/dataModel";
+import { api } from "../../../convex/_generated/api";
 
 export interface Assessment extends Doc<"assessments"> {
   questions: Doc<"assessmentQuestions">[];

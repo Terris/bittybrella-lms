@@ -2,14 +2,19 @@
 
 import * as Yup from "yup";
 import { useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import { AdminQuickForm, AdminFormConfig } from "../AdminQuickForm";
+import { api } from "../../../convex/_generated/api";
+import {
+  AdminFieldtype,
+  AdminQuickForm,
+  AdminFormConfig,
+} from "../../app/admin/AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
 
 // Define the fields
-export interface Assessment {
+export interface Course {
   title: string;
   description: string;
+  isPublished: boolean;
 }
 
 // Define the validation schema
@@ -20,29 +25,36 @@ const FormSchema = Yup.object().shape({
   description: Yup.string()
     .max(50, "Description must be less than 50 characters")
     .required("Description is required"),
+  isPublished: Yup.boolean().optional(),
 });
 
 // Configure the fields for diplay
 const fields = [
   { name: "title", label: "Title", initialValue: "" },
   { name: "description", label: "Description", initialValue: "" },
+  {
+    name: "isPublished",
+    label: "Published?",
+    fieldtype: "switch" as AdminFieldtype,
+    initialValue: false,
+  },
 ];
 
 // Set toast messages for success and error
-const successMessage = "Saved new assessment.";
-const errorMessage = "Something went wrong trying to create a new assessment.";
+const successMessage = "Saved new course.";
+const errorMessage = "Something went wrong trying to create a new course.";
 
 // Set the form title
-const formTitle = "Create new assessment";
+const formTitle = "Create new course";
 
-export const QuickCreateAssessmentForm = () => {
+export const QuickCreateCourseForm = () => {
   // Define the mutation
-  const createAssessment = useMutation(api.assessments.create);
+  const createCourse = useMutation(api.courses.create);
 
   const { toast } = useToast();
 
-  async function onSubmit(values: Assessment) {
-    const result = await createAssessment(values);
+  async function onSubmit(values: Course) {
+    const result = await createCourse(values);
 
     if (result) {
       toast({
@@ -62,16 +74,15 @@ export const QuickCreateAssessmentForm = () => {
   const initialValues = {
     title: "",
     description: "",
+    isPublished: false,
   };
 
-  const formConfig: AdminFormConfig<Assessment> = {
+  const config: AdminFormConfig<Course> = {
     validationSchema: FormSchema,
     initialValues,
     fields,
     onSubmit,
   };
 
-  return (
-    <AdminQuickForm<Assessment> config={formConfig} formTitle={formTitle} />
-  );
+  return <AdminQuickForm<Course> config={config} formTitle={formTitle} />;
 };

@@ -1,6 +1,6 @@
 import { useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "../../../convex/_generated/api";
+import { Id } from "../../../convex/_generated/dataModel";
 import {
   AlertDialogFooter,
   AlertDialogHeader,
@@ -18,8 +18,8 @@ import {
 } from "@/lib/ui";
 import { Trash2 } from "lucide-react";
 
-export function DeleteAssessmentButton({ id }: { id: Id<"assessments"> }) {
-  const deleteAssessment = useMutation(api.assessments.deleteById);
+export function DeleteModuleButton({ id }: { id: Id<"modules"> }) {
+  const deleteModuleSection = useMutation(api.modules.deleteById);
 
   return (
     <AlertDialog>
@@ -31,14 +31,14 @@ export function DeleteAssessmentButton({ id }: { id: Id<"assessments"> }) {
             </Button>
           </AlertDialogTrigger>
         </TooltipTrigger>
-        <TooltipContent>Delete assessment</TooltipContent>
+        <TooltipContent>Delete module</TooltipContent>
       </Tooltip>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action will permanently delete this assessment and remove it
-            from all courses and modules that use it.
+            This action cannot be undone. This will permanently delete this
+            module in all courses that use it.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -46,7 +46,7 @@ export function DeleteAssessmentButton({ id }: { id: Id<"assessments"> }) {
           <AlertDialogAction asChild>
             <Button
               variant="destructive"
-              onClick={() => deleteAssessment({ id })}
+              onClick={() => deleteModuleSection({ id })}
             >
               Yes, I&lsquo;m sure.
             </Button>
