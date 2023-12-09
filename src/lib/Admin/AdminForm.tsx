@@ -29,12 +29,12 @@ export interface AdminFormProps<CustomFormValues> {
   onSuccess?: () => void;
 }
 
-export const AdminQuickForm = <CustomFormValues extends FormikValues>({
+export function AdminForm<CustomFormValues extends FormikValues>({
   formTitle,
   formDescription,
   config,
   onSuccess,
-}: AdminFormProps<CustomFormValues>) => {
+}: AdminFormProps<CustomFormValues>) {
   const [serverError, setServerError] = useState<string | null>(null);
 
   const {
@@ -49,6 +49,7 @@ export const AdminQuickForm = <CustomFormValues extends FormikValues>({
     setServerError(null);
     try {
       await onSubmit(values);
+      onSuccess?.();
     } catch (error: any) {
       setServerError(error.message);
     }
@@ -91,7 +92,7 @@ export const AdminQuickForm = <CustomFormValues extends FormikValues>({
       </Formik>
     </>
   );
-};
+}
 
 export type AdminFieldtype =
   | "text"

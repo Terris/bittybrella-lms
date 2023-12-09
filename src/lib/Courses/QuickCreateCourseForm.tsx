@@ -3,11 +3,7 @@
 import * as Yup from "yup";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import {
-  AdminFieldtype,
-  AdminQuickForm,
-  AdminFormConfig,
-} from "../Admin/AdminQuickForm";
+import { AdminFieldtype, AdminFormConfig, AdminDialogForm } from "../Admin";
 import { useToast } from "@/lib/hooks/useToast";
 
 // Define the fields
@@ -84,5 +80,5 @@ export const QuickCreateCourseForm = () => {
     onSubmit,
   };
 
-  return <AdminQuickForm<Course> config={config} formTitle={formTitle} />;
+  return <AdminDialogForm<Course> config={config} formTitle={formTitle} />;
 };

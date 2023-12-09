@@ -1,16 +1,12 @@
 "use client";
 
 import * as Yup from "yup";
+import { Pencil } from "lucide-react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import {
-  AdminQuickForm,
-  AdminFormConfig,
-  AdminFieldtype,
-} from "../Admin/AdminQuickForm";
-import { useToast } from "@/lib/hooks/useToast";
 import { Id } from "../../../convex/_generated/dataModel";
-import { Pencil } from "lucide-react";
+import { useToast } from "@/lib/hooks/useToast";
+import { AdminFormConfig, AdminFieldtype, AdminDialogForm } from "@/lib/Admin";
 import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@/lib/ui";
 
 // Define the fields that can be edited
@@ -96,7 +92,7 @@ export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
   };
 
   return (
-    <AdminQuickForm<Module>
+    <AdminDialogForm<Module>
       config={moduleFormConfig}
       formTitle={formTitle}
       renderTrigger={

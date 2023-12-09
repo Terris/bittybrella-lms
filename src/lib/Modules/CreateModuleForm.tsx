@@ -3,12 +3,8 @@
 import * as Yup from "yup";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import {
-  AdminQuickForm,
-  AdminFormConfig,
-  AdminFieldtype,
-} from "../Admin/AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
+import { AdminFormConfig, AdminFieldtype, AdminDialogForm } from "@/lib/Admin";
 
 // Define the fields
 export interface Module {
@@ -39,13 +35,6 @@ const fields = [
   },
 ];
 
-// Set toast messages for success and error
-const successMessage = "Saved new module.";
-const errorMessage = "Error saving module. Please try again.";
-
-// Set the form title
-const formTitle = "Create new module";
-
 export const CreateModuleForm = () => {
   // Define the mutation
   const createModule = useMutation(api.modules.create);
@@ -58,13 +47,13 @@ export const CreateModuleForm = () => {
     if (result) {
       toast({
         title: "Success!",
-        description: successMessage,
+        description: "Saved new module.",
       });
     } else {
       toast({
         variant: "destructive",
         title: "Error!",
-        description: errorMessage,
+        description: "Error saving module. Please try again.",
       });
     }
   }
@@ -83,5 +72,7 @@ export const CreateModuleForm = () => {
     onSubmit,
   };
 
-  return <AdminQuickForm<Module> config={config} formTitle={formTitle} />;
+  return (
+    <AdminDialogForm<Module> config={config} formTitle="Create new module" />
+  );
 };

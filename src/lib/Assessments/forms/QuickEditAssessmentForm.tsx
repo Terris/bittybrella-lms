@@ -2,11 +2,11 @@
 
 import * as Yup from "yup";
 import { useMutation, useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import { AdminQuickForm, AdminFormConfig } from "../../Admin/AdminQuickForm";
-import { useToast } from "@/lib/hooks/useToast";
-import { Id } from "../../../../convex/_generated/dataModel";
 import { Pencil } from "lucide-react";
+import { api } from "../../../../convex/_generated/api";
+import { Id } from "../../../../convex/_generated/dataModel";
+import { AdminFormConfig, AdminDialogForm } from "@/lib/Admin";
+import { useToast } from "@/lib/hooks/useToast";
 import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@/lib/ui";
 import { AssessmentFormFields } from "../types";
 
@@ -80,7 +80,7 @@ export const QuickEditAssessmentForm = ({
   };
 
   return (
-    <AdminQuickForm<AssessmentFormFields>
+    <AdminDialogForm<AssessmentFormFields>
       config={formConfig}
       formTitle={formTitle}
       renderTrigger={
