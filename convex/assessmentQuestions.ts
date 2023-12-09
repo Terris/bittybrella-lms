@@ -41,12 +41,13 @@ export const create = mutation({
       "assessmentId",
       assessmentId
     );
-    return await ctx.db.insert("assessmentQuestions", {
+    const newAssessmentQuestionId = await ctx.db.insert("assessmentQuestions", {
       assessmentId,
       question: question ?? "Blank question",
       options,
       order: existingAssessmentQuestions.length + 1,
     });
+    return await ctx.db.get(newAssessmentQuestionId);
   },
 });
 
@@ -90,5 +91,6 @@ export const updateOrder = mutation({
         })
       )
     );
+    return true;
   },
 });

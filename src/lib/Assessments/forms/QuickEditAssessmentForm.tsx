@@ -45,7 +45,6 @@ export const QuickEditAssessmentForm = ({
   async function onSubmit(values: AssessmentFormFields) {
     if (!assessment) return;
     const result = await updateAssessment({ id: assessmentId, ...values });
-
     if (result) {
       toast({
         title: "Success!",

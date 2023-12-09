@@ -115,5 +115,6 @@ export const deleteById = mutation({
 
     // Finally, delete course
     await ctx.db.delete(id);
+    return true;
   },
 });

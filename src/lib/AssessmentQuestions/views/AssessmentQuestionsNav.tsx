@@ -22,8 +22,10 @@ import {
   useCreateAssessmentQuestion,
   useUpdateAssessmentQuestionsOrder,
 } from "../hooks";
+import { useToast } from "@/lib/hooks";
 
 export function AssessmentQuestionsNav() {
+  const { toast } = useToast();
   const {
     isLoading,
     assessmentId,
@@ -48,10 +50,23 @@ export function AssessmentQuestionsNav() {
     assessmentId,
   });
 
-  function handleOnUpdate(updatedItems: string[]) {
-    updateAssessmentQuestionsOrder({
+  async function handleOnUpdate(updatedItems: string[]) {
+    const res = await updateAssessmentQuestionsOrder({
       idsInOrder: updatedItems as Id<"assessmentQuestions">[],
     });
+    if (res) {
+      toast({
+        title: "Success!",
+        description: "Updated assessment questions order.",
+      });
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description:
+          "Something went wrong trying to update assessment questions order.",
+      });
+    }
   }
 
   // TODO: Add a visual loading state and handle error state
