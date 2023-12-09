@@ -66,13 +66,13 @@ export function AssessmentQuestionsNav() {
           <FlexColumn className="gap-2">
             {assessmentQuestions.map((question) => (
               <SortableListItem key={question._id} id={question._id}>
-                <FlexColumn className="flex-1 truncate">
+                <FlexColumn className="w-full truncate">
                   <Button
                     key={question._id}
                     variant="ghost"
                     onClick={() => setSelectedQuestionId(question?._id)}
                     className={cn(
-                      "flex-1 truncate transition-all",
+                      "w-full truncate transition-all",
                       selectedQuestionId === question?._id && "font-bold pl-5"
                     )}
                   >

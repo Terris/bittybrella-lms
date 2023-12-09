@@ -9,15 +9,13 @@ import {
   DropdownMenuItem,
   DropdownMenuPortal,
   DropdownMenuTrigger,
+  FlexColumn,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
   Text,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
 } from "@/lib/ui";
 import {
   SortableList,
@@ -110,7 +108,7 @@ export function ModuleSectionsNav({
 
       <div className="hidden lg:block">
         <SortableList items={sortItems} onUpdate={handleOnUpdate}>
-          <div className="flex flex-col gap-2">
+          <FlexColumn className="gap-2">
             {sections.map((section) => (
               <SortableListItem key={section._id} id={section._id}>
                 <Button
@@ -119,7 +117,7 @@ export function ModuleSectionsNav({
                   size="sm"
                   onClick={() => setSelectedModuleSectionId(section?._id)}
                   className={cn(
-                    "flex-1 truncate pl-4 transition-all",
+                    "w-full truncate pl-4 transition-all",
                     selectedModuleSectionId === section?._id && "font-bold pl-5"
                   )}
                 >
@@ -137,7 +135,7 @@ export function ModuleSectionsNav({
             >
               <Plus className="h-3 w-3 mr-1" /> Add new module section
             </Button>
-          </div>
+          </FlexColumn>
         </SortableList>
       </div>
       <div className="block lg:hidden pb-6">

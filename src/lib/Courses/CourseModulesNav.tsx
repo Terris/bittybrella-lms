@@ -7,6 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  FlexColumn,
   FlexRow,
   Select,
   SelectContent,
@@ -106,13 +107,13 @@ export function CourseModulesNav({
                 key={module.courseModuleId}
                 id={module.courseModuleId}
               >
-                <div className="flex flex-col flex-1 truncate">
+                <FlexColumn className="w-full truncate">
                   <Button
                     key={module._id}
                     variant="ghost"
                     onClick={() => setSelectedModuleId(module?._id)}
                     className={cn(
-                      "flex-1 truncate mb-2 transition-all",
+                      "w-full truncate mb-2 transition-all",
                       selectedModuleId === module?._id && "font-bold pl-5"
                     )}
                   >
@@ -129,7 +130,7 @@ export function CourseModulesNav({
                       hideHeader
                     />
                   )}
-                </div>
+                </FlexColumn>
               </SortableListItem>
             ))}
           </div>

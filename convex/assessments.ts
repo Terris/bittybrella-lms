@@ -19,12 +19,13 @@ export const findById = query({
   handler: async (ctx, { id }) => {
     await validateIdentity(ctx, { requireAdminRole: true });
     const assessment = await ctx.db.get(id);
-    if (!assessment) throw new Error("Assessment does not exist");
+    // if (!assessment) throw new Error("Assessment does not exist");
 
-    const questions = removeEmptyFromArray(
-      await getManyFrom(ctx.db, "assessmentQuestions", "assessmentId", id)
-    );
-    return { ...assessment, questions };
+    // const questions = removeEmptyFromArray(
+    //   await getManyFrom(ctx.db, "assessmentQuestions", "assessmentId", id)
+    // );
+    // return { ...assessment, questions };
+    return assessment;
   },
 });
 

@@ -6,7 +6,7 @@ interface FlexRowProps {
 }
 export function FlexColumn({ children, className }: FlexRowProps) {
   return (
-    <div className={cn("flex flex-col items-start justify-start", className)}>
+    <div className={cn("flex flex-col justify-start", className)}>
       {children}
     </div>
   );
