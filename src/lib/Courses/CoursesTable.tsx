@@ -1,7 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Check, X } from "lucide-react";
 import { useQuery } from "convex/react";
-import { QuickEditCourseForm } from "./QuickEditCourseForm";
 import { Id } from "../../../convex/_generated/dataModel";
 import { api } from "../../../convex/_generated/api";
 import {
@@ -12,7 +11,8 @@ import {
   TooltipContent,
   TextLink,
 } from "@/lib/ui";
-import { AdminTable } from "../Admin/AdminTable";
+import { AdminTable } from "@/lib/Admin";
+import { QuickEditCourseForm } from "./QuickEditCourseForm";
 import { DeleteCourseButton } from "./DeleteCourseButton";
 
 interface CourseRow {
