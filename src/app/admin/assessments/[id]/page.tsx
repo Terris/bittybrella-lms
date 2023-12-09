@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
 import { FlexRow, Text } from "@/lib/ui";
 import {
   QuickEditAssessmentForm,
   AssessmentProvider,
   useAssessmentContext,
+  type AssessmentId,
 } from "@/lib/Assessments";
 import { AssessmentQuestionsNav } from "@/lib/AssessmentQuestions";
 
@@ -17,7 +17,7 @@ interface AdminModulePageProps {
 
 export default function AdminAssessmentPage({ params }: AdminModulePageProps) {
   return (
-    <AssessmentProvider assessmentId={params.id as Id<"assessments">}>
+    <AssessmentProvider assessmentId={params.id as AssessmentId}>
       <AdminAssessmentPageContent />
     </AssessmentProvider>
   );
