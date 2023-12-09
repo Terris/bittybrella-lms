@@ -7,7 +7,7 @@ import {
   AdminQuickForm,
   AdminFormConfig,
   AdminFieldtype,
-} from "../../app/admin/AdminQuickForm";
+} from "../Admin/AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
 
 // Define the fields

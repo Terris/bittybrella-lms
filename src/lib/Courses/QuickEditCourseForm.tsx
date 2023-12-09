@@ -7,7 +7,7 @@ import {
   AdminFieldtype,
   AdminQuickForm,
   AdminFormConfig,
-} from "../../app/admin/AdminQuickForm";
+} from "../Admin/AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
 import { Id } from "../../../convex/_generated/dataModel";
 import { Pencil } from "lucide-react";

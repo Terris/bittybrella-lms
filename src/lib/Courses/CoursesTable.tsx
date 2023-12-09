@@ -12,7 +12,7 @@ import {
   TooltipContent,
   TextLink,
 } from "@/lib/ui";
-import { AdminTable } from "../../app/admin/AdminTable";
+import { AdminTable } from "../Admin/AdminTable";
 import { DeleteCourseButton } from "./DeleteCourseButton";
 
 interface CourseRow {
