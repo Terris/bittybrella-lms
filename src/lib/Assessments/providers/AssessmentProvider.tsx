@@ -5,15 +5,11 @@ import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { useAssessment } from "../hooks/useAssessment";
 import { useCreateAssessmentQuestion } from "../../AssessmentQuestions/hooks/useCreateAssessmentQuestion";
 
-export interface Assessment extends Doc<"assessments"> {
-  questions: Doc<"assessmentQuestions">[];
-}
-
 interface AssessmentContextProps {
   isLoading: boolean;
   error: string | null;
   assessmentId: Id<"assessments">;
-  assessment?: Assessment | null;
+  assessment?: Doc<"assessments"> | null;
   selectedQuestionId: Id<"assessmentQuestions"> | null;
   setSelectedQuestionId: (id: Id<"assessmentQuestions"> | null) => void;
   createBlankAssessmentQuestion: () => void;
