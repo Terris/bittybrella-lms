@@ -4,11 +4,7 @@ import * as Yup from "yup";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
-import {
-  AdminQuickForm,
-  AdminFormConfig,
-  AdminFieldtype,
-} from "../Admin/AdminQuickForm";
+import { AdminDialogForm, AdminFormConfig, AdminFieldtype } from "@/lib/Admin";
 import { useToast } from "@/lib/hooks/useToast";
 import { Button } from "@/lib/ui";
 
@@ -21,13 +17,6 @@ export interface CourseModule {
 const FormSchema = Yup.object().shape({
   moduleIds: Yup.array().of(Yup.string()),
 });
-
-// Set toast messages for success and error
-const successMessage = "Updated course modules.";
-const errorMessage = "Error saving course modules. Please try again.";
-
-// Set the form title
-const formTitle = "Edit Course Modules";
 
 export const QuickEditCourseModuleForm = ({
   courseId,
@@ -67,13 +56,13 @@ export const QuickEditCourseModuleForm = ({
     if (result) {
       toast({
         title: "Success!",
-        description: successMessage,
+        description: "Updated course modules.",
       });
     } else {
       toast({
         variant: "destructive",
         title: "Error!",
-        description: errorMessage,
+        description: "Error saving course modules. Please try again.",
       });
     }
   }
@@ -93,9 +82,9 @@ export const QuickEditCourseModuleForm = ({
   if (!allModules || !courseModules) return null;
 
   return (
-    <AdminQuickForm<CourseModule>
+    <AdminDialogForm<CourseModule>
       config={config}
-      formTitle={formTitle}
+      formTitle="Edit Course Modules"
       renderTrigger={
         <Button variant="ghost" size="sm">
           Edit course modules

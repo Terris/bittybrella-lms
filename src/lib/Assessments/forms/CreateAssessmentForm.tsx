@@ -1,10 +1,10 @@
 "use client";
 
 import * as Yup from "yup";
-import { AdminQuickForm, AdminFormConfig } from "../../Admin/AdminQuickForm";
+import { AdminFormConfig, AdminDialogForm } from "@/lib/Admin";
 import { useToast } from "@/lib/hooks/useToast";
-import { type AssessmentFormFields } from "../types";
 import { useCreateAssessment } from "../hooks/useCreateAssessment";
+import { type AssessmentFormFields } from "../types";
 
 const FormSchema = Yup.object().shape({
   title: Yup.string()
@@ -55,7 +55,7 @@ export const QuickCreateAssessmentForm = () => {
   };
 
   return (
-    <AdminQuickForm<AssessmentFormFields>
+    <AdminDialogForm<AssessmentFormFields>
       config={formConfig}
       formTitle={"Create new assessment"}
     />
