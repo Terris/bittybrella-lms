@@ -1,4 +1,10 @@
+"use client";
+
+import { useState } from "react";
+import { FormikValues } from "formik";
 import {
+  AdminForm,
+  AdminFormProps,
   Button,
   Dialog,
   DialogContent,
@@ -8,12 +14,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/lib/ui";
-import { FormikValues } from "formik";
-import { useState } from "react";
-import { AdminForm, AdminFormProps } from "./AdminForm";
 
 interface AdminDialogFormProps<CustomFormValues>
   extends AdminFormProps<CustomFormValues> {
+  formTitle: string;
+  formDescription?: string;
   onCloseForm?: () => void;
 }
 
@@ -27,8 +32,8 @@ export function AdminDialogForm<CustomFormValues extends FormikValues>({
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   function handleOnSetOpen(open: boolean) {
-    setIsOpen(open);
     if (!open) onCloseForm?.();
+    setIsOpen(open);
   }
 
   return (
@@ -52,9 +57,7 @@ export function AdminDialogForm<CustomFormValues extends FormikValues>({
           </DialogHeader>
           <AdminForm<CustomFormValues>
             config={config}
-            formTitle={formTitle}
-            formDescription={formDescription}
-            onSuccess={() => setIsOpen(false)}
+            onSuccess={() => handleOnSetOpen(false)}
           />
         </DialogContent>
       </DialogPortal>

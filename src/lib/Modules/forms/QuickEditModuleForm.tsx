@@ -7,8 +7,11 @@ import {
   AdminFormConfig,
   AdminDialogForm,
   type AdminFieldtype,
-} from "@/lib/Admin";
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@/lib/ui";
+  Button,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/lib/ui";
 import { useModule, useUpdateModule } from "../hooks";
 import type { ModuleFormFields, ModuleId } from "../types";
 

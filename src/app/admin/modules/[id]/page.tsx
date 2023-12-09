@@ -6,7 +6,7 @@ import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
 import { FlexRow, Text } from "@/lib/ui";
-import { EditModuleSectionForm } from "@/lib/ModuleSection/forms/EditModuleSectionForm";
+import { EditModuleSectionForm } from "@/lib/ModuleSections/forms/EditModuleSectionForm";
 import {
   type ModuleId,
   ModuleSectionsNav,

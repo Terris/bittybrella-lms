@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
-import { Doc, Id } from "../../../../convex/_generated/dataModel";
+import { MoreVertical } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 import { useDebounce } from "@/lib/hooks/useDebounce";
 import { useToast } from "@/lib/hooks/useToast";
@@ -23,12 +23,11 @@ import {
   DropdownMenuTrigger,
   FlexRow,
   Input,
-  Label,
 } from "@/lib/ui";
-import { MoreVertical } from "lucide-react";
+import type { ModuleSectionDoc, ModuleSectionId } from "../types";
 
 interface ModuleSectionProps {
-  id: Id<"moduleSections">;
+  id: ModuleSectionId;
 }
 
 export function EditModuleSectionForm({ id }: ModuleSectionProps) {
@@ -40,7 +39,7 @@ export function EditModuleSectionForm({ id }: ModuleSectionProps) {
   return <Form section={moduleSectionData} />;
 }
 
-const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
+const Form = ({ section }: { section: ModuleSectionDoc }) => {
   const { toast } = useToast();
   const updateModuleSection = useMutation(api.moduleSections.update);
   const [newSectionTitle, setNewSectionTitle] = useState<string>(section.title);
@@ -112,7 +111,7 @@ const Form = ({ section }: { section: Doc<"moduleSections"> }) => {
 function ModuleSectionSettingsMenu({
   moduleSectionId,
 }: {
-  moduleSectionId: Id<"moduleSections">;
+  moduleSectionId: ModuleSectionId;
 }) {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
 
@@ -134,8 +133,7 @@ function ModuleSectionSettingsMenu({
                 <AlertDialogHeader>
                   <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete
-                    this section.
+                    This will permanently delete this section.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

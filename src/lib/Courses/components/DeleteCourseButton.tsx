@@ -1,6 +1,6 @@
 import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import { Id } from "../../../convex/_generated/dataModel";
+import { Trash2 } from "lucide-react";
+import { api } from "../../../../convex/_generated/api";
 import {
   AlertDialogFooter,
   AlertDialogHeader,
@@ -16,9 +16,9 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/lib/ui";
-import { Trash2 } from "lucide-react";
+import { CourseId } from "../types";
 
-export function DeleteCourseButton({ id }: { id: Id<"courses"> }) {
+export function DeleteCourseButton({ id }: { id: CourseId }) {
   const deleteModuleSection = useMutation(api.courses.deleteById);
 
   return (

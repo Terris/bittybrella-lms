@@ -1,9 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Id } from "../../../../convex/_generated/dataModel";
-import { AdminTable } from "@/lib/Admin";
-import { QuickEditAssessmentForm } from "../forms/QuickEditAssessmentForm";
-import { DeleteAssessmentButton } from "../components/DeleteAssessmentButton";
 import {
+  AdminTable,
   Text,
   CopyToClipboardButton,
   Tooltip,
@@ -11,6 +9,8 @@ import {
   TooltipContent,
   TextLink,
 } from "@/lib/ui";
+import { QuickEditAssessmentForm } from "../forms/QuickEditAssessmentForm";
+import { DeleteAssessmentButton } from "../components/DeleteAssessmentButton";
 import { useAllAssessments } from "../hooks";
 
 interface AssessmentTableRow {

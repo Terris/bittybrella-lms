@@ -6,9 +6,9 @@ import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
 import { FlexRow, Text } from "@/lib/ui";
-import { CourseModulesNav } from "@/lib/Courses/CourseModulesNav";
-import { EditModuleSectionForm } from "@/lib/ModuleSection/forms/EditModuleSectionForm";
-import { QuickEditCourseForm } from "@/lib/Courses/QuickEditCourseForm";
+import { CourseModulesNav } from "@/lib/CourseModules/views/CourseModulesNav";
+import { EditModuleSectionForm } from "@/lib/ModuleSections/forms/EditModuleSectionForm";
+import { QuickEditCourseForm } from "@/lib/Courses/forms/QuickEditCourseForm";
 import { QuickEditModuleForm } from "@/lib/Modules";
 
 interface AdminCoursePageProps {
@@ -36,12 +36,16 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
     setSelectedModuleId(course?.modules?.[0]._id ?? null);
   }, [course?.modules, selectedModuleId]);
 
+  // reset selected module section when selected module changes
+  useEffect(() => {
+    setSelectedModuleSectionId(null);
+  }, [selectedModuleId]);
+
   // Select the first module section of the selected module when no module section is selected
   useEffect(() => {
-    if (!course || !selectedModuleId) return;
-
+    if (!course || !selectedModuleId || !!selectedModuleSectionId) return;
     setSelectedModuleSectionId(selectedModule?.sections?.[0]?._id ?? null);
-  }, [course, selectedModule, selectedModuleId]);
+  }, [course, selectedModule, selectedModuleId, selectedModuleSectionId]);
 
   if (!course) return null;
 

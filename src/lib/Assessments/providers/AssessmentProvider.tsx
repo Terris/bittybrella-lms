@@ -1,24 +1,25 @@
 "use client";
 
 import { createContext, ReactNode, useContext, useState } from "react";
-import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { useAssessment } from "../hooks/useAssessment";
 import { useCreateAssessmentQuestion } from "../../AssessmentQuestions/hooks/useCreateAssessmentQuestion";
+import type { AssessmentDoc, AssessmentId } from "../types";
+import { AssessmentQuestionId } from "@/lib/AssessmentQuestions";
 
 interface AssessmentContextProps {
   isLoading: boolean;
   error: string | null;
-  assessmentId: Id<"assessments">;
-  assessment?: Doc<"assessments"> | null;
-  selectedQuestionId: Id<"assessmentQuestions"> | null;
-  setSelectedQuestionId: (id: Id<"assessmentQuestions"> | null) => void;
+  assessmentId: AssessmentId;
+  assessment?: AssessmentDoc | null;
+  selectedQuestionId: AssessmentQuestionId | null;
+  setSelectedQuestionId: (id: AssessmentQuestionId | null) => void;
   createBlankAssessmentQuestion: () => void;
 }
 
 const initialProps = {
   isLoading: false,
   error: null,
-  assessmentId: null ?? ("" as Id<"assessments">),
+  assessmentId: null ?? ("" as AssessmentId),
   assessment: null,
   selectedQuestionId: null,
   setSelectedQuestionId: () => null,
@@ -30,7 +31,7 @@ export const AssessmentContext =
 
 interface AssessmentProviderProps {
   children: ReactNode;
-  assessmentId: Id<"assessments">;
+  assessmentId: AssessmentId;
 }
 
 export const AssessmentProvider = ({
@@ -44,7 +45,7 @@ export const AssessmentProvider = ({
 
   // Selected question state
   const [selectedQuestionId, setSelectedQuestionId] =
-    useState<Id<"assessmentQuestions"> | null>(null);
+    useState<AssessmentQuestionId | null>(null);
 
   // Mutation: Create a blank assessment question
   const { createBlankAssessmentQuestion } = useCreateAssessmentQuestion({

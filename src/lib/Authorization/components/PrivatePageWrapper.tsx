@@ -2,15 +2,18 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { LoadingScreen } from "../ui";
-import { useMe } from "../providers";
+import { LoadingScreen } from "@/lib/ui";
+import { useMe } from "@/lib/providers";
 
-interface PrivatePageProps {
+interface PrivatePageWrapperProps {
   children: React.ReactNode;
   authorizedRoles?: string[];
 }
 
-export function PrivatePage({ children, authorizedRoles }: PrivatePageProps) {
+export function PrivatePageWrapper({
+  children,
+  authorizedRoles,
+}: PrivatePageWrapperProps) {
   const router = useRouter();
   const { isAuthenticated, isLoading, me } = useMe();
 

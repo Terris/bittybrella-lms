@@ -1,3 +1,4 @@
+import { Plus } from "lucide-react";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import {
   Button,
@@ -16,15 +17,15 @@ import {
 } from "@/lib/providers/SortableListProvider";
 import { cn } from "@/lib/utils";
 import { useAssessmentContext } from "@/lib/Assessments";
-import { Plus } from "lucide-react";
 import {
   useAssessmentQuestions,
   useCreateAssessmentQuestion,
   useUpdateAssessmentQuestionsOrder,
-} from "..";
+} from "../hooks";
 
 export function AssessmentQuestionsNav() {
   const {
+    isLoading,
     assessmentId,
     assessment,
     selectedQuestionId,
@@ -53,8 +54,9 @@ export function AssessmentQuestionsNav() {
     });
   }
 
-  // TODO: Add a visual loading state
-  if (!assessment || !assessmentQuestions || !sortableListItems) return null;
+  // TODO: Add a visual loading state and handle error state
+  if (isLoading || !assessment || !assessmentQuestions || !sortableListItems)
+    return null;
 
   return (
     <>

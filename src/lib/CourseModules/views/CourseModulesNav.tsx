@@ -1,6 +1,8 @@
+import { useState } from "react";
+import { MoreVertical } from "lucide-react";
 import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import { Doc, Id } from "../../../convex/_generated/dataModel";
+import { api } from "../../../../convex/_generated/api";
+import { Id } from "../../../../convex/_generated/dataModel";
 import {
   Button,
   DropdownMenu,
@@ -20,16 +22,20 @@ import {
   SortableList,
   SortableListItem,
 } from "@/lib/providers/SortableListProvider";
-import { QuickEditCourseModuleForm } from "./QuickEditCourseModuleForm";
-import { MoreVertical } from "lucide-react";
-import { useState } from "react";
-import { ModuleSectionsNav } from "../Modules/views/ModuleSectionsNav";
 import { cn } from "@/lib/utils";
+import { type CourseId } from "@/lib/Courses";
+import { ModuleId, ModuleSectionsNav, type ModuleDoc } from "@/lib/Modules";
+import {
+  type ModuleSectionId,
+  type ModuleSectionDoc,
+} from "@/lib/ModuleSections";
+import { QuickEditCourseModuleForm } from "../forms/QuickEditCourseModuleForm";
+import { CourseModuleId } from "../types";
 
-export interface CourseModule extends Doc<"modules"> {
-  sections: Doc<"moduleSections">[];
+export interface CourseModule extends ModuleDoc {
+  sections: ModuleSectionDoc[];
   order: number;
-  courseModuleId: Id<"courseModules">;
+  courseModuleId: CourseModuleId;
 }
 
 export function CourseModulesNav({
@@ -40,12 +46,12 @@ export function CourseModulesNav({
   selectedModuleSectionId,
   setSelectedModuleSectionId,
 }: {
-  courseId: Id<"courses">;
+  courseId: CourseId;
   modules: CourseModule[];
-  selectedModuleId: Id<"modules"> | null;
-  setSelectedModuleId: (id: Id<"modules">) => void;
-  selectedModuleSectionId: Id<"moduleSections"> | null;
-  setSelectedModuleSectionId: (id: Id<"moduleSections">) => void;
+  selectedModuleId: ModuleId | null;
+  setSelectedModuleId: (id: ModuleId) => void;
+  selectedModuleSectionId: ModuleSectionId | null;
+  setSelectedModuleSectionId: (id: ModuleSectionId) => void;
 }) {
   const sortItems = modules.map((module) => module.courseModuleId);
 
@@ -76,7 +82,7 @@ export function CourseModulesNav({
 
   function handleOnUpdate(updatedItems: string[]) {
     updateCourseModulesOrder({
-      idsInOrder: updatedItems as Id<"courseModules">[],
+      idsInOrder: updatedItems as CourseModuleId[],
     });
   }
   const [menuIsOpen, setMenuIsOpen] = useState(false);
@@ -113,9 +119,10 @@ export function CourseModulesNav({
                     variant="ghost"
                     onClick={() => setSelectedModuleId(module?._id)}
                     className={cn(
-                      "w-full truncate mb-2 transition-all",
+                      "w-full truncate transition-all",
                       selectedModuleId === module?._id && "font-bold pl-5"
                     )}
+                    size="sm"
                   >
                     <div className="w-full text-left truncate">
                       {module.title ?? "Untitled section"}
@@ -123,12 +130,14 @@ export function CourseModulesNav({
                   </Button>
 
                   {selectedModuleId === module?._id && (
-                    <ModuleSectionsNav
-                      moduleId={selectedModuleId as Id<"modules">}
-                      selectedModuleSectionId={selectedModuleSectionId}
-                      setSelectedModuleSectionId={setSelectedModuleSectionId}
-                      hideHeader
-                    />
+                    <div className="pt-2">
+                      <ModuleSectionsNav
+                        moduleId={selectedModuleId as Id<"modules">}
+                        selectedModuleSectionId={selectedModuleSectionId}
+                        setSelectedModuleSectionId={setSelectedModuleSectionId}
+                        hideHeader
+                      />
+                    </div>
                   )}
                 </FlexColumn>
               </SortableListItem>

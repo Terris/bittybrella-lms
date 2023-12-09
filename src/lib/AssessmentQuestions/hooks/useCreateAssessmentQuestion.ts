@@ -1,11 +1,11 @@
 import { useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { AssessmentId } from "@/lib/Assessments";
 
 export function useCreateAssessmentQuestion({
   assessmentId,
 }: {
-  assessmentId: Id<"assessments">;
+  assessmentId: AssessmentId;
 }) {
   const createAssessmentQuestion = useMutation(api.assessmentQuestions.create);
 

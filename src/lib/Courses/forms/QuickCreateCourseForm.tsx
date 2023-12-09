@@ -1,14 +1,10 @@
 "use client";
 
 import * as Yup from "yup";
-import { useToast } from "@/lib/hooks/useToast";
-import {
-  AdminFormConfig,
-  AdminDialogForm,
-  type AdminFieldtype,
-} from "@/lib/ui";
-import type { ModuleFormFields } from "../types";
-import { useCreateModule } from "../hooks/useCreateModule";
+import { AdminFieldtype, AdminFormConfig, AdminDialogForm } from "@/lib/ui";
+import { useToast } from "@/lib/hooks";
+import { useCreateCourse } from "../hooks";
+import type { CourseFormFields } from "../types";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string()
@@ -17,6 +13,7 @@ const validationSchema = Yup.object().shape({
   description: Yup.string()
     .max(50, "Description must be less than 50 characters")
     .required("Description is required"),
+  isPublished: Yup.boolean().optional(),
 });
 
 const fields = [
@@ -30,44 +27,44 @@ const fields = [
   },
 ];
 
-const initialValues = {
-  title: "",
-  description: "",
-  isPublished: false,
-};
-
-export const QuickCreateModuleForm = () => {
+export const QuickCreateCourseForm = () => {
   const { toast } = useToast();
-  const { createModule } = useCreateModule();
+  const { createCourse } = useCreateCourse();
 
-  async function onSubmit(values: ModuleFormFields) {
-    const result = await createModule(values);
+  const initialValues = {
+    title: "",
+    description: "",
+    isPublished: false,
+  };
+
+  async function onSubmit(values: CourseFormFields) {
+    const result = await createCourse(values);
 
     if (result) {
       toast({
         title: "Success!",
-        description: "Saved new module.",
+        description: "Saved new course.",
       });
     } else {
       toast({
         variant: "destructive",
         title: "Error!",
-        description: "Error saving module. Please try again.",
+        description: "Something went wrong trying to create a new course.",
       });
     }
   }
 
-  const config: AdminFormConfig<ModuleFormFields> = {
+  const config: AdminFormConfig<CourseFormFields> = {
     validationSchema,
-    fields,
     initialValues,
+    fields,
     onSubmit,
   };
 
   return (
-    <AdminDialogForm<ModuleFormFields>
+    <AdminDialogForm<CourseFormFields>
       config={config}
-      formTitle="Create new module"
+      formTitle={"Create new course"}
     />
   );
 };

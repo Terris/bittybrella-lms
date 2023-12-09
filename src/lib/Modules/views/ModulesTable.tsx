@@ -4,6 +4,7 @@ import { Check, X } from "lucide-react";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { api } from "../../../../convex/_generated/api";
 import {
+  AdminTable,
   Text,
   CopyToClipboardButton,
   TextLink,
@@ -11,7 +12,6 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/lib/ui";
-import { AdminTable } from "@/lib/Admin";
 import { QuickEditModuleForm } from "../forms";
 import { DeleteModuleButton } from "../components";
 
