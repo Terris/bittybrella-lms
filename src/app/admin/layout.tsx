@@ -1,6 +1,6 @@
 "use client";
 
-import { PrivatePage } from "@/lib/layout";
+import { PrivatePageWrapper } from "@/lib/Authorization";
 import { useMe } from "@/lib/providers";
 import { useRouter } from "next/navigation";
 
@@ -15,5 +15,9 @@ export default function AdminLayout({
   if (!me?.isAdmin) {
     router.push("/");
   }
-  return <PrivatePage authorizedRoles={["admin"]}>{children}</PrivatePage>;
+  return (
+    <PrivatePageWrapper authorizedRoles={["admin"]}>
+      {children}
+    </PrivatePageWrapper>
+  );
 }

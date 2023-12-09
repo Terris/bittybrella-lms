@@ -1,5 +1,4 @@
 import { Trash2 } from "lucide-react";
-import { Id } from "../../../../convex/_generated/dataModel";
 import {
   AlertDialogFooter,
   AlertDialogHeader,
@@ -16,8 +15,9 @@ import {
   TooltipContent,
 } from "@/lib/ui";
 import { useDeleteAssessment } from "../hooks";
+import type { AssessmentId } from "../types";
 
-export function DeleteAssessmentButton({ id }: { id: Id<"assessments"> }) {
+export function DeleteAssessmentButton({ id }: { id: AssessmentId }) {
   const { deleteAssessment } = useDeleteAssessment();
 
   return (

@@ -1,16 +1,16 @@
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
-import { skipWithConditions } from "@/lib/utils";
+import { buildArgsWithSkipConditions } from "@/lib/utils";
+import { AssessmentId } from "@/lib/Assessments";
 
 export function useAssessmentQuestions({
   assessmentId,
 }: {
-  assessmentId?: Id<"assessments">;
+  assessmentId?: AssessmentId;
 }) {
   const assessmentQuestions = useQuery(
     api.assessmentQuestions.findByAssessmentId,
-    skipWithConditions([!assessmentId], { assessmentId })
+    buildArgsWithSkipConditions([!assessmentId], { assessmentId })
   );
   const isLoading = !assessmentQuestions;
   const error =

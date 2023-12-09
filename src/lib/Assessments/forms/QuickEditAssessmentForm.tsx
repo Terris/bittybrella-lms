@@ -3,8 +3,14 @@
 import * as Yup from "yup";
 import { Pencil } from "lucide-react";
 import { useToast } from "@/lib/hooks";
-import { AdminFormConfig, AdminDialogForm } from "@/lib/Admin";
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@/lib/ui";
+import {
+  Button,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  AdminFormConfig,
+  AdminDialogForm,
+} from "@/lib/ui";
 import { useAssessment, useUpdateAssessment } from "../hooks";
 import type { AssessmentFormFields, AssessmentId } from "../types";
 

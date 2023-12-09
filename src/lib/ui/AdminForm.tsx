@@ -1,17 +1,20 @@
+"use client";
+
+import { useState } from "react";
+import { AlertCircle } from "lucide-react";
+import { FieldInputProps, Form, Formik, FormikValues, useField } from "formik";
 import {
   Alert,
   AlertDescription,
   AlertTitle,
   Button,
+  FlexRow,
   Input,
   Label,
   Switch,
   Text,
 } from "@/lib/ui";
 import { cn } from "@/lib/utils";
-import { FieldInputProps, Form, Formik, FormikValues, useField } from "formik";
-import { AlertCircle } from "lucide-react";
-import { useState } from "react";
 
 export interface AdminFormConfig<CustomFormValues> {
   validationSchema: any;
@@ -22,16 +25,12 @@ export interface AdminFormConfig<CustomFormValues> {
 }
 
 export interface AdminFormProps<CustomFormValues> {
-  formTitle: string;
   renderTrigger?: React.ReactNode;
-  formDescription?: string;
   config: AdminFormConfig<CustomFormValues>;
   onSuccess?: () => void;
 }
 
 export function AdminForm<CustomFormValues extends FormikValues>({
-  formTitle,
-  formDescription,
   config,
   onSuccess,
 }: AdminFormProps<CustomFormValues>) {
@@ -57,8 +56,6 @@ export function AdminForm<CustomFormValues extends FormikValues>({
 
   return (
     <>
-      <Text className="text-lg">{formTitle}</Text>
-      {formDescription && <Text className="text-muted">{formDescription}</Text>}
       <Formik<CustomFormValues>
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -84,9 +81,11 @@ export function AdminForm<CustomFormValues extends FormikValues>({
                 />
               ))}
             </div>
-            <Button type="submit" disabled={isSubmitting}>
-              {submitButtonLabel ?? "Save"}
-            </Button>
+            <FlexRow className="justify-end">
+              <Button type="submit" disabled={isSubmitting}>
+                {submitButtonLabel ?? "Save"}
+              </Button>
+            </FlexRow>
           </Form>
         )}
       </Formik>
