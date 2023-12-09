@@ -1,20 +1,16 @@
 "use client";
 
 import * as Yup from "yup";
-import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
 import { useToast } from "@/lib/hooks/useToast";
-import { AdminFormConfig, AdminFieldtype, AdminDialogForm } from "@/lib/Admin";
+import {
+  AdminFormConfig,
+  AdminDialogForm,
+  type AdminFieldtype,
+} from "@/lib/Admin";
+import type { ModuleFormFields } from "../types";
+import { useCreateModule } from "../hooks/useCreateModule";
 
-// Define the fields
-export interface Module {
-  title: string;
-  description: string;
-  isPublished: boolean;
-}
-
-// Define the validation schema
-const ModuleFormSchema = Yup.object().shape({
+const validationSchema = Yup.object().shape({
   title: Yup.string()
     .max(50, "Title must be less than 50 characters")
     .required("Title is required"),
@@ -23,7 +19,6 @@ const ModuleFormSchema = Yup.object().shape({
     .required("Description is required"),
 });
 
-// Configure the fields for diplay
 const fields = [
   { name: "title", label: "Title", initialValue: "" },
   { name: "description", label: "Description", initialValue: "" },
@@ -35,13 +30,17 @@ const fields = [
   },
 ];
 
-export const CreateModuleForm = () => {
-  // Define the mutation
-  const createModule = useMutation(api.modules.create);
+const initialValues = {
+  title: "",
+  description: "",
+  isPublished: false,
+};
 
+export const QuickCreateModuleForm = () => {
   const { toast } = useToast();
+  const { createModule } = useCreateModule();
 
-  async function onSubmit(values: Module) {
+  async function onSubmit(values: ModuleFormFields) {
     const result = await createModule(values);
 
     if (result) {
@@ -58,21 +57,17 @@ export const CreateModuleForm = () => {
     }
   }
 
-  // Set initial values
-  const initialValues = {
-    title: "",
-    description: "",
-    isPublished: false,
-  };
-
-  const config: AdminFormConfig<Module> = {
-    validationSchema: ModuleFormSchema,
-    initialValues,
+  const config: AdminFormConfig<ModuleFormFields> = {
+    validationSchema,
     fields,
+    initialValues,
     onSubmit,
   };
 
   return (
-    <AdminDialogForm<Module> config={config} formTitle="Create new module" />
+    <AdminDialogForm<ModuleFormFields>
+      config={config}
+      formTitle="Create new module"
+    />
   );
 };

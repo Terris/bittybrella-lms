@@ -1,8 +1,7 @@
 "use client";
 
 import { PageContent, PageHeader } from "@/lib/layout";
-import { QuickCreateAssessmentForm } from "@/lib/Assessments/forms";
-import { AssessmentsTable } from "@/lib/Assessments/views";
+import { AssessmentsTable, QuickCreateAssessmentForm } from "@/lib/Assessments";
 import { Text } from "@/lib/ui";
 
 export default function AdminAssessmentsPage() {
