@@ -7,8 +7,11 @@ import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
 import { FlexRow, Text } from "@/lib/ui";
 import { EditModuleSectionForm } from "@/lib/ModuleSection/forms/EditModuleSectionForm";
-import { ModuleSectionsNav } from "@/lib/Modules/ModuleSectionsNav";
-import { QuickEditModuleForm } from "@/lib/Modules/forms/QuickEditModuleForm";
+import {
+  type ModuleId,
+  ModuleSectionsNav,
+  QuickEditModuleForm,
+} from "@/lib/Modules";
 
 interface AdminModulePageProps {
   params: { id: string };
@@ -16,7 +19,7 @@ interface AdminModulePageProps {
 
 export default function AdminModulePage({ params }: AdminModulePageProps) {
   const moduleData = useQuery(api.modules.findById, {
-    id: params.id as Id<"modules">,
+    id: params.id as ModuleId,
   });
 
   const [selectedModuleSectionId, setSelectedModuleSectionId] =

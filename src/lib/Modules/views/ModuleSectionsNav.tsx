@@ -1,7 +1,8 @@
 import React from "react";
 import { useMutation, useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import { Id } from "../../../convex/_generated/dataModel";
+import { MoreVertical, Plus } from "lucide-react";
+import { api } from "../../../../convex/_generated/api";
+import { Id } from "../../../../convex/_generated/dataModel";
 import {
   Button,
   DropdownMenu,
@@ -21,7 +22,6 @@ import {
   SortableList,
   SortableListItem,
 } from "@/lib/providers/SortableListProvider";
-import { MoreVertical, Plus, PlusSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function ModuleSectionsNav({

@@ -23,7 +23,7 @@ import {
 import { QuickEditCourseModuleForm } from "./QuickEditCourseModuleForm";
 import { MoreVertical } from "lucide-react";
 import { useState } from "react";
-import { ModuleSectionsNav } from "../Modules/ModuleSectionsNav";
+import { ModuleSectionsNav } from "../Modules/views/ModuleSectionsNav";
 import { cn } from "@/lib/utils";
 
 export interface CourseModule extends Doc<"modules"> {

@@ -2,7 +2,6 @@
 
 import { PageContent, PageHeader } from "@/lib/layout";
 import { QuickCreateModuleForm, ModulesTable } from "@/lib/Modules";
-import {} from "@/lib/Modules/ModulesTable";
 import { Text } from "@/lib/ui";
 
 export default function AdminModulesPage() {

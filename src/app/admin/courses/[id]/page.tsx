@@ -1,15 +1,15 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
 import { FlexRow, Text } from "@/lib/ui";
-import { useEffect, useState } from "react";
 import { CourseModulesNav } from "@/lib/Courses/CourseModulesNav";
 import { EditModuleSectionForm } from "@/lib/ModuleSection/forms/EditModuleSectionForm";
 import { QuickEditCourseForm } from "@/lib/Courses/QuickEditCourseForm";
-import { QuickEditModuleForm } from "@/lib/Modules/forms/QuickEditModuleForm";
+import { QuickEditModuleForm } from "@/lib/Modules";
 
 interface AdminCoursePageProps {
   params: { id: string };
