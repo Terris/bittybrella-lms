@@ -4,12 +4,12 @@ import React from "react";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
 import { FlexRow, Text } from "@/lib/ui";
-import { QuickEditAssessmentForm } from "@/lib/Assessments/QuickEditAssessmentForm";
 import {
+  QuickEditAssessmentForm,
   AssessmentProvider,
-  useAssessment,
-} from "@/lib/Assessments/providers/AssessmentProvider";
-import { AssessmentQuestionsNav } from "@/lib/AssessmentQuestions/AssessmentQuestionsNav";
+  useAssessmentContext,
+} from "@/lib/Assessments";
+import { AssessmentQuestionsNav } from "@/lib/AssessmentQuestions";
 
 interface AdminModulePageProps {
   params: { id: string };
@@ -24,7 +24,7 @@ export default function AdminAssessmentPage({ params }: AdminModulePageProps) {
 }
 
 function AdminAssessmentPageContent() {
-  const { isLoading, assessment, selectedQuestionId } = useAssessment();
+  const { isLoading, assessment, selectedQuestionId } = useAssessmentContext();
 
   if (isLoading || !assessment) return null;
 

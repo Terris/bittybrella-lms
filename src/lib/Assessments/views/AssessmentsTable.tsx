@@ -1,9 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { useQuery } from "convex/react";
-import { Id } from "../../../convex/_generated/dataModel";
-import { api } from "../../../convex/_generated/api";
-import { QuickEditAssessmentForm } from "./QuickEditAssessmentForm";
-import { DeleteAssessmentButton } from "./DeleteAssessmentButton";
+import { Id } from "../../../../convex/_generated/dataModel";
+import { QuickEditAssessmentForm } from "../forms/QuickEditAssessmentForm";
+import { DeleteAssessmentButton } from "../ui/DeleteAssessmentButton";
 import {
   Text,
   CopyToClipboardButton,
@@ -12,15 +10,16 @@ import {
   TooltipContent,
   TextLink,
 } from "@/lib/ui";
-import { AdminTable } from "../../app/admin/AdminTable";
+import { AdminTable } from "../../Admin/AdminTable";
+import { useAllAssessments } from "../hooks";
 
-interface AssessmentRow {
+interface AssessmentTableRow {
   _id: string;
   title: string;
   description: string;
 }
 
-const columns: ColumnDef<AssessmentRow>[] = [
+const columns: ColumnDef<AssessmentTableRow>[] = [
   {
     accessorKey: "title",
     header: "Title",
@@ -74,7 +73,7 @@ const columns: ColumnDef<AssessmentRow>[] = [
 ];
 
 export const AssessmentsTable = () => {
-  const assessments = useQuery(api.assessments.all);
+  const { assessments } = useAllAssessments();
   if (!assessments) return null;
   return <AdminTable columns={columns} data={assessments} />;
 };

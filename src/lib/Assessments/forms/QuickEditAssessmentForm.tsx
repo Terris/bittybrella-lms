@@ -2,21 +2,13 @@
 
 import * as Yup from "yup";
 import { useMutation, useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import {
-  AdminQuickForm,
-  AdminFormConfig,
-} from "../../app/admin/AdminQuickForm";
+import { api } from "../../../../convex/_generated/api";
+import { AdminQuickForm, AdminFormConfig } from "../../Admin/AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
-import { Id } from "../../../convex/_generated/dataModel";
+import { Id } from "../../../../convex/_generated/dataModel";
 import { Pencil } from "lucide-react";
 import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@/lib/ui";
-
-// Define the fields that can be edited
-export interface Assessment {
-  title: string;
-  description: string;
-}
+import { AssessmentFormFields } from "../types";
 
 // Define the validation schema
 const validationSchema = Yup.object().shape({
@@ -56,7 +48,7 @@ export const QuickEditAssessmentForm = ({
     { name: "description", label: "Description", initialValue: "" },
   ];
 
-  async function onSubmit(values: Assessment) {
+  async function onSubmit(values: AssessmentFormFields) {
     if (!assessment) return;
     const result = await editAssessment({ id: assessmentId, ...values });
 
@@ -80,7 +72,7 @@ export const QuickEditAssessmentForm = ({
     description: assessment?.description ?? "",
   };
 
-  const formConfig: AdminFormConfig<Assessment> = {
+  const formConfig: AdminFormConfig<AssessmentFormFields> = {
     validationSchema,
     initialValues,
     fields,
@@ -88,7 +80,7 @@ export const QuickEditAssessmentForm = ({
   };
 
   return (
-    <AdminQuickForm<Assessment>
+    <AdminQuickForm<AssessmentFormFields>
       config={formConfig}
       formTitle={formTitle}
       renderTrigger={

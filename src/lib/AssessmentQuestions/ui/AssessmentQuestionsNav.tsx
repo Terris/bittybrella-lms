@@ -1,6 +1,4 @@
-import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import { Doc, Id } from "../../../convex/_generated/dataModel";
+import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import {
   Button,
   FlexColumn,
@@ -17,49 +15,36 @@ import {
   SortableListItem,
 } from "@/lib/providers/SortableListProvider";
 import { cn } from "@/lib/utils";
-import { useAssessment } from "../Assessments/providers/AssessmentProvider";
+import { useAssessmentContext } from "@/lib/Assessments";
 import { Plus } from "lucide-react";
+import {
+  useAssessmentQuestions,
+  useCreateAssessmentQuestion,
+  useUpdateAssessmentQuestionsOrder,
+} from "..";
 
 export function AssessmentQuestionsNav() {
   const {
+    assessmentId,
     assessment,
     selectedQuestionId,
     setSelectedQuestionId,
-    createBlankAssessmentQuestion,
-  } = useAssessment();
+  } = useAssessmentContext();
 
-  const assessmentQuestions = assessment?.questions ?? [];
-  const sortableListItems = assessmentQuestions.map((question) => question._id);
+  const { createBlankAssessmentQuestion } = useCreateAssessmentQuestion({
+    assessmentId,
+  });
 
-  const updateAssessmentQuestionsOrder = useMutation(
-    api.assessmentQuestions.updateOrder
-  ).withOptimisticUpdate((localStore, args) => {
-    if (!assessment || !assessmentQuestions) return;
-    const { idsInOrder } = args;
-    const updatedAssessmentQuestions = assessmentQuestions
-      .map((question) => ({
-        ...question,
-        order: idsInOrder.indexOf(question._id) + 1,
-      }))
-      .sort((a, b) => a.order - b.order);
-    const currentValue = localStore.getQuery(
-      api.assessmentQuestions.findByAssessmentId,
-      {
-        assessmentId: assessment._id,
-      }
-    );
-    if (currentValue !== undefined) {
-      localStore.setQuery(
-        api.assessments.findById,
-        {
-          id: assessment._id,
-        },
-        {
-          ...assessment,
-          questions: updatedAssessmentQuestions,
-        }
-      );
-    }
+  const { assessmentQuestions } = useAssessmentQuestions({
+    assessmentId,
+  });
+
+  const sortableListItems = assessmentQuestions?.map(
+    (question) => question._id
+  );
+
+  const { updateAssessmentQuestionsOrder } = useUpdateAssessmentQuestionsOrder({
+    assessmentId,
   });
 
   function handleOnUpdate(updatedItems: string[]) {
@@ -69,7 +54,7 @@ export function AssessmentQuestionsNav() {
   }
 
   // TODO: Add a visual loading state
-  if (!assessment) return null;
+  if (!assessment || !assessmentQuestions || !sortableListItems) return null;
 
   return (
     <>

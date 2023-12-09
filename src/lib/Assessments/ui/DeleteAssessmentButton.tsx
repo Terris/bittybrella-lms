@@ -1,6 +1,5 @@
-import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import { Id } from "../../../convex/_generated/dataModel";
+import { Trash2 } from "lucide-react";
+import { Id } from "../../../../convex/_generated/dataModel";
 import {
   AlertDialogFooter,
   AlertDialogHeader,
@@ -16,10 +15,10 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/lib/ui";
-import { Trash2 } from "lucide-react";
+import { useDeleteAssessment } from "../hooks";
 
 export function DeleteAssessmentButton({ id }: { id: Id<"assessments"> }) {
-  const deleteAssessment = useMutation(api.assessments.deleteById);
+  const { deleteAssessment } = useDeleteAssessment();
 
   return (
     <AlertDialog>

@@ -1,21 +1,11 @@
 "use client";
 
 import * as Yup from "yup";
-import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import {
-  AdminQuickForm,
-  AdminFormConfig,
-} from "../../app/admin/AdminQuickForm";
+import { AdminQuickForm, AdminFormConfig } from "../../Admin/AdminQuickForm";
 import { useToast } from "@/lib/hooks/useToast";
+import { type AssessmentFormFields } from "../types";
+import { useCreateAssessment } from "../hooks/useCreateAssessment";
 
-// Define the fields
-export interface Assessment {
-  title: string;
-  description: string;
-}
-
-// Define the validation schema
 const FormSchema = Yup.object().shape({
   title: Yup.string()
     .max(50, "Title must be less than 50 characters")
@@ -25,38 +15,28 @@ const FormSchema = Yup.object().shape({
     .required("Description is required"),
 });
 
-// Configure the fields for diplay
 const fields = [
   { name: "title", label: "Title", initialValue: "" },
   { name: "description", label: "Description", initialValue: "" },
 ];
 
-// Set toast messages for success and error
-const successMessage = "Saved new assessment.";
-const errorMessage = "Something went wrong trying to create a new assessment.";
-
-// Set the form title
-const formTitle = "Create new assessment";
-
 export const QuickCreateAssessmentForm = () => {
-  // Define the mutation
-  const createAssessment = useMutation(api.assessments.create);
-
   const { toast } = useToast();
+  const { createAssessment } = useCreateAssessment();
 
-  async function onSubmit(values: Assessment) {
+  async function onSubmit(values: AssessmentFormFields) {
     const result = await createAssessment(values);
 
     if (result) {
       toast({
         title: "Success!",
-        description: successMessage,
+        description: "Saved new assessment.",
       });
     } else {
       toast({
         variant: "destructive",
         title: "Error!",
-        description: errorMessage,
+        description: "Something went wrong trying to create a new assessment.",
       });
     }
   }
@@ -67,7 +47,7 @@ export const QuickCreateAssessmentForm = () => {
     description: "",
   };
 
-  const formConfig: AdminFormConfig<Assessment> = {
+  const formConfig: AdminFormConfig<AssessmentFormFields> = {
     validationSchema: FormSchema,
     initialValues,
     fields,
@@ -75,6 +55,9 @@ export const QuickCreateAssessmentForm = () => {
   };
 
   return (
-    <AdminQuickForm<Assessment> config={formConfig} formTitle={formTitle} />
+    <AdminQuickForm<AssessmentFormFields>
+      config={formConfig}
+      formTitle={"Create new assessment"}
+    />
   );
 };

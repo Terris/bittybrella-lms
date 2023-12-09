@@ -11,7 +11,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/lib/ui";
-import { AdminTable } from "../../app/admin/AdminTable";
+import { AdminTable } from "../Admin/AdminTable";
 import Link from "next/link";
 import { Check, X } from "lucide-react";
 import { DeleteModuleButton } from "./DeleteModuleButton";
