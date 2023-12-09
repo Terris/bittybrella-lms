@@ -2,7 +2,7 @@
 
 import * as Yup from "yup";
 import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { api } from "../../../../convex/_generated/api";
 import { useToast } from "@/lib/hooks/useToast";
 import { AdminFormConfig, AdminFieldtype, AdminDialogForm } from "@/lib/Admin";
 
@@ -35,7 +35,7 @@ const fields = [
   },
 ];
 
-export const CreateModuleForm = () => {
+export const QuickCreateModuleForm = () => {
   // Define the mutation
   const createModule = useMutation(api.modules.create);
 

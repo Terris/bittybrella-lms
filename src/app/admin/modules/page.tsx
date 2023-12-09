@@ -1,7 +1,7 @@
 "use client";
 
 import { PageContent, PageHeader } from "@/lib/layout";
-import { CreateModuleForm } from "@/lib/Modules/CreateModuleForm";
+import { QuickCreateModuleForm } from "@/lib/Modules";
 import { ModulesTable } from "@/lib/Modules/ModulesTable";
 import { Text } from "@/lib/ui";
 
@@ -13,7 +13,7 @@ export default function AdminModulesPage() {
           { href: "/admin", label: "Admin" },
           { href: "/admin/modules", label: "Modules" },
         ]}
-        renderActions={<CreateModuleForm />}
+        renderActions={<QuickCreateModuleForm />}
       />
       <PageContent>
         <Text className="text-2xl font-semibold">Modules</Text>
