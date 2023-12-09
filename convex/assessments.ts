@@ -3,6 +3,7 @@ import { mutation, query } from "./_generated/server";
 import { validateIdentity } from "./lib/authorization";
 import { asyncMap, getManyFrom } from "./lib/relationships";
 import { removeEmptyFromArray } from "./lib/utils";
+import { Doc } from "./_generated/dataModel";
 
 /* ADMIN ONLY
 ======================================= */
@@ -14,17 +15,15 @@ export const all = query({
   },
 });
 
+export type FindAssessmentByIdResult = Doc<"assessments"> & {
+  questionCount: number;
+};
+
 export const findById = query({
   args: { id: v.id("assessments") },
   handler: async (ctx, { id }) => {
     await validateIdentity(ctx, { requireAdminRole: true });
     const assessment = await ctx.db.get(id);
-    // if (!assessment) throw new Error("Assessment does not exist");
-
-    // const questions = removeEmptyFromArray(
-    //   await getManyFrom(ctx.db, "assessmentQuestions", "assessmentId", id)
-    // );
-    // return { ...assessment, questions };
     return assessment;
   },
 });

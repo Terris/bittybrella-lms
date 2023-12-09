@@ -121,5 +121,6 @@ export const deleteById = mutation({
 
     // Finally, delete the module
     await ctx.db.delete(id);
+    return true;
   },
 });

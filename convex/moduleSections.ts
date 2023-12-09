@@ -103,6 +103,7 @@ export const updateOrder = mutation({
         })
       )
     );
+    return true;
   },
 });
 
@@ -131,5 +132,6 @@ export const deleteById = mutation({
       });
     });
     await ctx.db.delete(id);
+    return true;
   },
 });
