@@ -7,9 +7,9 @@ import { PageContent, PageHeader } from "@/lib/layout";
 import { FlexRow, Text } from "@/lib/ui";
 import { useEffect, useState } from "react";
 import { CourseModulesNav } from "@/lib/Courses/CourseModulesNav";
-import { EditModuleSectionForm } from "@/lib/Modules/EditModuleSectionForm";
+import { EditModuleSectionForm } from "@/lib/ModuleSection/forms/EditModuleSectionForm";
 import { QuickEditCourseForm } from "@/lib/Courses/QuickEditCourseForm";
-import { QuickEditModuleForm } from "@/lib/Modules/QuickEditModuleForm";
+import { QuickEditModuleForm } from "@/lib/Modules/forms/QuickEditModuleForm";
 
 interface AdminCoursePageProps {
   params: { id: string };

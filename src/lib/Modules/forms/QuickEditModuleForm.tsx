@@ -2,21 +2,16 @@
 
 import * as Yup from "yup";
 import { Pencil } from "lucide-react";
-import { useMutation, useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import { Id } from "../../../convex/_generated/dataModel";
-import { useToast } from "@/lib/hooks/useToast";
-import { AdminFormConfig, AdminFieldtype, AdminDialogForm } from "@/lib/Admin";
+import { useToast } from "@/lib/hooks";
+import {
+  AdminFormConfig,
+  AdminDialogForm,
+  type AdminFieldtype,
+} from "@/lib/Admin";
 import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@/lib/ui";
+import { useModule, useUpdateModule } from "../hooks";
+import type { ModuleFormFields, ModuleId } from "../types";
 
-// Define the fields that can be edited
-export interface Module {
-  title: string;
-  description: string;
-  isPublished: boolean;
-}
-
-// Define the validation schema
 const validationSchema = Yup.object().shape({
   title: Yup.string()
     .max(50, "Title must be less than 50 characters")
@@ -27,7 +22,6 @@ const validationSchema = Yup.object().shape({
   isPublished: Yup.boolean().optional(),
 });
 
-// Configure the fields for diplay
 const fields = [
   { name: "title", label: "Title", initialValue: "" },
   { name: "description", label: "Description", initialValue: "" },
@@ -39,40 +33,32 @@ const fields = [
   },
 ];
 
-// Set toast messages for success and error
-const successMessage = "Module saved.";
-const errorMessage = "Error saving module. Please try again.";
-
 // Set the form title
 const formTitle = "Edit module";
 
 interface QuickEditModuleFormProps {
-  moduleId: Id<"modules">;
+  moduleId: ModuleId;
 }
 
 export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
-  // Fetch the module to edit
-  const existingModule = useQuery(api.modules.findById, { id: moduleId });
-
-  // Define the mutation
-  const editModule = useMutation(api.modules.update);
-
   const { toast } = useToast();
+  const { moduleData: existingModule } = useModule({ id: moduleId });
+  const { updateModule } = useUpdateModule();
 
-  async function onSubmit(values: Module) {
+  async function onSubmit(values: ModuleFormFields) {
     if (!existingModule) return;
-    const result = await editModule({ id: moduleId, ...values });
+    const result = await updateModule({ id: moduleId, ...values });
 
     if (result) {
       toast({
         title: "Success!",
-        description: successMessage,
+        description: "Module saved.",
       });
     } else {
       toast({
         variant: "destructive",
         title: "Error!",
-        description: errorMessage,
+        description: "Error saving module. Please try again.",
       });
     }
   }
@@ -84,7 +70,7 @@ export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
     isPublished: existingModule?.isPublished ?? false,
   };
 
-  const moduleFormConfig: AdminFormConfig<Module> = {
+  const moduleFormConfig: AdminFormConfig<ModuleFormFields> = {
     validationSchema,
     initialValues,
     fields,
@@ -92,7 +78,7 @@ export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
   };
 
   return (
-    <AdminDialogForm<Module>
+    <AdminDialogForm<ModuleFormFields>
       config={moduleFormConfig}
       formTitle={formTitle}
       renderTrigger={

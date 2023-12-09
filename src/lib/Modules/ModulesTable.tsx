@@ -12,7 +12,7 @@ import {
   TooltipContent,
 } from "@/lib/ui";
 import { AdminTable } from "@/lib/Admin";
-import { QuickEditModuleForm } from "./QuickEditModuleForm";
+import { QuickEditModuleForm } from "./forms/QuickEditModuleForm";
 import { DeleteModuleButton } from "./DeleteModuleButton";
 
 interface ModuleRow {

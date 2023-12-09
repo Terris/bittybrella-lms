@@ -1,16 +1,13 @@
 "use client";
 
 import * as Yup from "yup";
-import { useMutation, useQuery } from "convex/react";
 import { Pencil } from "lucide-react";
-import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { useToast } from "@/lib/hooks";
 import { AdminFormConfig, AdminDialogForm } from "@/lib/Admin";
-import { useToast } from "@/lib/hooks/useToast";
 import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@/lib/ui";
-import { AssessmentFormFields } from "../types";
+import { useAssessment, useUpdateAssessment } from "../hooks";
+import type { AssessmentFormFields, AssessmentId } from "../types";
 
-// Define the validation schema
 const validationSchema = Yup.object().shape({
   title: Yup.string()
     .max(50, "Title must be less than 50 characters")
@@ -20,57 +17,42 @@ const validationSchema = Yup.object().shape({
     .required("Description is required"),
 });
 
-// Set toast messages for success and error
-const successMessage = "Assessment saved.";
-const errorMessage = "Something went wrong trying to update assessment.";
-
-// Set the form title
-const formTitle = "Edit assessment";
-
-interface EditAssessmentFormProps {
-  assessmentId: Id<"assessments">;
-}
+const fields = [
+  { name: "title", label: "Title" },
+  { name: "description", label: "Description" },
+];
 
 export const QuickEditAssessmentForm = ({
   assessmentId,
-}: EditAssessmentFormProps) => {
-  // Fetch the assessment to edit
-  const assessment = useQuery(api.assessments.findById, { id: assessmentId });
-
-  // Define the mutation
-  const editAssessment = useMutation(api.assessments.update);
-
+}: {
+  assessmentId: AssessmentId;
+}) => {
   const { toast } = useToast();
+  const { assessment } = useAssessment({ id: assessmentId });
+  const { updateAssessment } = useUpdateAssessment();
 
-  // Configure the fields for diplay
-  const fields = [
-    { name: "title", label: "Title", initialValue: "" },
-    { name: "description", label: "Description", initialValue: "" },
-  ];
+  const initialValues = {
+    title: assessment?.title ?? "",
+    description: assessment?.description ?? "",
+  };
 
   async function onSubmit(values: AssessmentFormFields) {
     if (!assessment) return;
-    const result = await editAssessment({ id: assessmentId, ...values });
+    const result = await updateAssessment({ id: assessmentId, ...values });
 
     if (result) {
       toast({
         title: "Success!",
-        description: successMessage,
+        description: "Assessment saved.",
       });
     } else {
       toast({
         variant: "destructive",
         title: "Error!",
-        description: errorMessage,
+        description: "Something went wrong trying to update assessment.",
       });
     }
   }
-
-  // Set initial values
-  const initialValues = {
-    title: assessment?.title ?? "",
-    description: assessment?.description ?? "",
-  };
 
   const formConfig: AdminFormConfig<AssessmentFormFields> = {
     validationSchema,
@@ -82,7 +64,7 @@ export const QuickEditAssessmentForm = ({
   return (
     <AdminDialogForm<AssessmentFormFields>
       config={formConfig}
-      formTitle={formTitle}
+      formTitle="Edit assessment"
       renderTrigger={
         <Button variant="ghost" size="sm">
           <Tooltip>

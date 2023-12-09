@@ -3,10 +3,10 @@
 import * as Yup from "yup";
 import { AdminFormConfig, AdminDialogForm } from "@/lib/Admin";
 import { useToast } from "@/lib/hooks/useToast";
-import { useCreateAssessment } from "../hooks/useCreateAssessment";
-import { type AssessmentFormFields } from "../types";
+import { useCreateAssessment } from "../hooks";
+import type { AssessmentFormFields } from "../types";
 
-const FormSchema = Yup.object().shape({
+const validationSchema = Yup.object().shape({
   title: Yup.string()
     .max(50, "Title must be less than 50 characters")
     .required("Title is required"),
@@ -19,6 +19,11 @@ const fields = [
   { name: "title", label: "Title", initialValue: "" },
   { name: "description", label: "Description", initialValue: "" },
 ];
+
+const initialValues = {
+  title: "",
+  description: "",
+};
 
 export const QuickCreateAssessmentForm = () => {
   const { toast } = useToast();
@@ -41,14 +46,8 @@ export const QuickCreateAssessmentForm = () => {
     }
   }
 
-  // Set initial values
-  const initialValues = {
-    title: "",
-    description: "",
-  };
-
   const formConfig: AdminFormConfig<AssessmentFormFields> = {
-    validationSchema: FormSchema,
+    validationSchema,
     initialValues,
     fields,
     onSubmit,
