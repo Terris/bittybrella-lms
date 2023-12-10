@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Check, X } from "lucide-react";
+import { ArrowUpRight, Check, X } from "lucide-react";
 import { useQuery } from "convex/react";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { api } from "../../../../convex/_generated/api";
@@ -11,6 +11,7 @@ import {
   TooltipTrigger,
   TooltipContent,
   TextLink,
+  AdminTableBooleanCell,
 } from "@/lib/ui";
 import { QuickEditCourseForm } from "../forms";
 import { DeleteCourseButton } from "../components/DeleteCourseButton";
@@ -28,7 +29,7 @@ const columns: ColumnDef<CourseRow>[] = [
     header: "Title",
     cell: ({ row }) => {
       return (
-        <TextLink href={`/admin/courses/${row.original._id}`}>
+        <TextLink href={`/admin/courses/${row.original._id}`} arrow>
           {row.original.title}
         </TextLink>
       );
@@ -46,11 +47,7 @@ const columns: ColumnDef<CourseRow>[] = [
       return (
         <Tooltip>
           <TooltipTrigger>
-            {isPublished ? (
-              <Check className="h-4 w-4 text-primary" />
-            ) : (
-              <X className="h-4 w-4 text-destructive" />
-            )}
+            <AdminTableBooleanCell value={isPublished} />
           </TooltipTrigger>
           <TooltipContent>
             {isPublished ? "Published" : "Not published"}

@@ -5,7 +5,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
-import { FlexRow, Text } from "@/lib/ui";
+import { FlexColumn, FlexRow, Text } from "@/lib/ui";
 import { CourseModulesNav } from "@/lib/CourseModules/views/CourseModulesNav";
 import { EditModuleSectionForm } from "@/lib/ModuleSections/forms/EditModuleSectionForm";
 import { QuickEditCourseForm } from "@/lib/Courses/forms/QuickEditCourseForm";
@@ -70,7 +70,7 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
           <QuickEditCourseForm courseId={params.id as Id<"courses">} />
         </FlexRow>
         <hr />
-        <div className="flex flex-col lg:flex-row lg:h-full">
+        <FlexColumn className="flex flex-col lg:flex-row lg:h-full">
           <aside className="lg:w-1/4 lg:pr-4 lg:pt-2">
             <CourseModulesNav
               courseId={params.id as Id<"courses">}
@@ -102,7 +102,7 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
               <EditModuleSectionForm id={selectedModuleSectionId} />
             )}
           </div>
-        </div>
+        </FlexColumn>
       </PageContent>
     </>
   );

@@ -24,7 +24,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <AppProviders>
-          <div className="flex flex-col lg:flex-row min-h-screen">
+          <div className="min-h-screen">
             <Masthead />
             <Main>{children}</Main>
             <Toaster />

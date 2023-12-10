@@ -25,7 +25,7 @@ const columns: ColumnDef<AssessmentTableRow>[] = [
     header: "Title",
     cell: ({ row }) => {
       return (
-        <TextLink href={`/admin/assessments/${row.original._id}`}>
+        <TextLink href={`/admin/assessments/${row.original._id}`} arrow>
           {row.original.title}
         </TextLink>
       );

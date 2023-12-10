@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/lib/ui";
+import { Check, X } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -73,5 +74,13 @@ export function AdminTable<TData, TValue>({
         )}
       </TableBody>
     </Table>
+  );
+}
+
+export function AdminTableBooleanCell({ value }: { value: boolean }) {
+  return value ? (
+    <Check className="h-4 w-4 text-success" />
+  ) : (
+    <X className="h-4 w-4 text-destructive" />
   );
 }

@@ -27,7 +27,7 @@ export function DeleteModuleButton({ id }: { id: Id<"modules"> }) {
         <TooltipTrigger asChild>
           <AlertDialogTrigger asChild>
             <Button variant="ghost">
-              <Trash2 className="h-4 w-4 text-destructive" />
+              <Trash2 className="h-4 w-4" />
             </Button>
           </AlertDialogTrigger>
         </TooltipTrigger>

@@ -11,6 +11,7 @@ import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
+  AdminTableBooleanCell,
 } from "@/lib/ui";
 import { QuickEditModuleForm } from "../forms";
 import { DeleteModuleButton } from "../components";
@@ -27,7 +28,7 @@ const columns: ColumnDef<ModuleRow>[] = [
     header: "Title",
     cell: ({ row }) => {
       return (
-        <TextLink href={`/admin/modules/${row.original._id}`}>
+        <TextLink href={`/admin/modules/${row.original._id}`} arrow>
           {row.original.title}
         </TextLink>
       );
@@ -45,11 +46,7 @@ const columns: ColumnDef<ModuleRow>[] = [
       return (
         <Tooltip>
           <TooltipTrigger>
-            {isPublished ? (
-              <Check className="h-4 w-4 text-primary" />
-            ) : (
-              <X className="h-4 w-4 text-destructive" />
-            )}
+            <AdminTableBooleanCell value={isPublished} />
           </TooltipTrigger>
           <TooltipContent>
             {isPublished ? "Published" : "Not published"}

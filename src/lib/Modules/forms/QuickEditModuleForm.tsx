@@ -1,7 +1,7 @@
 "use client";
 
 import * as Yup from "yup";
-import { Pencil } from "lucide-react";
+import { Settings } from "lucide-react";
 import { useToast } from "@/lib/hooks";
 import {
   AdminFormConfig,
@@ -88,7 +88,7 @@ export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
         <Button variant="ghost" size="sm">
           <Tooltip>
             <TooltipTrigger>
-              <Pencil className="h-4 w-4" />
+              <Settings className="h-4 w-4" />
             </TooltipTrigger>
             <TooltipContent>Edit module settings</TooltipContent>
           </Tooltip>

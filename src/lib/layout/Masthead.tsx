@@ -10,9 +10,11 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  FlexRow,
   Text,
+  TextLink,
 } from "@/lib/ui";
-import Link from "next/link";
+import Link, { LinkProps } from "next/link";
 import { useTracking } from "../hooks/useTracking";
 import { useMe } from "../providers";
 
@@ -28,35 +30,32 @@ export function Masthead() {
   };
 
   return (
-    <div className="flex flex-row items-center justify-between w-full px-4 py-2 border-b text-sm lg:fixed lg:flex-col lg:w-[160px] lg:border-b-0 lg:py-8 lg:px-8 lg:border-r lg:items-start lg:h-screen">
-      <Link href="/" className="lg:w-full lg:flex lg:justify-center">
-        <PocketKnife className="text-emerald-700" />
+    <FlexRow className="flex flex-row items-center justify-between w-full px-8 py-2 border-b text-sm">
+      <Link href="/" className="mr-6">
+        <PocketKnife className="text-primary" />
       </Link>
 
       {isAuthenticated && (
-        <div className="flex flex-row gap-8 mr-auto ml-4 lg:mx-0 lg:flex-col lg:w-full lg:gap-4 lg:mt-6 lg:border-t lg:pt-4">
-          <Link
+        <div className="flex flex-row gap-8 ml-4">
+          <TextLink
             href="/my-courses"
             onClick={() => trackNavigationEvent("my courses")}
           >
             My Courses
-          </Link>
+          </TextLink>
         </div>
       )}
       {isAdmin && (
-        <div className="flex flex-row gap-8 items-center mr-4 lg:mr-0 lg:flex-col lg:items-start lg:gap-4 lg:mt-16 lg:mb-auto">
-          <Text className="text-xs tracking-widest font-bold hidden lg:block">
-            ADMIN MENU
-          </Text>
-          <Link href="/admin">Admin</Link>
-          <Link href="/admin/courses">Courses</Link>
-          <Link href="/admin/modules">Modules</Link>
-          <Link href="/admin/assessments">Assessments</Link>
+        <div className="flex flex-row gap-8 items-center mr-auto ml-16">
+          <TextLink href="/admin">Admin</TextLink>
+          <TextLink href="/admin/courses">Courses</TextLink>
+          <TextLink href="/admin/modules">Modules</TextLink>
+          <TextLink href="/admin/assessments">Assessments</TextLink>
         </div>
       )}
-      <div className="flex flex-row items-center justify-between mt-auto gap-4 lg:w-full lg:flex-col">
+      <div className="flex flex-row items-center justify-between gap-4">
         <ModeToggle />
-        <div className="lg:w-full lg:flex lg:flex-col items-center lg:border-t lg:py-4">
+        <div className="items-center">
           {isAuthenticated ? (
             <UserButton
               afterSignOutUrl="/"
@@ -71,7 +70,7 @@ export function Masthead() {
           )}
         </div>
       </div>
-    </div>
+    </FlexRow>
   );
 }
 

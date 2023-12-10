@@ -5,8 +5,7 @@ import {
 
 /* FONT FAVORITES
   Cabin
-  DM Sans
-  Manrope
+  Alegreya_Sans
 */
 
 export const fontSans = FontSans({
