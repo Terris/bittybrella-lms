@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { TextLink } from "../ui";
+import { TextLink } from ".";
 
 export interface Breadcrumb {
   href: string;

@@ -1,9 +1,12 @@
+import { Breadcrumbs } from "./Breadcrumbs";
+
 export * from "./AdminDialogForm";
 export * from "./AdminForm";
 export * from "./AdminTable";
 export * from "./Alert";
 export * from "./AlertDialog";
 export * from "./Badge";
+export * from "./Breadcrumbs";
 export * from "./Button";
 export * from "./Card";
 export * from "./ContentEditor";
