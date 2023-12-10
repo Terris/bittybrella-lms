@@ -2,8 +2,6 @@ import { Plus } from "lucide-react";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import {
   Button,
-  FlexColumn,
-  FlexRow,
   Select,
   SelectContent,
   SelectItem,
@@ -75,15 +73,15 @@ export function AssessmentQuestionsNav() {
 
   return (
     <>
-      <FlexRow className="justify-between pb-4">
+      <div className="flex flex-row items-center justify-between pb-4">
         <Text className="font-bold">Assessment Questions</Text>
-      </FlexRow>
+      </div>
       <div className="hidden lg:block">
         <SortableList items={sortableListItems} onUpdate={handleOnUpdate}>
-          <FlexColumn className="gap-2">
+          <div className="flex flex-col gap-2">
             {assessmentQuestions.map((question) => (
               <SortableListItem key={question._id} id={question._id}>
-                <FlexColumn className="w-full truncate">
+                <div className="w-full flex flex-col truncate">
                   <Button
                     key={question._id}
                     variant="ghost"
@@ -97,7 +95,7 @@ export function AssessmentQuestionsNav() {
                       {question.question}
                     </div>
                   </Button>
-                </FlexColumn>
+                </div>
               </SortableListItem>
             ))}
             <Button
@@ -108,7 +106,7 @@ export function AssessmentQuestionsNav() {
             >
               <Plus className="h-3 w-3 mr-1" /> Add assessment question
             </Button>
-          </FlexColumn>
+          </div>
         </SortableList>
       </div>
       <div className="block lg:hidden pb-6">

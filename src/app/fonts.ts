@@ -9,7 +9,7 @@ import {
 */
 
 export const fontSans = FontSans({
-  weight: ["400", "700", "800"],
+  weight: ["100", "300", "400", "700", "800", "900"],
   subsets: ["latin"],
   variable: "--font-sans",
 });

@@ -32,7 +32,7 @@ export function AdminTable<TData, TValue>({
   });
 
   return (
-    <Table>
+    <Table className="w-full">
       <TableHeader>
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>

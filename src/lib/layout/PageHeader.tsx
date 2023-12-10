@@ -8,7 +8,7 @@ interface PageHeaderProps {
 
 export function PageHeader({ renderActions, breadcrumbs }: PageHeaderProps) {
   return (
-    <div className="flex flex-row items-center justify-between w-full h-16 py-2 border-b ">
+    <div className="w-full flex flex-row items-center justify-between h-14 px-8">
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div>{renderActions}</div>
     </div>

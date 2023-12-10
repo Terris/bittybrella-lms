@@ -16,9 +16,12 @@ export default function AdminCoursesPage() {
         renderActions={<QuickCreateCourseForm />}
       />
       <PageContent>
-        <Text className="text-2xl font-semibold">Courses</Text>
-        <hr />
-        <CoursesTable />
+        <div className="py-4 px-8 border-b">
+          <Text className="text-3xl font-semibold">Courses</Text>
+        </div>
+        <div className="px-4 w-full max-w-screen-2xl mx-auto">
+          <CoursesTable />
+        </div>
       </PageContent>
     </>
   );

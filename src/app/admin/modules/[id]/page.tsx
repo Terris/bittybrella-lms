@@ -5,7 +5,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
-import { FlexRow, Text } from "@/lib/ui";
+import { Text } from "@/lib/ui";
 import { EditModuleSectionForm } from "@/lib/ModuleSections/forms/EditModuleSectionForm";
 import {
   type ModuleId,
@@ -54,19 +54,18 @@ export default function AdminModulePage({ params }: AdminModulePageProps) {
         ]}
       />
       <PageContent>
-        <FlexRow className="justify-between">
-          <div className="space-y-0.5">
-            <Text className="text-2xl font-semibold">{moduleData.title}</Text>
+        <div className="w-full flex flex-row items-center justify-start py-4 px-8 border-b">
+          <div className="mr-4">
+            <Text className="text-3xl font-semibold">{moduleData.title}</Text>
             <Text className="text-muted-foreground">
               {moduleData.description}
             </Text>
           </div>
           <QuickEditModuleForm moduleId={params.id as Id<"modules">} />
-        </FlexRow>
-        <hr />
-        <div className="flex flex-col lg:flex-row">
-          <aside className="lg:w-1/4 lg:pr-4">
-            <div className="flex flex-col gap-4 lg:sticky lg:top-0">
+        </div>
+        <div className="w-full py-8 lg:flex lg:flex-row lg:h-full lg:gap-4">
+          <aside className="px-4 lg:w-1/5 lg:pl-8">
+            <div className="sticky top-0">
               <ModuleSectionsNav
                 moduleId={params.id as Id<"modules">}
                 selectedModuleSectionId={selectedModuleSectionId}
@@ -74,10 +73,12 @@ export default function AdminModulePage({ params }: AdminModulePageProps) {
               />
             </div>
           </aside>
-          <div className="flex-1 lg:w-3/4 lg:pl-4">
-            {selectedModuleSectionId && (
-              <EditModuleSectionForm id={selectedModuleSectionId} />
-            )}
+          <div className="px-4 lg:w-4/5 lg:pr-8">
+            <div className="flex flex-col gap-4  max-w-4xl">
+              {selectedModuleSectionId && (
+                <EditModuleSectionForm id={selectedModuleSectionId} />
+              )}
+            </div>
           </div>
         </div>
       </PageContent>

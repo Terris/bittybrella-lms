@@ -10,7 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuPortal,
   DropdownMenuTrigger,
-  FlexColumn,
   Select,
   SelectContent,
   SelectItem,
@@ -108,7 +107,7 @@ export function ModuleSectionsNav({
 
       <div className="hidden lg:block">
         <SortableList items={sortItems} onUpdate={handleOnUpdate}>
-          <FlexColumn className="gap-2">
+          <div className="flex flex-col gap-2">
             {sections.map((section) => (
               <SortableListItem key={section._id} id={section._id}>
                 <Button
@@ -135,7 +134,7 @@ export function ModuleSectionsNav({
             >
               <Plus className="h-3 w-3 mr-1" /> Add new module section
             </Button>
-          </FlexColumn>
+          </div>
         </SortableList>
       </div>
       <div className="block lg:hidden pb-6">

@@ -15,9 +15,12 @@ export default function AdminAssessmentsPage() {
         renderActions={<QuickCreateAssessmentForm />}
       />
       <PageContent>
-        <Text className="text-2xl font-semibold">Assessments</Text>
-        <hr />
-        <AssessmentsTable />
+        <div className="py-4 px-8 border-b">
+          <Text className="text-3xl font-semibold">Assessments</Text>
+        </div>
+        <div className="px-4 w-full max-w-screen-2xl mx-auto">
+          <AssessmentsTable />
+        </div>
       </PageContent>
     </>
   );

@@ -5,7 +5,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { PageContent, PageHeader } from "@/lib/layout";
-import { FlexColumn, FlexRow, Text } from "@/lib/ui";
+import { Text } from "@/lib/ui";
 import { CourseModulesNav } from "@/lib/CourseModules/views/CourseModulesNav";
 import { EditModuleSectionForm } from "@/lib/ModuleSections/forms/EditModuleSectionForm";
 import { QuickEditCourseForm } from "@/lib/Courses/forms/QuickEditCourseForm";
@@ -62,47 +62,50 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
         ]}
       />
       <PageContent>
-        <FlexRow className="justify-between">
-          <div className="space-y-0.5">
-            <Text className="text-2xl font-semibold">{course.title}</Text>
+        <div className="w-full flex flex-row items-center justify-start py-4 px-8 border-b">
+          <div className="mr-4">
+            <Text className="text-3xl font-semibold">{course.title}</Text>
             <Text className="text-muted-foreground">{course.description}</Text>
           </div>
           <QuickEditCourseForm courseId={params.id as Id<"courses">} />
-        </FlexRow>
-        <hr />
-        <FlexColumn className="flex flex-col lg:flex-row lg:h-full">
-          <aside className="lg:w-1/4 lg:pr-4 lg:pt-2">
-            <CourseModulesNav
-              courseId={params.id as Id<"courses">}
-              modules={course.modules}
-              selectedModuleId={selectedModuleId}
-              setSelectedModuleId={setSelectedModuleId}
-              selectedModuleSectionId={selectedModuleSectionId}
-              setSelectedModuleSectionId={setSelectedModuleSectionId}
-            />
+        </div>
+        <div className="w-full py-8 lg:flex lg:flex-row lg:h-full lg:gap-4">
+          <aside className="px-4 lg:w-1/5 lg:pl-8">
+            <div className="sticky top-0">
+              <CourseModulesNav
+                courseId={params.id as Id<"courses">}
+                modules={course.modules}
+                selectedModuleId={selectedModuleId}
+                setSelectedModuleId={setSelectedModuleId}
+                selectedModuleSectionId={selectedModuleSectionId}
+                setSelectedModuleSectionId={setSelectedModuleSectionId}
+              />
+            </div>
           </aside>
-          <div className="flex-1 flex flex-col gap-4 lg:w-3/4 lg:pl-4">
-            {selectedModule && (
-              <FlexRow className="justify-between">
-                <div className="space-y-0.5">
-                  <Text className="text-2xl font-semibold">
-                    {selectedModule.title}
-                  </Text>
-                  <Text className="text-muted-foreground">
-                    {selectedModule.description}
-                  </Text>
+          <div className="px-4 lg:w-4/5 lg:pr-8">
+            <div className="flex flex-col gap-4 max-w-4xl">
+              {selectedModule && (
+                <div className="flex flex-row items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Text className="text-2xl font-semibold">
+                      {selectedModule.title}
+                    </Text>
+                    <Text className="text-muted-foreground">
+                      {selectedModule.description}
+                    </Text>
+                  </div>
+                  <QuickEditModuleForm
+                    moduleId={selectedModuleId as Id<"modules">}
+                  />
                 </div>
-                <QuickEditModuleForm
-                  moduleId={selectedModuleId as Id<"modules">}
-                />
-              </FlexRow>
-            )}
-            <hr className="" />
-            {selectedModuleSectionId && (
-              <EditModuleSectionForm id={selectedModuleSectionId} />
-            )}
+              )}
+              <hr className="" />
+              {selectedModuleSectionId && (
+                <EditModuleSectionForm id={selectedModuleSectionId} />
+              )}
+            </div>
           </div>
-        </FlexColumn>
+        </div>
       </PageContent>
     </>
   );

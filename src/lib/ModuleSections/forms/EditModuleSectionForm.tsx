@@ -21,7 +21,6 @@ import {
   DropdownMenuItem,
   DropdownMenuPortal,
   DropdownMenuTrigger,
-  FlexRow,
   Input,
 } from "@/lib/ui";
 import type { ModuleSectionDoc, ModuleSectionId } from "../types";
@@ -88,7 +87,7 @@ const Form = ({ section }: { section: ModuleSectionDoc }) => {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <FlexRow>
+        <div className="flex flex-row">
           <Input
             name="section-title"
             placeholder="Section title"
@@ -96,7 +95,7 @@ const Form = ({ section }: { section: ModuleSectionDoc }) => {
             onChange={(e) => setNewSectionTitle(e.target.value)}
           />
           <ModuleSectionSettingsMenu moduleSectionId={section._id} />
-        </FlexRow>
+        </div>
       </div>
       <div>
         <ContentEditor

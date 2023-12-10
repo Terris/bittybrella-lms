@@ -8,7 +8,6 @@ import {
   AlertDescription,
   AlertTitle,
   Button,
-  FlexRow,
   Input,
   Label,
   Switch,
@@ -81,11 +80,11 @@ export function AdminForm<CustomFormValues extends FormikValues>({
                 />
               ))}
             </div>
-            <FlexRow className="justify-end">
+            <div className="flex flex-row items-center justify-end">
               <Button type="submit" disabled={isSubmitting}>
                 {submitButtonLabel ?? "Save"}
               </Button>
-            </FlexRow>
+            </div>
           </Form>
         )}
       </Formik>

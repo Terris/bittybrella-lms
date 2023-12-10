@@ -17,14 +17,9 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body
-        className={cn(
-          "min-h-screen bg-background antialiased",
-          fontSans.variable
-        )}
-      >
+      <body className={cn("min-h-screen antialiased", fontSans.variable)}>
         <AppProviders>
-          <div className="min-h-screen">
+          <div className="flex flex-col w-full h-full min-h-screen flex-1">
             <Masthead />
             <Main>{children}</Main>
             <Toaster />

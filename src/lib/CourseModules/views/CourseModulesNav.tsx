@@ -9,8 +9,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  FlexColumn,
-  FlexRow,
   Select,
   SelectContent,
   SelectItem,
@@ -89,7 +87,7 @@ export function CourseModulesNav({
 
   return (
     <>
-      <FlexRow className="justify-between pb-4">
+      <div className="flex flex-row items-center justify-between pb-4">
         <Text className="font-bold">Course Modules</Text>
         <DropdownMenu open={menuIsOpen} onOpenChange={setMenuIsOpen}>
           <DropdownMenuTrigger>
@@ -104,7 +102,7 @@ export function CourseModulesNav({
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </FlexRow>
+      </div>
       <div className="hidden lg:block">
         <SortableList items={sortItems} onUpdate={handleOnUpdate}>
           <div className="flex flex-col gap-2">
@@ -113,7 +111,7 @@ export function CourseModulesNav({
                 key={module.courseModuleId}
                 id={module.courseModuleId}
               >
-                <FlexColumn className="w-full truncate">
+                <div className="w-full flex flex-col truncate">
                   <Button
                     key={module._id}
                     variant="ghost"
@@ -139,7 +137,7 @@ export function CourseModulesNav({
                       />
                     </div>
                   )}
-                </FlexColumn>
+                </div>
               </SortableListItem>
             ))}
           </div>

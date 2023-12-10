@@ -10,8 +10,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  FlexRow,
-  Text,
   TextLink,
 } from "@/lib/ui";
 import Link, { LinkProps } from "next/link";
@@ -30,7 +28,7 @@ export function Masthead() {
   };
 
   return (
-    <FlexRow className="flex flex-row items-center justify-between w-full px-8 py-2 border-b text-sm">
+    <div className="flex flex-row items-center justify-between w-full px-8 py-2 border-b text-sm">
       <Link href="/" className="mr-6">
         <PocketKnife className="text-primary" />
       </Link>
@@ -70,7 +68,7 @@ export function Masthead() {
           )}
         </div>
       </div>
-    </FlexRow>
+    </div>
   );
 }
 

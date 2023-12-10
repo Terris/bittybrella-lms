@@ -2,7 +2,7 @@
 
 import React from "react";
 import { PageContent, PageHeader } from "@/lib/layout";
-import { FlexRow, Text } from "@/lib/ui";
+import { Text } from "@/lib/ui";
 import {
   QuickEditAssessmentForm,
   AssessmentProvider,
@@ -41,21 +41,26 @@ function AdminAssessmentPageContent() {
         ]}
       />
       <PageContent>
-        <FlexRow className="justify-between">
-          <div className="space-y-0.5">
-            <Text className="text-2xl font-semibold">{assessment.title}</Text>
+        <div className="w-full flex flex-row items-center justify-start py-4 px-8 border-b">
+          <div className="mr-4">
+            <Text className="text-3xl font-semibold">{assessment.title}</Text>
             <Text className="text-muted-foreground">
               {assessment.description}
             </Text>
           </div>
           <QuickEditAssessmentForm assessmentId={assessment._id} />
-        </FlexRow>
-        <hr />
-        <div className="flex flex-col lg:flex-row">
-          <aside className="lg:w-1/4 lg:pr-4 lg:pt-2">
-            <AssessmentQuestionsNav />
+        </div>
+        <div className="w-full py-8 lg:flex lg:flex-row lg:h-full lg:gap-4">
+          <aside className="px-4 lg:w-1/5 lg:pl-8">
+            <div className="sticky top-0">
+              <AssessmentQuestionsNav />
+            </div>
           </aside>
-          <div className="flex-1 lg:w-3/4 lg:pl-4">{selectedQuestionId}</div>
+          <div className="px-4 lg:w-4/5 lg:pr-8">
+            <div className="flex flex-col gap-4 max-w-4xl">
+              {selectedQuestionId}
+            </div>
+          </div>
         </div>
       </PageContent>
     </>
