@@ -12,9 +12,10 @@ export const metadata = {
 
 interface RootLayoutProps {
   children: React.ReactNode;
+  nav: React.ReactNode;
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children, nav }: RootLayoutProps) {
   return (
     <html lang="en">
       <body className={cn("min-h-screen antialiased", fontSans.variable)}>
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <Toaster />
           </div>
         </AppProviders>
+        {nav}
       </body>
     </html>
   );
