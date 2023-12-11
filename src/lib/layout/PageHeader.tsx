@@ -3,14 +3,10 @@ import { Breadcrumb, Breadcrumbs } from "../ui";
 
 interface PageHeaderProps {
   breadcrumbs?: Breadcrumb[];
-  renderActions?: ReactNode;
 }
 
-export function PageHeader({ renderActions, breadcrumbs }: PageHeaderProps) {
+export function PageHeader({ breadcrumbs }: PageHeaderProps) {
   return (
-    <div className="w-full flex flex-row items-center justify-between h-14 px-8">
-      <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <div>{renderActions}</div>
-    </div>
+    <div className="w-full flex flex-row items-center justify-between h-14 px-8"></div>
   );
 }

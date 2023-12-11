@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
-import { PageContent, PageHeader } from "@/lib/layout";
-import { Text } from "@/lib/ui";
+import { PageContent } from "@/lib/layout";
+import { Breadcrumbs, Text } from "@/lib/ui";
 import { EditModuleSectionForm } from "@/lib/ModuleSections/forms/EditModuleSectionForm";
 import {
   type ModuleId,
@@ -43,16 +43,18 @@ export default function AdminModulePage({ params }: AdminModulePageProps) {
 
   return (
     <>
-      <PageHeader
-        breadcrumbs={[
-          { href: "/admin", label: "Admin" },
-          { href: "/admin/modules", label: "Modules" },
-          {
-            href: `/admin/modules/${params.id}`,
-            label: moduleData.title ?? "Untitled Module",
-          },
-        ]}
-      />
+      <div className="w-full flex flex-row items-center justify-between py-2 px-8 border-b">
+        <Breadcrumbs
+          breadcrumbs={[
+            { href: "/admin", label: "Admin" },
+            { href: "/admin/modules", label: "Modules" },
+            {
+              href: `/admin/modules/${params.id}`,
+              label: moduleData.title ?? "Untitled Module",
+            },
+          ]}
+        />
+      </div>
       <PageContent>
         <div className="w-full flex flex-row items-center justify-start py-4 px-8 border-b">
           <div className="mr-4">

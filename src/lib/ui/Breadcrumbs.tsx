@@ -11,7 +11,7 @@ export interface BreadcrumbsProps {
 }
 export const Breadcrumbs = ({ breadcrumbs }: BreadcrumbsProps) => {
   return (
-    <div className="flex flex-row items-center text-sm gap-4">
+    <div className="flex flex-row items-center text-xs gap-4">
       <TextLink
         href="/"
         className={breadcrumbs?.length === 0 ? "font-bold" : ""}

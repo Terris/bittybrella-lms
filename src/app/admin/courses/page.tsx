@@ -1,23 +1,25 @@
 "use client";
 
-import { PageContent, PageHeader } from "@/lib/layout";
+import { PageContent } from "@/lib/layout";
 import { QuickCreateCourseForm } from "@/lib/Courses/forms/QuickCreateCourseForm";
 import { CoursesTable } from "@/lib/Courses/views/CoursesTable";
-import { Text } from "@/lib/ui";
+import { Breadcrumbs, Text } from "@/lib/ui";
 
 export default function AdminCoursesPage() {
   return (
     <>
-      <PageHeader
-        breadcrumbs={[
-          { href: "/admin", label: "Admin" },
-          { href: "/admin/courses", label: "Courses" },
-        ]}
-        renderActions={<QuickCreateCourseForm />}
-      />
+      <div className="w-full flex flex-row items-center justify-between py-2 px-8 border-b">
+        <Breadcrumbs
+          breadcrumbs={[
+            { href: "/admin", label: "Admin" },
+            { href: "/admin/courses", label: "Courses" },
+          ]}
+        />
+      </div>
       <PageContent>
-        <div className="py-4 px-8 border-b">
+        <div className="py-4 px-8 border-b flex flex-row items-center justify-between">
           <Text className="text-3xl font-semibold">Courses</Text>
+          <QuickCreateCourseForm />
         </div>
         <div className="px-4 w-full max-w-screen-2xl mx-auto">
           <CoursesTable />

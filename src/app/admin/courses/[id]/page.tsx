@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
-import { PageContent, PageHeader } from "@/lib/layout";
-import { Text } from "@/lib/ui";
+import { PageContent } from "@/lib/layout";
+import { Breadcrumbs, Text } from "@/lib/ui";
 import { CourseModulesNav } from "@/lib/CourseModules/views/CourseModulesNav";
 import { EditModuleSectionForm } from "@/lib/ModuleSections/forms/EditModuleSectionForm";
 import { QuickEditCourseForm } from "@/lib/Courses/forms/QuickEditCourseForm";
@@ -51,17 +51,19 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
 
   return (
     <>
-      <PageHeader
-        breadcrumbs={[
-          { href: "/admin", label: "Admin" },
-          { href: "/admin/courses", label: "Courses" },
-          {
-            href: `/admin/courses/${params.id}`,
-            label: course.title ?? "Untitled Course",
-          },
-        ]}
-      />
       <PageContent>
+        <div className="w-full flex flex-row items-center justify-between py-2 px-8 border-b">
+          <Breadcrumbs
+            breadcrumbs={[
+              { href: "/admin", label: "Admin" },
+              { href: "/admin/courses", label: "Courses" },
+              {
+                href: `/admin/courses/${params.id}`,
+                label: course.title ?? "Untitled Course",
+              },
+            ]}
+          />
+        </div>
         <div className="w-full flex flex-row items-center justify-start py-4 px-8 border-b">
           <div className="mr-4">
             <Text className="text-3xl font-semibold">{course.title}</Text>

@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { PageContent, PageHeader } from "@/lib/layout";
-import { Text } from "@/lib/ui";
+import { PageContent } from "@/lib/layout";
+import { Breadcrumbs, Text } from "@/lib/ui";
 import {
   QuickEditAssessmentForm,
   AssessmentProvider,
@@ -30,16 +30,18 @@ function AdminAssessmentPageContent() {
 
   return (
     <>
-      <PageHeader
-        breadcrumbs={[
-          { href: "/admin", label: "Admin" },
-          { href: "/admin/assessments", label: "Assessments" },
-          {
-            href: `/admin/assessments/${assessment._id}`,
-            label: assessment.title ?? "Untitled Assessment",
-          },
-        ]}
-      />
+      <div className="w-full flex flex-row items-center justify-between py-2 px-8 border-b">
+        <Breadcrumbs
+          breadcrumbs={[
+            { href: "/admin", label: "Admin" },
+            { href: "/admin/assessments", label: "Assessments" },
+            {
+              href: `/admin/assessments/${assessment._id}`,
+              label: assessment.title ?? "Untitled Assessment",
+            },
+          ]}
+        />
+      </div>
       <PageContent>
         <div className="w-full flex flex-row items-center justify-start py-4 px-8 border-b">
           <div className="mr-4">
