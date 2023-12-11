@@ -28,27 +28,36 @@ export function Masthead() {
   };
 
   return (
-    <div className="flex flex-row items-center justify-between w-full px-8 py-2 border-b text-sm">
+    <div className="flex flex-row items-center justify-between w-full px-8 py-2 border-b text-sm leading-none">
       <Link href="/" className="mr-6">
         <PocketKnife className="text-primary" />
       </Link>
 
       {isAuthenticated && (
-        <div className="flex flex-row gap-8 ml-4">
+        <div className="flex flex-row gap-8 mr-auto ml-4">
           <TextLink
             href="/my-courses"
             onClick={() => trackNavigationEvent("my courses")}
+            className="font-bold"
           >
             My Courses
           </TextLink>
         </div>
       )}
       {isAdmin && (
-        <div className="flex flex-row gap-8 items-center mr-auto ml-16">
-          <TextLink href="/admin">Admin</TextLink>
-          <TextLink href="/admin/courses">Courses</TextLink>
-          <TextLink href="/admin/modules">Modules</TextLink>
-          <TextLink href="/admin/assessments">Assessments</TextLink>
+        <div className="flex flex-row gap-8 items-center ml-auto mr-16">
+          <TextLink href="/admin" className="font-bold">
+            Admin
+          </TextLink>
+          <TextLink href="/admin/courses" className="font-bold">
+            Courses
+          </TextLink>
+          <TextLink href="/admin/modules" className="font-bold">
+            Modules
+          </TextLink>
+          <TextLink href="/admin/assessments" className="font-bold">
+            Assessments
+          </TextLink>
         </div>
       )}
       <div className="flex flex-row items-center justify-between gap-4">
