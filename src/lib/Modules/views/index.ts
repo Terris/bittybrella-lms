@@ -1,2 +1,2 @@
-export * from "./ModuleSectionsNav";
+export * from "../../ModuleSections/views/ModuleSectionsNav";
 export * from "./ModulesTable";

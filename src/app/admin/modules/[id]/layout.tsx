@@ -3,26 +3,22 @@
 import React from "react";
 import { PageContent } from "@/lib/layout";
 import { Breadcrumbs, Text } from "@/lib/ui";
-import {
-  QuickEditAssessmentForm,
-  type AssessmentId,
-  useAssessment,
-} from "@/lib/Assessments";
+import { ModuleId, QuickEditModuleForm, useModule } from "@/lib/Modules";
 
-interface AdminAssessmentLayoutProps {
+interface AdminModuleLayoutProps {
   params: { id: string };
   children: React.ReactNode;
 }
 
-export default function AdminAssessmentLayout({
+export default function AdminModuleLayout({
   params,
   children,
-}: AdminAssessmentLayoutProps) {
-  const { isLoading, assessment } = useAssessment({
-    id: params.id as AssessmentId,
+}: AdminModuleLayoutProps) {
+  const { isLoading, moduleData } = useModule({
+    id: params.id as ModuleId,
   });
 
-  if (isLoading || !assessment) return null;
+  if (isLoading || !moduleData) return null;
 
   return (
     <>
@@ -32,8 +28,8 @@ export default function AdminAssessmentLayout({
             { href: "/admin", label: "Admin" },
             { href: "/admin/assessments", label: "Assessments" },
             {
-              href: `/admin/assessments/${assessment._id}`,
-              label: assessment.title ?? "Untitled Assessment",
+              href: `/admin/assessments/${moduleData._id}`,
+              label: moduleData.title ?? "Untitled Assessment",
             },
           ]}
         />
@@ -41,12 +37,12 @@ export default function AdminAssessmentLayout({
       <PageContent>
         <div className="w-full flex flex-row items-center justify-start py-4 px-8 border-b">
           <div className="mr-4">
-            <Text className="text-3xl font-bold">{assessment.title}</Text>
+            <Text className="text-3xl font-bold">{moduleData.title}</Text>
             <Text className="text-muted-foreground">
-              {assessment.description}
+              {moduleData.description}
             </Text>
           </div>
-          <QuickEditAssessmentForm assessmentId={assessment._id} />
+          <QuickEditModuleForm moduleId={moduleData._id} />
         </div>
         {children}
       </PageContent>

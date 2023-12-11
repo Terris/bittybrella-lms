@@ -36,14 +36,7 @@ const fields = [
   },
 ];
 
-// Set the form title
-const formTitle = "Edit module";
-
-interface QuickEditModuleFormProps {
-  moduleId: ModuleId;
-}
-
-export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
+export const QuickEditModuleForm = ({ moduleId }: { moduleId: ModuleId }) => {
   const { toast } = useToast();
   const { moduleData: existingModule } = useModule({ id: moduleId });
   const { updateModule } = useUpdateModule();
@@ -83,7 +76,7 @@ export const QuickEditModuleForm = ({ moduleId }: QuickEditModuleFormProps) => {
   return (
     <AdminDialogForm<ModuleFormFields>
       config={moduleFormConfig}
-      formTitle={formTitle}
+      formTitle="Edit module"
       renderTrigger={
         <Button variant="ghost" size="sm">
           <Tooltip>

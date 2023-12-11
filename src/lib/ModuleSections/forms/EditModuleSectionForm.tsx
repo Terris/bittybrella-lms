@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useEffect, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { MoreVertical } from "lucide-react";
@@ -97,12 +99,10 @@ const Form = ({ section }: { section: ModuleSectionDoc }) => {
           <ModuleSectionSettingsMenu moduleSectionId={section._id} />
         </div>
       </div>
-      <div>
-        <ContentEditor
-          initialContent={section.content}
-          onChange={handleSaveContent}
-        />
-      </div>
+      <ContentEditor
+        initialContent={section.content}
+        onChange={handleSaveContent}
+      />
     </div>
   );
 };

@@ -23,6 +23,7 @@ export const findById = query({
   handler: async (ctx, { id }) => {
     await validateIdentity(ctx, { requireAdminRole: true });
     const assessment = await ctx.db.get(id);
+    if (!assessment) throw new Error("Assessment does not exist.");
     return assessment;
   },
 });

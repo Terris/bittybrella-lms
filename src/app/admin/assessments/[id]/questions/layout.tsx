@@ -36,7 +36,7 @@ export default function AdminAssessmentQuestionLayout({
   return (
     <div className="w-full py-8 lg:flex lg:flex-row lg:h-full lg:gap-4">
       <aside className="px-4 lg:w-1/5 lg:pl-8">
-        <div className="sticky top-0">
+        <div className="sticky top-2">
           <AssessmentQuestionsNav
             assessmentId={id as AssessmentId}
             questionId={questionId as AssessmentQuestionId}

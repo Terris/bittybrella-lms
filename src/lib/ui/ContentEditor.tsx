@@ -89,7 +89,7 @@ export const ContentEditor = ({
   }, [debouncedContent, editable, hasChanges, onChange, ready]);
 
   return (
-    <div className="rounded-md">
+    <div>
       {editable && <ToolBar editor={editor} />}
       <EditorContent editor={editor} className="p-4" />
       {editable && (
@@ -131,7 +131,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
   };
 
   return (
-    <div className="sticky top-0 z-50 bg-background flex flex-wrap gap-1 items-center p-2 border rounded-md">
+    <div className="sticky top-0 z-50 bg-background flex flex-wrap gap-1 items-center p-2 rounded-md">
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}

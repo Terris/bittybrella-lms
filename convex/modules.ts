@@ -25,11 +25,12 @@ export const findById = query({
   },
   handler: async (ctx, { id }) => {
     await validateIdentity(ctx, { requireAdminRole: true });
-    const moduleRec = await ctx.db.get(id);
-    const sections = removeEmptyFromArray(
+    const moduleDoc = await ctx.db.get(id);
+    if (!moduleDoc) throw new Error("Module does not exist.");
+    const sections = await removeEmptyFromArray(
       await getManyFrom(ctx.db, "moduleSections", "moduleId", id)
     ).sort((a, b) => a.order - b.order);
-    return { ...moduleRec, sections };
+    return { ...moduleDoc, sections };
   },
 });
 
