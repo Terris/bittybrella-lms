@@ -8,8 +8,8 @@ export default function AdminCoursesPage() {
         <Breadcrumbs breadcrumbs={[{ href: "/admin", label: "Admin" }]} />
       </div>
       <PageContent>
-        <div className="px-8">
-          <Text className="text-3xl font-semibold">Admin</Text>
+        <div className="py-4 px-8 border-b flex flex-row items-center justify-between">
+          <Text className="text-3xl font-bold">Admin</Text>
         </div>
       </PageContent>
     </>

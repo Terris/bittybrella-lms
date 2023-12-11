@@ -17,7 +17,7 @@ export default function AdminAssessmentsPage() {
       </div>
       <PageContent>
         <div className="py-4 px-8 border-b flex flex-row items-center justify-between">
-          <Text className="text-3xl font-semibold">Assessments</Text>
+          <Text className="text-3xl font-bold">Assessments</Text>
           <QuickCreateAssessmentForm />
         </div>
         <div className="px-4 w-full max-w-screen-2xl mx-auto">

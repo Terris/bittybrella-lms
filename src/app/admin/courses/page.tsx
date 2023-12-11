@@ -18,7 +18,7 @@ export default function AdminCoursesPage() {
       </div>
       <PageContent>
         <div className="py-4 px-8 border-b flex flex-row items-center justify-between">
-          <Text className="text-3xl font-semibold">Courses</Text>
+          <Text className="text-3xl font-bold">Courses</Text>
           <QuickCreateCourseForm />
         </div>
         <div className="px-4 w-full max-w-screen-2xl mx-auto">

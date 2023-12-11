@@ -11,7 +11,7 @@ export default function Home() {
       </div>
       <PageContent>
         <div className="py-4 px-8 border-b flex flex-row items-center justify-between">
-          <Text className="text-3xl font-semibold">Home</Text>
+          <Text className="text-3xl font-bold">Home</Text>
         </div>
       </PageContent>
     </>

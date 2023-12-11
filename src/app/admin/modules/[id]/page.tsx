@@ -58,7 +58,7 @@ export default function AdminModulePage({ params }: AdminModulePageProps) {
       <PageContent>
         <div className="w-full flex flex-row items-center justify-start py-4 px-8 border-b">
           <div className="mr-4">
-            <Text className="text-3xl font-semibold">{moduleData.title}</Text>
+            <Text className="text-3xl font-bold">{moduleData.title}</Text>
             <Text className="text-muted-foreground">
               {moduleData.description}
             </Text>

@@ -66,7 +66,7 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
         </div>
         <div className="w-full flex flex-row items-center justify-start py-4 px-8 border-b">
           <div className="mr-4">
-            <Text className="text-3xl font-semibold">{course.title}</Text>
+            <Text className="text-3xl font-bold">{course.title}</Text>
             <Text className="text-muted-foreground">{course.description}</Text>
           </div>
           <QuickEditCourseForm courseId={params.id as Id<"courses">} />
@@ -89,7 +89,7 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
               {selectedModule && (
                 <div className="flex flex-row items-center justify-between">
                   <div className="space-y-0.5">
-                    <Text className="text-2xl font-semibold">
+                    <Text className="text-2xl font-bold">
                       {selectedModule.title}
                     </Text>
                     <Text className="text-muted-foreground">
