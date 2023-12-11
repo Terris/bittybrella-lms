@@ -1,13 +1,18 @@
-import { PageContent, PageHeader } from "@/lib/layout";
+import { Breadcrumbs, PageContent } from "@/lib/layout";
+import { Text } from "@/lib/ui";
 
 export default function MyCoursesPage() {
   return (
     <>
-      <PageHeader
-        breadcrumbs={[{ href: "/my-courses", label: "My Courses" }]}
-      />
+      <div className="w-full flex flex-row items-center justify-between py-2 px-8 border-b">
+        <Breadcrumbs
+          breadcrumbs={[{ href: "/my-courses", label: "My Courses" }]}
+        />
+      </div>
       <PageContent>
-        <h1>My Courses</h1>
+        <div className="px-8">
+          <Text className="text-3xl font-semibold">My Courses</Text>
+        </div>
       </PageContent>
     </>
   );
