@@ -10,7 +10,7 @@ export default function MyCoursesPage() {
         />
       </div>
       <PageContent>
-        <div className="px-8">
+        <div className="py-4 px-8 border-b flex flex-row items-center justify-between">
           <Text className="text-3xl font-semibold">My Courses</Text>
         </div>
       </PageContent>
