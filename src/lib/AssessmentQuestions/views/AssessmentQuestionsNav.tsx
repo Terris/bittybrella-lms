@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import {
@@ -22,7 +23,6 @@ import {
 } from "../hooks";
 import { useToast } from "@/lib/hooks";
 import { AssessmentQuestionId } from "../types";
-import { useRouter } from "next/navigation";
 
 interface AssessmentQuestionsNavProps {
   assessmentId: AssessmentId;

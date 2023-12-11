@@ -1,26 +1,26 @@
+"use client";
+
 import React from "react";
 import { PageContent } from "@/lib/layout";
 import { Breadcrumbs, Text } from "@/lib/ui";
-// import {
-//   QuickEditAssessmentForm,
-//   type AssessmentId,
-//   useAssessment,
-// } from "@/lib/Assessments";
+import {
+  QuickEditAssessmentForm,
+  type AssessmentId,
+  useAssessment,
+} from "@/lib/Assessments";
 
 interface AdminModulePageProps {
   params: { id: string };
   children: React.ReactNode;
 }
 
-export function AdminAssessmentLayout({
+export default function AdminAssessmentLayout({
   params,
   children,
 }: AdminModulePageProps) {
-  // const { isLoading, assessment } = useAssessment({
-  //   id: params.id as AssessmentId,
-  // });
-
-  return { children };
+  const { isLoading, assessment } = useAssessment({
+    id: params.id as AssessmentId,
+  });
 
   if (isLoading || !assessment) return null;
 
