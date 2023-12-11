@@ -71,7 +71,7 @@ export default function AdminCoursePage({ params }: AdminCoursePageProps) {
         </div>
         <div className="w-full py-8 lg:flex lg:flex-row lg:h-full lg:gap-4">
           <aside className="px-4 lg:w-1/5 lg:pl-8">
-            <div className="sticky top-0">
+            <div className="sticky top-4">
               <CourseModulesNav
                 courseId={params.id as Id<"courses">}
                 modules={course.modules}

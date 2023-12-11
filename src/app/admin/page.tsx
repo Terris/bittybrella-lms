@@ -6,10 +6,9 @@ export default function AdminCoursesPage() {
     <>
       <PageHeader breadcrumbs={[{ href: "/admin", label: "Admin" }]} />
       <PageContent>
-        <div className="space-y-0.5">
-          <Text className="text-2xl font-semibold">Admin</Text>
+        <div className="px-8">
+          <Text className="text-3xl font-semibold">Admin</Text>
         </div>
-        <hr />
       </PageContent>
     </>
   );
