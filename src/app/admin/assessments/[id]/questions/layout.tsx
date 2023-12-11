@@ -5,23 +5,24 @@ import {
   AssessmentQuestionsNav,
 } from "@/lib/AssessmentQuestions";
 import { AssessmentId } from "@/lib/Assessments";
+import { useParams } from "next/navigation";
 
 interface AdminAssessmentQuestionLayoutProps {
-  params: { id: string; questionId: string };
   children: React.ReactNode;
 }
 
 export default function AdminAssessmentQuestionLayout({
-  params,
   children,
 }: AdminAssessmentQuestionLayoutProps) {
+  const { id, questionId } = useParams();
+
   return (
     <div className="w-full py-8 lg:flex lg:flex-row lg:h-full lg:gap-4">
       <aside className="px-4 lg:w-1/5 lg:pl-8">
         <div className="sticky top-0">
           <AssessmentQuestionsNav
-            assessmentId={params.id as AssessmentId}
-            questionId={params.questionId as AssessmentQuestionId}
+            assessmentId={id as AssessmentId}
+            questionId={questionId as AssessmentQuestionId}
           />
         </div>
       </aside>

@@ -91,6 +91,7 @@ export function AssessmentQuestionsNav({
                   <Button
                     key={question._id}
                     variant="ghost"
+                    size="sm"
                     onClick={() =>
                       router.push(
                         `/admin/assessments/${assessmentId}/questions/${question?._id}`
