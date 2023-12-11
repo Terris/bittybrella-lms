@@ -1,7 +1,7 @@
 "use client";
 
 import * as Yup from "yup";
-import { Pencil } from "lucide-react";
+import { Settings } from "lucide-react";
 import { useToast } from "@/lib/hooks";
 import {
   Button,
@@ -74,7 +74,7 @@ export const QuickEditAssessmentForm = ({
         <Button variant="ghost" size="sm">
           <Tooltip>
             <TooltipTrigger>
-              <Pencil className="h-4 w-4" />
+              <Settings className="h-4 w-4" />
             </TooltipTrigger>
             <TooltipContent>Edit assessment settings</TooltipContent>
           </Tooltip>
