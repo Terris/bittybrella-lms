@@ -14,7 +14,7 @@ import {
 } from "@/lib/ui";
 import Link, { LinkProps } from "next/link";
 import { useTracking } from "../hooks/useTracking";
-import { useMe } from "../providers";
+import { useMe } from "../providers/MeProvider";
 
 export function Masthead() {
   const { isAuthenticated, isAdmin } = useMe();

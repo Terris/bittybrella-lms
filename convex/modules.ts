@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { asyncMap, getManyFrom } from "./lib/relationships";
+import { asyncMap } from "convex-helpers";
+import { getManyFrom } from "./lib/relationships";
 import { removeEmptyFromArray } from "./lib/utils";
 import { validateIdentity } from "./lib/authorization";
 

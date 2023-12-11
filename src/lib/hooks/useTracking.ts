@@ -2,7 +2,7 @@
 
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import { useMe } from "../providers";
+import { useMe } from "../providers/MeProvider";
 
 export function useTracking() {
   const { me } = useMe();

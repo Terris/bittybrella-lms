@@ -1,5 +1,5 @@
 import "./globals.css";
-import { AppProviders } from "@/lib/providers";
+import { AppProviders } from "@/lib/providers/AppProviders";
 import { Masthead, Main } from "@/lib/layout";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/lib/ui";

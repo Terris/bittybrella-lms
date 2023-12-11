@@ -14,29 +14,35 @@ import {
   SortableListItem,
 } from "@/lib/providers/SortableListProvider";
 import { cn } from "@/lib/utils";
-import { useAssessmentContext } from "@/lib/Assessments";
+import { AssessmentId, useAssessment } from "@/lib/Assessments";
 import {
   useAssessmentQuestions,
   useCreateAssessmentQuestion,
   useUpdateAssessmentQuestionsOrder,
 } from "../hooks";
 import { useToast } from "@/lib/hooks";
+import { AssessmentQuestionId } from "../types";
+import { useRouter } from "next/navigation";
 
-export function AssessmentQuestionsNav() {
+interface AssessmentQuestionsNavProps {
+  assessmentId: AssessmentId;
+  questionId?: AssessmentQuestionId | null;
+}
+
+export function AssessmentQuestionsNav({
+  assessmentId,
+  questionId,
+}: AssessmentQuestionsNavProps) {
+  const router = useRouter();
   const { toast } = useToast();
-  const {
-    isLoading,
-    assessmentId,
-    assessment,
-    selectedQuestionId,
-    setSelectedQuestionId,
-  } = useAssessmentContext();
+  const { isLoading, assessment } = useAssessment({ id: assessmentId });
+  const selectedQuestionId = questionId;
 
-  const { createBlankAssessmentQuestion } = useCreateAssessmentQuestion({
+  const { assessmentQuestions } = useAssessmentQuestions({
     assessmentId,
   });
 
-  const { assessmentQuestions } = useAssessmentQuestions({
+  const { createBlankAssessmentQuestion } = useCreateAssessmentQuestion({
     assessmentId,
   });
 
@@ -85,7 +91,11 @@ export function AssessmentQuestionsNav() {
                   <Button
                     key={question._id}
                     variant="ghost"
-                    onClick={() => setSelectedQuestionId(question?._id)}
+                    onClick={() =>
+                      router.push(
+                        `/admin/assessments/${assessmentId}/questions/${question?._id}`
+                      )
+                    }
                     className={cn(
                       "w-full truncate transition-all",
                       selectedQuestionId === question?._id && "font-bold pl-5"
@@ -113,7 +123,11 @@ export function AssessmentQuestionsNav() {
         <AssessmentQuestionsNavSelect
           assessmentQuestions={assessmentQuestions}
           selectedQuestionId={selectedQuestionId}
-          setSelectedQuestionId={setSelectedQuestionId}
+          setSelectedQuestionId={(questionId) =>
+            router.push(
+              `/admin/assessments/${assessmentId}/questions/${questionId}`
+            )
+          }
         />
       </div>
     </>
@@ -126,7 +140,7 @@ function AssessmentQuestionsNavSelect({
   setSelectedQuestionId,
 }: {
   assessmentQuestions: Doc<"assessmentQuestions">[];
-  selectedQuestionId: Id<"assessmentQuestions"> | null;
+  selectedQuestionId: Id<"assessmentQuestions"> | null | undefined;
   setSelectedQuestionId: (id: Id<"assessmentQuestions"> | null) => void;
 }) {
   return (

@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { LoadingScreen } from "@/lib/ui";
-import { useMe } from "@/lib/providers";
+import { useMe } from "@/lib/providers/MeProvider";
 
 interface PrivatePageWrapperProps {
   children: React.ReactNode;
