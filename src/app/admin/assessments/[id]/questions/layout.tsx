@@ -1,11 +1,13 @@
 "use client";
 
+import { useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { AssessmentId } from "@/lib/Assessments";
 import {
   AssessmentQuestionId,
   AssessmentQuestionsNav,
+  useAssessmentQuestions,
 } from "@/lib/AssessmentQuestions";
-import { AssessmentId } from "@/lib/Assessments";
-import { useParams } from "next/navigation";
 
 interface AdminAssessmentQuestionLayoutProps {
   children: React.ReactNode;
@@ -14,7 +16,22 @@ interface AdminAssessmentQuestionLayoutProps {
 export default function AdminAssessmentQuestionLayout({
   children,
 }: AdminAssessmentQuestionLayoutProps) {
+  const router = useRouter();
   const { id, questionId } = useParams();
+  const { assessmentQuestions } = useAssessmentQuestions({
+    assessmentId: id as AssessmentId,
+  });
+
+  useEffect(() => {
+    if (!assessmentQuestions) return;
+    if (!questionId) {
+      router.replace(
+        `/admin/assessments/${id}/questions/${assessmentQuestions[0]._id}`
+      );
+    }
+  });
+
+  if (!id) return null;
 
   return (
     <div className="w-full py-8 lg:flex lg:flex-row lg:h-full lg:gap-4">

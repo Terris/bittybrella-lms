@@ -1,6 +1,3 @@
-export function buildArgsWithSkipConditions(
-  conditions: boolean[],
-  queryArgs: any
-) {
-  return conditions.some((condition) => condition) ? undefined : queryArgs;
+export function skipOrBuildArgs(skipConditions: boolean[], queryArgs: any) {
+  return skipConditions.some((condition) => condition) ? undefined : queryArgs;
 }
