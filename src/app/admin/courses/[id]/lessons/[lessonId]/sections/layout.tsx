@@ -1,6 +1,7 @@
 "use client";
 import { useLessonSections } from "@/lib/LessonSections";
 import { LessonId } from "@/lib/Lessons";
+import { useConditionalForwarder } from "@/lib/hooks";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -17,14 +18,13 @@ export default function AdminCourseLessonSectionLayout({
     lessonId: lessonId as LessonId,
   });
 
-  useEffect(() => {
-    if (!lessonSections || lessonSections.length === 0) return;
-    if (!lessonSectionId) {
-      router.replace(
-        `/admin/courses/${id}/lessons/${lessonId}/sections/${lessonSections[0]._id}`
-      );
-    }
-  }, [id, router, lessonSections, lessonSectionId, lessonId]);
+  useConditionalForwarder({
+    skipCondition: !lessonSections || lessonSections.length === 0,
+    forwardCondition: !lessonSectionId,
+    forwardTo: `/admin/courses/${id}/lessons/${lessonId}/sections/${
+      lessonSections?.[0]?._id ?? ""
+    }`,
+  });
 
   if (!id || (id && !lessonId)) return null;
   return <>{children}</>;

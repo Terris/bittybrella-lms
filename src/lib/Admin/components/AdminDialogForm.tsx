@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { FormikValues } from "formik";
+import { AdminForm, type AdminFormProps } from "@/lib/Admin";
 import {
-  AdminForm,
-  AdminFormProps,
   Button,
   Dialog,
   DialogContent,

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
 import { MoreVertical } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 import { useDebounce } from "@/lib/hooks/useDebounce";

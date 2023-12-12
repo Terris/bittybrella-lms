@@ -1,17 +1,15 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { useQuery } from "convex/react";
-import { Check, X } from "lucide-react";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { api } from "../../../../convex/_generated/api";
+import { AdminTable, AdminTableBooleanCell } from "@/lib/Admin";
 import {
-  AdminTable,
   Text,
   CopyToClipboardButton,
   TextLink,
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-  AdminTableBooleanCell,
 } from "@/lib/ui";
 import { QuickEditLessonForm } from "../forms";
 import { DeleteLessonButton } from "../components";

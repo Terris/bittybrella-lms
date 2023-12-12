@@ -22,7 +22,8 @@ import {
   useUpdateAssessmentQuestionsOrder,
 } from "../hooks";
 import { useToast } from "@/lib/hooks";
-import { AssessmentQuestionId } from "../types";
+import { AssessmentQuestionDoc, AssessmentQuestionId } from "../types";
+import { SortableAdminNavList } from "@/lib/Admin";
 
 interface AssessmentQuestionsNavProps {
   assessmentId: AssessmentId;
@@ -86,8 +87,12 @@ export function AssessmentQuestionsNav({
       <div className="hidden lg:block">
         <SortableList items={sortableListItems} onUpdate={handleOnUpdate}>
           <div className="flex flex-col gap-2">
-            {assessmentQuestions.map((question) => (
-              <SortableListItem key={question._id} id={question._id}>
+            <SortableAdminNavList<AssessmentQuestionDoc, "_id">
+              data={assessmentQuestions}
+              keyExtractor="_id"
+              sortableItemIds={sortableListItems}
+              onUpdate={handleOnUpdate}
+              renderItem={(question) => (
                 <Button
                   key={question._id}
                   variant="ghost"
@@ -106,8 +111,8 @@ export function AssessmentQuestionsNav({
                     {question.question}
                   </div>
                 </Button>
-              </SortableListItem>
-            ))}
+              )}
+            />
             <Button
               variant="ghost"
               size="sm"

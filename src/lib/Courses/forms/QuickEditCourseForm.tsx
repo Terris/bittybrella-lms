@@ -3,15 +3,8 @@
 import * as Yup from "yup";
 import { Settings } from "lucide-react";
 import { useToast } from "@/lib/hooks/useToast";
-import {
-  AdminFieldtype,
-  AdminFormConfig,
-  AdminDialogForm,
-  Button,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/lib/ui";
+import { AdminFieldtype, AdminFormConfig, AdminDialogForm } from "@/lib/Admin";
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@/lib/ui";
 import type { CourseFormFields, CourseId } from "../types";
 import { useCourse, useUpdateCourse } from "../hooks";
 

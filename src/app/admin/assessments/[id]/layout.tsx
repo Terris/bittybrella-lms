@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { AdminLayout } from "@/lib/layout";
+import { AdminLayout } from "@/lib/Admin";
 import { Breadcrumbs, Text } from "@/lib/ui";
 import {
   type AssessmentId,

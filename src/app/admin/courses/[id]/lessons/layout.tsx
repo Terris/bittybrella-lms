@@ -23,7 +23,9 @@ export default function AdminAssessmentQuestionLayout({
   useConditionalForwarder({
     skipCondition: !courseLessons || courseLessons.length === 0,
     forwardCondition: !lessonId,
-    forwardTo: `/admin/courses/${id}/lessons/${courseLessons?.[0].lessonId}`,
+    forwardTo: `/admin/courses/${id}/lessons/${
+      courseLessons?.[0]?.lessonId ?? ""
+    }`,
   });
 
   if (!id) return null;

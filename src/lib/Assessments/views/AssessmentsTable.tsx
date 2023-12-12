@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Id } from "../../../../convex/_generated/dataModel";
+import { AdminTable } from "@/lib/Admin";
 import {
-  AdminTable,
   Text,
   CopyToClipboardButton,
   Tooltip,

@@ -1,4 +1,4 @@
-import { cn } from "../utils";
+import { cn } from "../../utils";
 
 function AdminLayout() {}
 
@@ -53,7 +53,7 @@ AdminLayout.TableWrapper = TableWrapper;
 function NavAndContentFlexWrapper({ children }: LayoutComponentWithChildren) {
   return (
     <div className="w-full py-8 lg:flex lg:flex-row lg:h-full lg:gap-4">
-      <div className="sticky top-4">{children}</div>
+      {children}
     </div>
   );
 }
@@ -64,7 +64,9 @@ AdminLayout.NavAndContentFlexWrapper = NavAndContentFlexWrapper;
 */
 export function NavWrapper({ children }: LayoutComponentWithChildren) {
   return (
-    <aside className="px-4 lg:w-1/4 lg:max-w-4xl lg:pl-8">{children}</aside>
+    <aside className="px-4 lg:w-1/4 lg:max-w-4xl lg:pl-8">
+      <div className="sticky top-4">{children}</div>
+    </aside>
   );
 }
 AdminLayout.NavWrapper = NavWrapper;

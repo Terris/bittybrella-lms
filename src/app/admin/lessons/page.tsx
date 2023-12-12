@@ -1,6 +1,6 @@
 "use client";
 
-import { AdminLayout } from "@/lib/layout";
+import { AdminLayout } from "@/lib/Admin";
 import { QuickCreateLessonForm, LessonsTable } from "@/lib/Lessons";
 import { Breadcrumbs, Text } from "@/lib/ui";
 

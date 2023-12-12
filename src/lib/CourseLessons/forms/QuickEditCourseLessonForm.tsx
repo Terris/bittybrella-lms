@@ -5,9 +5,9 @@ import { useToast } from "@/lib/hooks/useToast";
 import {
   AdminDialogForm,
   AdminFormConfig,
-  Button,
   type AdminFieldtype,
-} from "@/lib/ui";
+} from "@/lib/Admin";
+import { Button } from "@/lib/ui";
 import { useFindAllLessons } from "@/lib/Lessons";
 import { type CourseId } from "@/lib/Courses";
 import { useCourseLessons, useUpdateCourseLessons } from "../hooks";

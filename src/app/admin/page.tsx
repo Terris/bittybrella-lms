@@ -1,4 +1,4 @@
-import { AdminLayout } from "@/lib/layout";
+import { AdminLayout } from "@/lib/Admin";
 import { Breadcrumbs, Text } from "@/lib/ui";
 
 export default function AdminCoursesPage() {

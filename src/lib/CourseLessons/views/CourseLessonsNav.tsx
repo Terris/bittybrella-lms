@@ -22,10 +22,15 @@ import { type CourseId } from "@/lib/Courses";
 import { LessonId, type LessonDoc } from "@/lib/Lessons";
 import { LessonSectionsNav, type LessonSectionId } from "@/lib/LessonSections";
 import { QuickEditCourseLessonForm } from "../forms/QuickEditCourseLessonForm";
-import { CourseLessonId } from "../types";
+import {
+  CourseLessonDoc,
+  CourseLessonId,
+  CourseLessonWithLessonDoc,
+} from "../types";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/lib/hooks";
 import { useCourseLessons, useUpdateCourseLessonsOrder } from "../hooks";
+import { SortableAdminNavList } from "@/lib/Admin";
 
 export interface CourseLesson extends LessonDoc {
   order: number;
@@ -103,43 +108,42 @@ export function CourseLessonsNav({
         </DropdownMenu>
       </div>
       <div className="hidden lg:block">
-        <SortableList items={sortableListItems} onUpdate={handleOnUpdate}>
-          <div className="flex flex-col gap-2">
-            {courseLessons.map((courseLesson) => (
-              <SortableListItem key={courseLesson._id} id={courseLesson._id}>
-                <div className="w-full flex flex-col truncate">
-                  <Button
-                    variant="ghost"
-                    onClick={() =>
-                      router.push(
-                        `/admin/courses/${courseId}/lessons/${courseLesson.lessonId}/sections`
-                      )
-                    }
-                    className={cn(
-                      "w-full truncate transition-all",
-                      selectedLessonId === courseLesson.lessonId &&
-                        "font-bold pl-5"
-                    )}
-                  >
-                    <div className="w-full text-left truncate">
-                      {courseLesson.lesson.title}
-                    </div>
-                  </Button>
-                  {selectedLessonId === courseLesson.lessonId && (
-                    <div className="pt-2">
-                      <LessonSectionsNav
-                        lessonId={selectedLessonId}
-                        sectionId={selectedSectionId}
-                        hideHeader
-                        rootUrl={`/admin/courses/${courseId}/lessons`}
-                      />
-                    </div>
-                  )}
+        <SortableAdminNavList<CourseLessonWithLessonDoc, "_id">
+          data={courseLessons}
+          keyExtractor="_id"
+          sortableItemIds={sortableListItems}
+          onUpdate={handleOnUpdate}
+          renderItem={(courseLesson) => (
+            <div className="w-full flex flex-col truncate">
+              <Button
+                variant="ghost"
+                onClick={() =>
+                  router.push(
+                    `/admin/courses/${courseId}/lessons/${courseLesson.lessonId}/sections`
+                  )
+                }
+                className={cn(
+                  "w-full truncate transition-all",
+                  selectedLessonId === courseLesson.lessonId && "font-bold pl-5"
+                )}
+              >
+                <div className="w-full text-left truncate">
+                  {courseLesson.lesson.title}
                 </div>
-              </SortableListItem>
-            ))}
-          </div>
-        </SortableList>
+              </Button>
+              {selectedLessonId === courseLesson.lessonId && (
+                <div className="pt-2">
+                  <LessonSectionsNav
+                    lessonId={selectedLessonId}
+                    sectionId={selectedSectionId}
+                    hideHeader
+                    rootUrl={`/admin/courses/${courseId}/lessons`}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+        />
       </div>
       <div className="block lg:hidden pb-6">
         <Select

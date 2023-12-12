@@ -8,6 +8,7 @@ import {
   LessonSectionsNav,
   useLessonSections,
 } from "@/lib/LessonSections";
+import { useConditionalForwarder } from "@/lib/hooks";
 
 interface AdminLessonSectionLayoutProps {
   children: React.ReactNode;
@@ -22,11 +23,12 @@ export default function AdminLessonSectionLayout({
     lessonId: id as LessonId,
   });
 
-  useEffect(() => {
-    if (!lessonSections || lessonSections.length === 0) return;
-    if (!sectionId) {
-      router.replace(`/admin/lessons/${id}/sections/${lessonSections[0]._id}`);
-    }
+  useConditionalForwarder({
+    skipCondition: !lessonSections || lessonSections.length === 0,
+    forwardCondition: !sectionId,
+    forwardTo: `/admin/lessons/${id}/sections/${
+      lessonSections?.[0]?._id ?? ""
+    }`,
   });
 
   if (!id) return null;

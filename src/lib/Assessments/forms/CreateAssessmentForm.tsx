@@ -1,7 +1,7 @@
 "use client";
 
 import * as Yup from "yup";
-import { AdminFormConfig, AdminDialogForm } from "@/lib/ui";
+import { AdminFormConfig, AdminDialogForm } from "@/lib/Admin";
 import { useToast } from "@/lib/hooks/useToast";
 import { useCreateAssessment } from "../hooks";
 import type { AssessmentFormFields } from "../types";

@@ -30,6 +30,7 @@ import {
 } from "@/lib/LessonSections";
 import { useToast } from "@/lib/hooks";
 import { LessonId } from "../../Lessons";
+import { SortableAdminNavList } from "@/lib/Admin";
 
 interface LessonSectionsNavProps {
   lessonId: LessonId;
@@ -108,40 +109,30 @@ export function LessonSectionsNav({
       )}
 
       <div className="hidden lg:block">
-        <SortableList items={sortableListItems} onUpdate={handleOnUpdate}>
-          <div className="flex flex-col gap-1">
-            {lessonSections.map((section) => (
-              <SortableListItem key={section._id} id={section._id}>
-                <Button
-                  key={section?._id}
-                  variant={"ghost"}
-                  size="sm"
-                  onClick={() =>
-                    router.push(
-                      `${rootUrl}/${lessonId}/sections/${section?._id}`
-                    )
-                  }
-                  className={cn(
-                    "w-full truncate transition-all",
-                    selectedSectionId === section?._id && "font-bold pl-5"
-                  )}
-                >
-                  <div className="w-full text-left truncate">
-                    {section?.title ?? "Untitled section"}
-                  </div>
-                </Button>
-              </SortableListItem>
-            ))}
+        <SortableAdminNavList<LessonSectionDoc, "_id">
+          data={lessonSections}
+          keyExtractor="_id"
+          sortableItemIds={sortableListItems}
+          onUpdate={handleOnUpdate}
+          renderItem={(section) => (
             <Button
-              variant="ghost"
+              key={section?._id}
+              variant={"ghost"}
               size="sm"
-              onClick={handleCreateNewSection}
-              className="ml-5 justify-start italic"
+              onClick={() =>
+                router.push(`${rootUrl}/${lessonId}/sections/${section?._id}`)
+              }
+              className={cn(
+                "w-full truncate transition-all",
+                selectedSectionId === section?._id && "font-bold pl-5"
+              )}
             >
-              <Plus className="h-3 w-3 mr-1" /> Add new lesson section
+              <div className="w-full text-left truncate">
+                {section?.title ?? "Untitled section"}
+              </div>
             </Button>
-          </div>
-        </SortableList>
+          )}
+        />
       </div>
       <div className="block lg:hidden pb-6">
         <LessonSectionsNavSelect

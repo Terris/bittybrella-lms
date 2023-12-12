@@ -6,7 +6,7 @@ import {
   AdminFormConfig,
   AdminDialogForm,
   type AdminFieldtype,
-} from "@/lib/ui";
+} from "@/lib/Admin";
 import type { LessonFormFields } from "../types";
 import { useCreateLesson } from "../hooks/useCreateLesson";
 

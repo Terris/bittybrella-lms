@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
+import { useParams } from "next/navigation";
+import { AdminLayout } from "@/lib/Admin";
 import { Breadcrumbs, Text } from "@/lib/ui";
 import { type LessonId, QuickEditLessonForm, useLesson } from "@/lib/Lessons";
 import { LessonSectionId, LessonSectionsNav } from "@/lib/LessonSections";
-import { useParams } from "next/navigation";
-import { AdminLayout } from "@/lib/layout";
 
 interface AdminLessonLayoutProps {
   children: React.ReactNode;

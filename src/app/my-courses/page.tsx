@@ -8,7 +8,7 @@ export default function MyCoursesPage() {
           breadcrumbs={[{ href: "/my-courses", label: "My Courses" }]}
         />
       </div>
-      <div className="py-4 px-8 border-b flex flex-row items-center justify-between">
+      <div className="w-full py-4 px-8 border-b flex flex-row items-center justify-between">
         <Text className="text-3xl font-bold">My Courses</Text>
       </div>
     </>
