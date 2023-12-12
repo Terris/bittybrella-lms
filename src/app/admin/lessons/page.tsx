@@ -15,7 +15,7 @@ export default function AdminLessonsPage() {
           ]}
         />
       </AdminLayout.BreadcrumbsWrapper>
-      <AdminLayout.PageTitleWrapper>
+      <AdminLayout.PageTitleWrapper align="between">
         <Text className="text-3xl font-bold">Lessons</Text>
         <QuickCreateLessonForm />
       </AdminLayout.PageTitleWrapper>
