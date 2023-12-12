@@ -36,9 +36,6 @@ export function EditLessonSectionForm({ id }: LessonSectionProps) {
   const { isLoading, error, lessonSection } = useLessonSection({
     id,
   });
-  console.log(id);
-  console.log(error);
-  console.log(lessonSection);
 
   if (!lessonSection) return null;
   return <Form section={lessonSection} />;

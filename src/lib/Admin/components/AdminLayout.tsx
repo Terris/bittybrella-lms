@@ -64,7 +64,7 @@ AdminLayout.NavAndContentFlexWrapper = NavAndContentFlexWrapper;
 */
 export function NavWrapper({ children }: LayoutComponentWithChildren) {
   return (
-    <aside className="px-4 lg:w-1/4 lg:max-w-4xl lg:pl-8">
+    <aside className="px-4 lg:w-1/4 lg:max-w-[20rem] flex-shrink lg:pl-8">
       <div className="sticky top-4">{children}</div>
     </aside>
   );
@@ -76,8 +76,8 @@ AdminLayout.NavWrapper = NavWrapper;
 */
 export function ContentWrapper({ children }: LayoutComponentWithChildren) {
   return (
-    <div className="px-4  lg:pr-8">
-      <div className="flex flex-col gap-4 max-w-4xl">{children}</div>
+    <div className="px-4 lg:w-3/4 lg:pr-8">
+      <div className="max-w-4xl mx-auto">{children}</div>
     </div>
   );
 }
