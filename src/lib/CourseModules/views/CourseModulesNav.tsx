@@ -1,8 +1,5 @@
 import { useState } from "react";
 import { MoreVertical } from "lucide-react";
-import { useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
 import {
   Button,
   DropdownMenu,
@@ -22,68 +19,71 @@ import {
 } from "@/lib/providers/SortableListProvider";
 import { cn } from "@/lib/utils";
 import { type CourseId } from "@/lib/Courses";
-import { ModuleId, ModuleSectionsNav, type ModuleDoc } from "@/lib/Modules";
-import {
-  type ModuleSectionId,
-  type ModuleSectionDoc,
-} from "@/lib/ModuleSections";
+import { ModuleId, type ModuleDoc } from "@/lib/Modules";
+import { ModuleSectionsNav, type ModuleSectionId } from "@/lib/ModuleSections";
 import { QuickEditCourseModuleForm } from "../forms/QuickEditCourseModuleForm";
 import { CourseModuleId } from "../types";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/lib/hooks";
+import { useCourseModules, useUpdateCourseModulesOrder } from "../hooks";
 
 export interface CourseModule extends ModuleDoc {
-  sections: ModuleSectionDoc[];
   order: number;
   courseModuleId: CourseModuleId;
 }
 
 export function CourseModulesNav({
   courseId,
-  modules,
-  selectedModuleId,
-  setSelectedModuleId,
-  selectedModuleSectionId,
-  setSelectedModuleSectionId,
+  moduleId,
+  moduleSectionId,
 }: {
   courseId: CourseId;
-  modules: CourseModule[];
-  selectedModuleId: ModuleId | null;
-  setSelectedModuleId: (id: ModuleId) => void;
-  selectedModuleSectionId: ModuleSectionId | null;
-  setSelectedModuleSectionId: (id: ModuleSectionId) => void;
+  moduleId?: ModuleId;
+  moduleSectionId?: ModuleSectionId;
 }) {
-  const sortItems = modules.map((module) => module.courseModuleId);
+  const router = useRouter();
+  const { toast } = useToast();
+  const selectedModuleId = moduleId;
+  const selectedSectionId = moduleSectionId;
+  console.log(selectedSectionId);
 
-  const updateCourseModulesOrder = useMutation(
-    api.courseModules.updateOrder
-  ).withOptimisticUpdate((localStore, args) => {
-    const { idsInOrder } = args;
-
-    const updatedModules = modules
-      .map((module) => ({
-        ...module,
-        order: idsInOrder.indexOf(module.courseModuleId) + 1,
-      }))
-      .sort((a, b) => a.order - b.order);
-    const currentValue = localStore.getQuery(api.courses.findById, {
-      id: courseId,
-    });
-    if (currentValue !== undefined) {
-      localStore.setQuery(
-        api.courses.findById,
-        {
-          id: courseId,
-        },
-        { ...currentValue, modules: updatedModules }
-      );
-    }
+  const { isLoading, courseModules } = useCourseModules({
+    courseId,
   });
 
-  function handleOnUpdate(updatedItems: string[]) {
-    updateCourseModulesOrder({
+  const sortableListItems = courseModules?.map(
+    (courseModule) => courseModule._id
+  );
+
+  const { updateCourseModulesOrder } = useUpdateCourseModulesOrder({
+    courseId,
+  });
+
+  // Note that we're sorting courseModule._ids, not courseModule.module
+  async function handleOnUpdate(updatedItems: string[]) {
+    const res = await updateCourseModulesOrder({
       idsInOrder: updatedItems as CourseModuleId[],
     });
+    if (res) {
+      toast({
+        title: "Success!",
+        description: "Updated course module order.",
+      });
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description:
+          "Something went wrong trying to update course module order.",
+      });
+    }
   }
+
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+
+  if (isLoading || !courseModules || !sortableListItems) {
+    return null;
+  }
 
   return (
     <>
@@ -104,36 +104,36 @@ export function CourseModulesNav({
         </DropdownMenu>
       </div>
       <div className="hidden lg:block">
-        <SortableList items={sortItems} onUpdate={handleOnUpdate}>
+        <SortableList items={sortableListItems} onUpdate={handleOnUpdate}>
           <div className="flex flex-col gap-2">
-            {modules.map((module) => (
-              <SortableListItem
-                key={module.courseModuleId}
-                id={module.courseModuleId}
-              >
+            {courseModules.map((courseModule) => (
+              <SortableListItem key={courseModule._id} id={courseModule._id}>
                 <div className="w-full flex flex-col truncate">
                   <Button
-                    key={module._id}
                     variant="ghost"
-                    onClick={() => setSelectedModuleId(module?._id)}
+                    onClick={() =>
+                      router.push(
+                        `/admin/courses/${courseId}/modules/${courseModule.moduleId}/sections`
+                      )
+                    }
                     className={cn(
                       "w-full truncate transition-all",
-                      selectedModuleId === module?._id && "font-bold pl-5"
+                      selectedModuleId === courseModule.moduleId &&
+                        "font-bold pl-5"
                     )}
                     size="sm"
                   >
                     <div className="w-full text-left truncate">
-                      {module.title ?? "Untitled section"}
+                      {courseModule.moduleDoc?.title ?? "Untitled section"}
                     </div>
                   </Button>
-
-                  {selectedModuleId === module?._id && (
+                  {selectedModuleId === courseModule.moduleId && (
                     <div className="pt-2">
                       <ModuleSectionsNav
-                        moduleId={selectedModuleId as Id<"modules">}
-                        selectedModuleSectionId={selectedModuleSectionId}
-                        setSelectedModuleSectionId={setSelectedModuleSectionId}
+                        moduleId={selectedModuleId}
+                        sectionId={selectedSectionId}
                         hideHeader
+                        rootUrl={`/admin/courses/${courseId}/modules`}
                       />
                     </div>
                   )}
@@ -145,16 +145,21 @@ export function CourseModulesNav({
       </div>
       <div className="block lg:hidden pb-6">
         <Select
-          onValueChange={(val) => setSelectedModuleId(val as Id<"modules">)}
+          onValueChange={(moduleId) =>
+            router.push(`/admin/courses/${courseId}/modules/${moduleId}`)
+          }
           value={selectedModuleId as string}
         >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select a module" />
           </SelectTrigger>
           <SelectContent>
-            {modules.map((module) => (
-              <SelectItem value={module._id} key={module._id}>
-                {module.title}
+            {courseModules.map((courseModule) => (
+              <SelectItem
+                value={courseModule.moduleId}
+                key={courseModule.moduleId}
+              >
+                {courseModule.moduleDoc?.title}
               </SelectItem>
             ))}
           </SelectContent>

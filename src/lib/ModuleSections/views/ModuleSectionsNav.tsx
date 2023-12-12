@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import { useMutation } from "convex/react";
 import { MoreVertical, Plus } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
 import {
   Button,
   DropdownMenu,
@@ -36,21 +35,22 @@ interface ModuleSectionsNavProps {
   moduleId: ModuleId;
   sectionId?: ModuleSectionId | null;
   hideHeader?: boolean;
+  rootUrl?: string;
 }
 
 export function ModuleSectionsNav({
   moduleId,
   sectionId,
   hideHeader,
+  rootUrl = "/admin/modules",
 }: ModuleSectionsNavProps) {
   const router = useRouter();
   const { toast } = useToast();
   const { isLoading, moduleSections } = useModuleSections({ moduleId });
   const selectedSectionId = sectionId;
 
-  const createModuleSection = useMutation(api.moduleSections.create);
-
   const sortableListItems = moduleSections?.map((section) => section._id);
+  const createModuleSection = useMutation(api.moduleSections.create);
 
   const { updateModuleSectionsOrder } = useUpdateModuleSectionsOrder({
     moduleId,
@@ -82,12 +82,15 @@ export function ModuleSectionsNav({
     });
   };
 
-  if (!moduleSections || !sortableListItems) return null;
+  // TODO: Add a visual loading state and handle error state
+  if (isLoading || !module || !moduleSections || !sortableListItems) {
+    return null;
+  }
 
   return (
     <>
       {hideHeader ? null : (
-        <div className="flex items-center justify-between">
+        <div className="flex flex-row items-center justify-between pb-2">
           <Text className="font-bold">Module Sections</Text>
           <DropdownMenu>
             <DropdownMenuTrigger>
@@ -106,7 +109,7 @@ export function ModuleSectionsNav({
 
       <div className="hidden lg:block">
         <SortableList items={sortableListItems} onUpdate={handleOnUpdate}>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1">
             {moduleSections.map((section) => (
               <SortableListItem key={section._id} id={section._id}>
                 <Button
@@ -115,7 +118,7 @@ export function ModuleSectionsNav({
                   size="sm"
                   onClick={() =>
                     router.push(
-                      `/admin/modules/${moduleId}/sections/${section?._id}`
+                      `${rootUrl}/${moduleId}/sections/${section?._id}`
                     )
                   }
                   className={cn(
@@ -145,7 +148,7 @@ export function ModuleSectionsNav({
           moduleSections={moduleSections}
           selectedSectionId={selectedSectionId}
           setSelectedSectionId={(sectionid) =>
-            router.push(`/admin/modules/${moduleId}/sections/${sectionid}`)
+            router.push(`${rootUrl}/${moduleId}/sections/${sectionid}`)
           }
         />
       </div>

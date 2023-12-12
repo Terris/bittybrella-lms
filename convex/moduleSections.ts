@@ -2,7 +2,7 @@ import { v } from "convex/values";
 import { asyncMap } from "convex-helpers";
 import { mutation, query } from "./_generated/server";
 import { validateIdentity } from "./lib/authorization";
-import { removeEmptyFromArray } from "./lib/utils";
+import { asyncMapWithIndex } from "./lib/utils";
 import { getManyFrom } from "./lib/relationships";
 
 /* PUBLIC 
@@ -33,9 +33,7 @@ export const findByModuleId = query({
       "moduleId",
       moduleId
     );
-    return removeEmptyFromArray(moduleSections).sort(
-      (a, b) => a.order - b.order
-    );
+    return moduleSections.sort((a, b) => a.order - b.order);
   },
 });
 
@@ -52,17 +50,21 @@ export const create = mutation({
     const existingModule = await ctx.db.get(moduleId);
     if (!existingModule) throw new Error("Module does not exist");
 
-    const existingModuleSections = removeEmptyFromArray(
-      await getManyFrom(ctx.db, "moduleSections", "moduleId", moduleId)
+    const existingModuleSections = await getManyFrom(
+      ctx.db,
+      "moduleSections",
+      "moduleId",
+      moduleId
     );
 
-    return await ctx.db.insert("moduleSections", {
+    await ctx.db.insert("moduleSections", {
       moduleId,
       type,
       title: defaultSectionTitle,
       content: "",
       order: existingModuleSections.length + 1,
     });
+    return true;
   },
 });
 
@@ -87,7 +89,7 @@ export const update = mutation({
       content: content ?? existingSection?.content,
       order: order ?? existingSection?.order,
     });
-    return await ctx.db.get(id);
+    return true;
   },
 });
 
@@ -97,12 +99,10 @@ export const updateOrder = mutation({
   },
   handler: async (ctx, { idsInOrder }) => {
     await validateIdentity(ctx, { requireAdminRole: true });
-    await Promise.all(
-      idsInOrder.map((sectionId, index) =>
-        ctx.db.patch(sectionId, {
-          order: index + 1,
-        })
-      )
+    await asyncMapWithIndex(idsInOrder, (sectionId, index) =>
+      ctx.db.patch(sectionId, {
+        order: index + 1,
+      })
     );
     return true;
   },

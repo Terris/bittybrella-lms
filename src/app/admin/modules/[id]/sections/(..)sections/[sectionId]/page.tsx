@@ -1,3 +1,5 @@
+"use client";
+
 import { EditModuleSectionForm, ModuleSectionId } from "@/lib/ModuleSections";
 
 interface AdminModuleSectionPageProps {

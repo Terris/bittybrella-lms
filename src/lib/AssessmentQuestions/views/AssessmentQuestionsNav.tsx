@@ -42,13 +42,13 @@ export function AssessmentQuestionsNav({
     assessmentId,
   });
 
-  const { createBlankAssessmentQuestion } = useCreateAssessmentQuestion({
-    assessmentId,
-  });
-
   const sortableListItems = assessmentQuestions?.map(
     (question) => question._id
   );
+
+  const { createBlankAssessmentQuestion } = useCreateAssessmentQuestion({
+    assessmentId,
+  });
 
   const { updateAssessmentQuestionsOrder } = useUpdateAssessmentQuestionsOrder({
     assessmentId,
@@ -74,12 +74,13 @@ export function AssessmentQuestionsNav({
   }
 
   // TODO: Add a visual loading state and handle error state
-  if (isLoading || !assessment || !assessmentQuestions || !sortableListItems)
+  if (isLoading || !assessment || !assessmentQuestions || !sortableListItems) {
     return null;
+  }
 
   return (
     <>
-      <div className="flex flex-row items-center justify-between pb-4">
+      <div className="flex flex-row items-center justify-between pb-2">
         <Text className="font-bold">Assessment Questions</Text>
       </div>
       <div className="hidden lg:block">
@@ -87,26 +88,24 @@ export function AssessmentQuestionsNav({
           <div className="flex flex-col gap-2">
             {assessmentQuestions.map((question) => (
               <SortableListItem key={question._id} id={question._id}>
-                <div className="w-full flex flex-col truncate">
-                  <Button
-                    key={question._id}
-                    variant="ghost"
-                    size="sm"
-                    onClick={() =>
-                      router.push(
-                        `/admin/assessments/${assessmentId}/questions/${question?._id}`
-                      )
-                    }
-                    className={cn(
-                      "w-full truncate transition-all",
-                      selectedQuestionId === question?._id && "font-bold pl-5"
-                    )}
-                  >
-                    <div className="w-full text-left truncate">
-                      {question.question}
-                    </div>
-                  </Button>
-                </div>
+                <Button
+                  key={question._id}
+                  variant="ghost"
+                  size="sm"
+                  onClick={() =>
+                    router.push(
+                      `/admin/assessments/${assessmentId}/questions/${question?._id}`
+                    )
+                  }
+                  className={cn(
+                    "w-full truncate transition-all",
+                    selectedQuestionId === question?._id && "font-bold pl-5"
+                  )}
+                >
+                  <div className="w-full text-left truncate">
+                    {question.question}
+                  </div>
+                </Button>
               </SortableListItem>
             ))}
             <Button

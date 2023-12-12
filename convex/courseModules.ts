@@ -1,8 +1,9 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { removeEmptyFromArray } from "./lib/utils";
 import { getManyFrom } from "./lib/relationships";
 import { validateIdentity } from "./lib/authorization";
+import { asyncMap } from "convex-helpers";
+import { asyncMapWithIndex } from "./lib/utils";
 
 /* PUBLIC 
 ======================================= */
@@ -26,9 +27,27 @@ export const findByCourseId = query({
   },
   handler: async (ctx, { courseId }) => {
     await validateIdentity(ctx, { requireAdminRole: true });
-    return removeEmptyFromArray(
-      await getManyFrom(ctx.db, "courseModules", "courseId", courseId)
+    return await getManyFrom(ctx.db, "courseModules", "courseId", courseId);
+  },
+});
+
+export const findByCourseIdWithModules = query({
+  args: {
+    courseId: v.id("courses"),
+  },
+  handler: async (ctx, { courseId }) => {
+    await validateIdentity(ctx, { requireAdminRole: true });
+    const courseModules = await getManyFrom(
+      ctx.db,
+      "courseModules",
+      "courseId",
+      courseId
     );
+    const sortedCourseModules = courseModules.sort((a, b) => a.order - b.order);
+    return await asyncMap(sortedCourseModules, async (cm) => {
+      const moduleDoc = await ctx.db.get(cm.moduleId);
+      return { ...cm, moduleDoc };
+    });
   },
 });
 
@@ -41,14 +60,19 @@ export const updateAllByCourseId = mutation({
     await validateIdentity(ctx, { requireAdminRole: true });
 
     // get existing courseModules
-    const existingCourseModules = removeEmptyFromArray(
-      await getManyFrom(ctx.db, "courseModules", "courseId", courseId)
+    const existingCourseModules = await getManyFrom(
+      ctx.db,
+      "courseModules",
+      "courseId",
+      courseId
     );
 
     const courseModulesToDelete = existingCourseModules.filter(
       (cm) => !moduleIds.includes(cm.moduleId)
     );
+
     const deleteIds = courseModulesToDelete.map((cm) => cm._id);
+
     const courseModulesToKeep = existingCourseModules
       .filter((cm) => !deleteIds.includes(cm._id))
       .sort((a, b) => a.order - b.order);
@@ -60,23 +84,20 @@ export const updateAllByCourseId = mutation({
     );
 
     // Destroy the course modules to delete
-    await Promise.all(courseModulesToDelete.map((cm) => ctx.db.delete(cm._id)));
+    await asyncMap(courseModulesToDelete, (cm) => ctx.db.delete(cm._id));
 
     // Update the order of all courseModules to keep
-    await Promise.all(
-      courseModulesToKeep.map((cm, index) =>
-        ctx.db.patch(cm._id, { order: index + 1 })
-      )
-    );
+    await asyncMapWithIndex(courseModulesToKeep, (cm, index) => {
+      return ctx.db.patch(cm._id, { order: index + 1 });
+    });
 
-    await Promise.all(
-      courseModulesToCreate.map((moduleId, index) =>
-        ctx.db.insert("courseModules", {
-          courseId,
-          moduleId,
-          order: lastModuleOrder + index + 1,
-        })
-      )
+    // Create the course modules
+    await asyncMapWithIndex(courseModulesToCreate, (moduleId, index) =>
+      ctx.db.insert("courseModules", {
+        courseId,
+        moduleId,
+        order: lastModuleOrder + index + 1,
+      })
     );
     return true;
   },
@@ -88,12 +109,10 @@ export const updateOrder = mutation({
   },
   handler: async (ctx, { idsInOrder }) => {
     await validateIdentity(ctx, { requireAdminRole: true });
-    await Promise.all(
-      idsInOrder.map((courseModuleId, index) =>
-        ctx.db.patch(courseModuleId, {
-          order: index + 1,
-        })
-      )
+    await asyncMapWithIndex(idsInOrder, async (courseModuleId, index) =>
+      ctx.db.patch(courseModuleId, {
+        order: index + 1,
+      })
     );
     return true;
   },

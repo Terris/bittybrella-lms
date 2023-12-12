@@ -1,8 +1,8 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { validateIdentity } from "./lib/authorization";
-import { removeEmptyFromArray } from "./lib/utils";
 import { getManyFrom } from "./lib/relationships";
+import { pruneNull } from "convex-helpers";
 
 export const findByAssessmentId = query({
   args: {
@@ -16,9 +16,7 @@ export const findByAssessmentId = query({
       "assessmentId",
       assessmentId
     );
-    return removeEmptyFromArray(assessmentQuestions).sort(
-      (a, b) => a.order - b.order
-    );
+    return pruneNull(assessmentQuestions).sort((a, b) => a.order - b.order);
   },
 });
 

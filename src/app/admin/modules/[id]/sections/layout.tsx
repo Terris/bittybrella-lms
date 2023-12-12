@@ -2,8 +2,12 @@
 
 import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ModuleId, ModuleSectionsNav } from "@/lib/Modules";
-import { useModuleSections } from "@/lib/ModuleSections";
+import { ModuleId } from "@/lib/Modules";
+import {
+  ModuleSectionId,
+  ModuleSectionsNav,
+  useModuleSections,
+} from "@/lib/ModuleSections";
 
 interface AdminModuleSectionLayoutProps {
   children: React.ReactNode;
@@ -19,7 +23,7 @@ export default function AdminModuleSectionLayout({
   });
 
   useEffect(() => {
-    if (!moduleSections || !moduleSections.length) return;
+    if (!moduleSections || moduleSections.length === 0) return;
     if (!sectionId) {
       router.replace(`/admin/modules/${id}/sections/${moduleSections[0]._id}`);
     }
@@ -30,8 +34,11 @@ export default function AdminModuleSectionLayout({
   return (
     <div className="w-full py-8 lg:flex lg:flex-row lg:h-full lg:gap-4">
       <aside className="px-4 lg:w-1/5 lg:pl-8">
-        <div className="sticky top-2">
-          <ModuleSectionsNav moduleId={id as ModuleId} />
+        <div className="sticky top-4">
+          <ModuleSectionsNav
+            moduleId={id as ModuleId}
+            sectionId={sectionId as ModuleSectionId}
+          />
         </div>
       </aside>
       <div className="px-4 lg:w-4/5 lg:pr-8">

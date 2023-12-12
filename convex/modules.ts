@@ -1,8 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { asyncMap } from "convex-helpers";
-import { getManyFrom } from "./lib/relationships";
-import { removeEmptyFromArray } from "./lib/utils";
+import { getAll } from "./lib/relationships";
 import { validateIdentity } from "./lib/authorization";
 
 /* PUBLIC 
@@ -25,12 +24,17 @@ export const findById = query({
   },
   handler: async (ctx, { id }) => {
     await validateIdentity(ctx, { requireAdminRole: true });
-    const moduleDoc = await ctx.db.get(id);
-    if (!moduleDoc) throw new Error("Module does not exist.");
-    const sections = await removeEmptyFromArray(
-      await getManyFrom(ctx.db, "moduleSections", "moduleId", id)
-    ).sort((a, b) => a.order - b.order);
-    return { ...moduleDoc, sections };
+    return await ctx.db.get(id);
+  },
+});
+
+export const findManyById = query({
+  args: {
+    ids: v.array(v.id("modules")),
+  },
+  handler: async (ctx, { ids }) => {
+    await validateIdentity(ctx, { requireAdminRole: true });
+    return await getAll(ctx.db, ids);
   },
 });
 
@@ -42,11 +46,12 @@ export const create = mutation({
   },
   handler: async (ctx, { title, description, isPublished }) => {
     await validateIdentity(ctx, { requireAdminRole: true });
-    return await ctx.db.insert("modules", {
+    await ctx.db.insert("modules", {
       title,
       description,
       isPublished,
     });
+    return true;
   },
 });
 
@@ -65,7 +70,7 @@ export const update = mutation({
       description: description ?? existingCourse?.description,
       isPublished: isPublished ?? existingCourse?.isPublished,
     });
-    return await ctx.db.get(id);
+    return true;
   },
 });
 

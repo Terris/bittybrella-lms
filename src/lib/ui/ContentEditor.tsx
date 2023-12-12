@@ -90,22 +90,19 @@ export const ContentEditor = ({
 
   return (
     <div>
-      {editable && <ToolBar editor={editor} />}
+      {editable && <ToolBar editor={editor} loading={loading} />}
       <EditorContent editor={editor} className="p-4" />
-      {editable && (
-        <div className="sticky bottom-0 z-50 bg-background flex border p-2 justify-end rounded-b-md">
-          {loading ? (
-            <Loader className="h-3 w-3 text-yellow-300" />
-          ) : (
-            <Check className="h-3 w-3 text-primary" />
-          )}
-        </div>
-      )}
     </div>
   );
 };
 
-const ToolBar = ({ editor }: { editor: Editor | null }) => {
+const ToolBar = ({
+  editor,
+  loading,
+}: {
+  editor: Editor | null;
+  loading?: boolean;
+}) => {
   if (!editor) {
     return null;
   }
@@ -131,7 +128,7 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
   };
 
   return (
-    <div className="sticky top-0 z-50 bg-background flex flex-wrap gap-1 items-center p-2 rounded-md">
+    <div className="sticky top-0 z-50 bg-background flex flex-wrap gap-1 items-center p-2 shadow-sm">
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
@@ -271,6 +268,13 @@ const ToolBar = ({ editor }: { editor: Editor | null }) => {
         >
           <Redo className="w-4 h-4" />
         </ToolbarButton>
+      </div>
+      <div className="ml-auto">
+        {loading ? (
+          <Loader className="h-3 w-3 text-yellow-300" />
+        ) : (
+          <Check className="h-3 w-3 text-success" />
+        )}
       </div>
     </div>
   );

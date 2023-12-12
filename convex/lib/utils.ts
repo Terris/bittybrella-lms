@@ -1,11 +1,19 @@
-export function notEmpty<TValue>(
-  value: TValue | null | undefined
-): value is TValue {
-  return value !== null && value !== undefined;
-}
-
-export function removeEmptyFromArray<TValue>(
-  arr: (TValue | null | undefined)[]
-) {
-  return arr.filter(notEmpty);
+/**
+ * asyncMapWithIndex returns the results of applying an async function over an list.
+ *
+ * @param list - Iterable object of items, e.g. an Array, Set, Object.keys
+ * @param asyncTransform
+ * @returns
+ */
+export async function asyncMapWithIndex<FromType, ToType>(
+  list: Iterable<FromType>,
+  asyncTransform: (item: FromType, index: number) => Promise<ToType>
+): Promise<ToType[]> {
+  const promises: Promise<ToType>[] = [];
+  let index = 0;
+  for (const item of list) {
+    promises.push(asyncTransform(item, index));
+    index++;
+  }
+  return Promise.all(promises);
 }

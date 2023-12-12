@@ -2,7 +2,6 @@ import { v } from "convex/values";
 import { asyncMap } from "convex-helpers";
 import { mutation, query } from "./_generated/server";
 import { getManyFrom, getManyVia } from "./lib/relationships";
-import { removeEmptyFromArray } from "./lib/utils";
 import { validateIdentity } from "./lib/authorization";
 
 /* PUBLIC 
@@ -23,40 +22,7 @@ export const findById = query({
   args: { id: v.id("courses") },
   handler: async (ctx, { id }) => {
     await validateIdentity(ctx, { requireAdminRole: true });
-    const course = await ctx.db.get(id);
-
-    const courseModules = removeEmptyFromArray(
-      await getManyFrom(ctx.db, "courseModules", "courseId", id)
-    );
-
-    const modules = removeEmptyFromArray(
-      await getManyVia(ctx.db, "courseModules", "moduleId", "courseId", id)
-    );
-
-    const modulesWithSections = await asyncMap(modules, async (module) => {
-      const moduleCourseModule = courseModules.find(
-        (mcm) => mcm.moduleId === module._id
-      );
-      if (!moduleCourseModule) {
-        throw new Error("Could not find moduleCourseModule");
-      }
-      const sections = removeEmptyFromArray(
-        await getManyFrom(ctx.db, "moduleSections", "moduleId", module._id)
-      ).sort((a, b) => a.order - b.order);
-
-      return {
-        ...module,
-        sections,
-        order: moduleCourseModule.order,
-        courseModuleId: moduleCourseModule._id,
-      };
-    });
-
-    return {
-      ...course,
-      something: "test",
-      modules: modulesWithSections.sort((a, b) => a.order - b.order),
-    };
+    return await ctx.db.get(id);
   },
 });
 
@@ -92,7 +58,7 @@ export const update = mutation({
       isPublished:
         isPublished === undefined ? existingCourse?.isPublished : isPublished,
     });
-    return await ctx.db.get(id);
+    return true;
   },
 });
 

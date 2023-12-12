@@ -4,8 +4,8 @@ import React from "react";
 import { PageContent } from "@/lib/layout";
 import { Breadcrumbs, Text } from "@/lib/ui";
 import {
-  QuickEditAssessmentForm,
   type AssessmentId,
+  QuickEditAssessmentForm,
   useAssessment,
 } from "@/lib/Assessments";
 
