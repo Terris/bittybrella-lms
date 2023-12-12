@@ -42,6 +42,13 @@ export function Masthead() {
           >
             My Courses
           </TextLink>
+          <TextLink
+            href="/my-courses"
+            onClick={() => trackNavigationEvent("my courses")}
+            className="font-bold"
+          >
+            Badges
+          </TextLink>
         </div>
       )}
       {isAdmin && (

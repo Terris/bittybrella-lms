@@ -38,7 +38,7 @@ export default function AdminAssessmentQuestionLayout({
 
   return (
     <div className="w-full py-8 lg:flex lg:flex-row lg:h-full lg:gap-4">
-      <aside className="px-4 lg:w-1/5 lg:pl-8">
+      <aside className="px-4 lg:w-1/4 lg:max-w-4xl lg:pl-8">
         <div className="sticky top-4">
           <CourseModulesNav
             courseId={id as CourseId}
@@ -47,7 +47,7 @@ export default function AdminAssessmentQuestionLayout({
           />
         </div>
       </aside>
-      <div className="px-4 lg:w-4/5 lg:pr-8">
+      <div className="px-4  lg:pr-8">
         <div className="flex flex-col gap-4 max-w-4xl">{children}</div>
       </div>
     </div>
