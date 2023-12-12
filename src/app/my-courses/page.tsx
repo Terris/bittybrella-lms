@@ -1,5 +1,5 @@
-import { Breadcrumbs, PageContent } from "@/lib/layout";
-import { Text } from "@/lib/ui";
+import { PageContent } from "@/lib/layout";
+import { Breadcrumbs, Text } from "@/lib/ui";
 
 export default function MyCoursesPage() {
   return (
