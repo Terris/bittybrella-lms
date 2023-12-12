@@ -9,6 +9,5 @@ interface AdminLessonSectionPageProps {
 export default function AdminLessonSectionPage({
   params,
 }: AdminLessonSectionPageProps) {
-  console.log("params", params);
   return <EditLessonSectionForm id={params.sectionId as LessonSectionId} />;
 }

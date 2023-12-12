@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
   TextLink,
 } from "@/lib/ui";
-import Link, { LinkProps } from "next/link";
+import Link from "next/link";
 import { useTracking } from "../hooks/useTracking";
 import { useMe } from "../providers/MeProvider";
 
@@ -53,9 +53,6 @@ export function Masthead() {
       )}
       {isAdmin && (
         <div className="flex flex-row gap-8 items-center ml-auto mr-16">
-          <TextLink href="/admin" className="font-bold">
-            Admin
-          </TextLink>
           <TextLink href="/admin/courses" className="font-bold">
             Courses
           </TextLink>

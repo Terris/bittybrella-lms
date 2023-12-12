@@ -1,28 +1,29 @@
 "use client";
 
 import React from "react";
-import { PageContent } from "@/lib/layout";
 import { Breadcrumbs, Text } from "@/lib/ui";
 import { type LessonId, QuickEditLessonForm, useLesson } from "@/lib/Lessons";
+import { LessonSectionId, LessonSectionsNav } from "@/lib/LessonSections";
+import { useParams } from "next/navigation";
+import { AdminLayout } from "@/lib/layout";
 
 interface AdminLessonLayoutProps {
-  params: { id: string };
   children: React.ReactNode;
 }
 
 export default function AdminLessonLayout({
-  params,
   children,
 }: AdminLessonLayoutProps) {
+  const { id, sectionId } = useParams();
   const { isLoading, lesson } = useLesson({
-    id: params.id as LessonId,
+    id: id as LessonId,
   });
 
   if (isLoading || !lesson) return null;
 
   return (
-    <PageContent>
-      <div className="w-full flex flex-row items-center justify-between py-2 px-8 border-b">
+    <>
+      <AdminLayout.BreadcrumbsWrapper>
         <Breadcrumbs
           breadcrumbs={[
             { href: "/admin", label: "Admin" },
@@ -33,15 +34,23 @@ export default function AdminLessonLayout({
             },
           ]}
         />
-      </div>
-      <div className="w-full flex flex-row items-center justify-start py-4 px-8 border-b">
+      </AdminLayout.BreadcrumbsWrapper>
+      <AdminLayout.PageTitleWrapper>
         <div className="mr-4">
           <Text className="text-3xl font-bold">{lesson.title}</Text>
           <Text className="text-muted-foreground">{lesson.description}</Text>
         </div>
         <QuickEditLessonForm lessonId={lesson._id} />
-      </div>
-      {children}
-    </PageContent>
+      </AdminLayout.PageTitleWrapper>
+      <AdminLayout.NavAndContentFlexWrapper>
+        <AdminLayout.NavWrapper>
+          <LessonSectionsNav
+            lessonId={id as LessonId}
+            sectionId={sectionId as LessonSectionId}
+          />
+        </AdminLayout.NavWrapper>
+        <AdminLayout.ContentWrapper>{children}</AdminLayout.ContentWrapper>
+      </AdminLayout.NavAndContentFlexWrapper>
+    </>
   );
 }

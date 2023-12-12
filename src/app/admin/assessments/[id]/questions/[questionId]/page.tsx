@@ -7,5 +7,7 @@ interface AdminAssessmentQuestionPageProps {
 export default function AdminAssessmentQuestionPage({
   params,
 }: AdminAssessmentQuestionPageProps) {
-  return <Text>{params.questionId}</Text>;
+  return (
+    <Text>To Do: insert editor here. Question ID: {params.questionId}</Text>
+  );
 }

@@ -1,32 +1,36 @@
 "use client";
 
 import React from "react";
-import { PageContent } from "@/lib/layout";
+import { AdminLayout } from "@/lib/layout";
 import { Breadcrumbs, Text } from "@/lib/ui";
 import {
   type AssessmentId,
   QuickEditAssessmentForm,
   useAssessment,
 } from "@/lib/Assessments";
+import {
+  AssessmentQuestionId,
+  AssessmentQuestionsNav,
+} from "@/lib/AssessmentQuestions";
+import { useParams } from "next/navigation";
 
 interface AdminAssessmentLayoutProps {
-  params: { id: string };
   children: React.ReactNode;
 }
 
 export default function AdminAssessmentLayout({
-  params,
   children,
 }: AdminAssessmentLayoutProps) {
+  const { id, questionId } = useParams();
   const { isLoading, assessment } = useAssessment({
-    id: params.id as AssessmentId,
+    id: id as AssessmentId,
   });
 
   if (isLoading || !assessment) return null;
 
   return (
     <>
-      <div className="w-full flex flex-row items-center justify-between py-2 px-8 border-b">
+      <AdminLayout.BreadcrumbsWrapper>
         <Breadcrumbs
           breadcrumbs={[
             { href: "/admin", label: "Admin" },
@@ -37,19 +41,25 @@ export default function AdminAssessmentLayout({
             },
           ]}
         />
-      </div>
-      <PageContent>
-        <div className="w-full flex flex-row items-center justify-start py-4 px-8 border-b">
-          <div className="mr-4">
-            <Text className="text-3xl font-bold">{assessment.title}</Text>
-            <Text className="text-muted-foreground">
-              {assessment.description}
-            </Text>
-          </div>
-          <QuickEditAssessmentForm assessmentId={assessment._id} />
+      </AdminLayout.BreadcrumbsWrapper>
+      <AdminLayout.PageTitleWrapper>
+        <div className="mr-4">
+          <Text className="text-3xl font-bold">{assessment.title}</Text>
+          <Text className="text-muted-foreground">
+            {assessment.description}
+          </Text>
         </div>
-        {children}
-      </PageContent>
+        <QuickEditAssessmentForm assessmentId={assessment._id} />
+      </AdminLayout.PageTitleWrapper>
+      <AdminLayout.NavAndContentFlexWrapper>
+        <AdminLayout.NavWrapper>
+          <AssessmentQuestionsNav
+            assessmentId={id as AssessmentId}
+            questionId={questionId as AssessmentQuestionId}
+          />
+        </AdminLayout.NavWrapper>
+        <AdminLayout.ContentWrapper>{children}</AdminLayout.ContentWrapper>
+      </AdminLayout.NavAndContentFlexWrapper>
     </>
   );
 }
