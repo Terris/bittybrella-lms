@@ -18,26 +18,12 @@ export default defineSchema({
     description: v.string(),
     isPublished: v.boolean(),
   }),
-  modules: defineTable({
-    title: v.string(),
-    description: v.string(),
-    isPublished: v.boolean(),
-    draftModuleId: v.optional(v.id("modules")),
-  }),
   lessons: defineTable({
     title: v.string(),
     description: v.string(),
     isPublished: v.boolean(),
     draftLessonId: v.optional(v.id("lessons")),
   }),
-  courseModules: defineTable({
-    courseId: v.id("courses"),
-    moduleId: v.id("modules"),
-    order: v.number(),
-  })
-    .index("by_courseId", ["courseId"])
-    .index("by_moduleId", ["moduleId"])
-    .index("by_order", ["order"]),
   courseLessons: defineTable({
     courseId: v.id("courses"),
     lessonId: v.id("lessons"),
@@ -46,17 +32,6 @@ export default defineSchema({
     .index("by_courseId", ["courseId"])
     .index("by_lessonId", ["lessonId"])
     .index("by_order", ["order"]),
-  moduleSections: defineTable({
-    moduleId: v.id("modules"),
-    type: v.string(),
-    title: v.string(),
-    content: v.string(),
-    order: v.number(),
-    assessmentId: v.optional(v.id("assessments")),
-  })
-    .index("by_moduleId", ["moduleId"])
-    .index("by_order", ["order"])
-    .index("by_assessmentId", ["assessmentId"]),
   lessonSections: defineTable({
     lessonId: v.id("lessons"),
     type: v.string(),

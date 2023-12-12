@@ -67,16 +67,16 @@ export const deleteById = mutation({
     const assessmentToDelete = await ctx.db.get(id);
     if (!assessmentToDelete) throw new Error("Assessment does not exist");
 
-    // Remove this assessment id from all related moduleSections
-    const moduleSectionsWithThisAssessment = await ctx.db
-      .query("moduleSections")
+    // Remove this assessment id from all related lessonSections
+    const lessonSectionsWithThisAssessment = await ctx.db
+      .query("lessonSections")
       .filter((q) => q.eq(q.field("assessmentId"), id))
       .collect();
 
     await asyncMap(
-      moduleSectionsWithThisAssessment,
-      async (moduleSection) =>
-        await ctx.db.patch(moduleSection._id, { assessmentId: undefined })
+      lessonSectionsWithThisAssessment,
+      async (lessonSection) =>
+        await ctx.db.patch(lessonSection._id, { assessmentId: undefined })
     );
 
     // Remove all related assessmentQuestions

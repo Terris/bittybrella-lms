@@ -70,14 +70,14 @@ export const deleteById = mutation({
     const sectionToDelete = await ctx.db.get(id);
     if (!sectionToDelete) throw new Error("Course does not exist");
 
-    // Delete all related courseModules
-    const courseModulesToDelete = await ctx.db
-      .query("courseModules")
+    // Delete all related courseLessons
+    const courseLessonsToDelete = await ctx.db
+      .query("courseLessons")
       .filter((q) => q.eq(q.field("courseId"), id))
       .collect();
 
-    await asyncMap(courseModulesToDelete, async (courseModule) => {
-      await ctx.db.delete(courseModule._id);
+    await asyncMap(courseLessonsToDelete, async (courseLesson) => {
+      await ctx.db.delete(courseLesson._id);
     });
 
     // Finally, delete course

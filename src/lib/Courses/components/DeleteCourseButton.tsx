@@ -17,9 +17,10 @@ import {
   TooltipContent,
 } from "@/lib/ui";
 import { CourseId } from "../types";
+import { useDeleteCourse } from "../hooks";
 
 export function DeleteCourseButton({ id }: { id: CourseId }) {
-  const deleteModuleSection = useMutation(api.courses.deleteById);
+  const { deleteCourse } = useDeleteCourse();
 
   return (
     <AlertDialog>
@@ -27,7 +28,7 @@ export function DeleteCourseButton({ id }: { id: CourseId }) {
         <TooltipTrigger asChild>
           <AlertDialogTrigger asChild>
             <Button variant="ghost">
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-4 w-4" /> adf
             </Button>
           </AlertDialogTrigger>
         </TooltipTrigger>
@@ -37,17 +38,13 @@ export function DeleteCourseButton({ id }: { id: CourseId }) {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action will permanently delete this module and remove it from
-            all courses that use it.
+            This action will permanently delete this course.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button
-              variant="destructive"
-              onClick={() => deleteModuleSection({ id })}
-            >
+            <Button variant="destructive" onClick={() => deleteCourse({ id })}>
               Yes, I&lsquo;m sure.
             </Button>
           </AlertDialogAction>

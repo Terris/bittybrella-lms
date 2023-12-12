@@ -17,15 +17,12 @@ import type {
 import type * as assessmentQuestions from "../assessmentQuestions.js";
 import type * as assessments from "../assessments.js";
 import type * as courseLessons from "../courseLessons.js";
-import type * as courseModules from "../courseModules.js";
 import type * as courses from "../courses.js";
 import type * as lessonSections from "../lessonSections.js";
 import type * as lessons from "../lessons.js";
 import type * as lib_authorization from "../lib/authorization.js";
 import type * as lib_relationships from "../lib/relationships.js";
 import type * as lib_utils from "../lib/utils.js";
-import type * as moduleSections from "../moduleSections.js";
-import type * as modules from "../modules.js";
 import type * as tracking from "../tracking.js";
 import type * as users from "../users.js";
 
@@ -41,15 +38,12 @@ declare const fullApi: ApiFromModules<{
   assessmentQuestions: typeof assessmentQuestions;
   assessments: typeof assessments;
   courseLessons: typeof courseLessons;
-  courseModules: typeof courseModules;
   courses: typeof courses;
   lessonSections: typeof lessonSections;
   lessons: typeof lessons;
   "lib/authorization": typeof lib_authorization;
   "lib/relationships": typeof lib_relationships;
   "lib/utils": typeof lib_utils;
-  moduleSections: typeof moduleSections;
-  modules: typeof modules;
   tracking: typeof tracking;
   users: typeof users;
 }>;

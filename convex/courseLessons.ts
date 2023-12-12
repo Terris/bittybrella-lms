@@ -44,9 +44,13 @@ export const findByCourseIdWithLessons = query({
       courseId
     );
     const sortedCourseLessons = courseLessons.sort((a, b) => a.order - b.order);
-    return await asyncMap(sortedCourseLessons, async (cm) => {
-      const lesson = await ctx.db.get(cm.lessonId);
-      return { ...cm, lesson };
+    return await asyncMap(sortedCourseLessons, async (courseLesson) => {
+      const lesson = await ctx.db.get(courseLesson.lessonId);
+      if (!lesson)
+        throw new Error(
+          `Lesson not found for courseLesson ${courseLesson._id}`
+        );
+      return { ...courseLesson, lesson };
     });
   },
 });

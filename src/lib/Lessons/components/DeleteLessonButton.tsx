@@ -1,4 +1,6 @@
-import { Trash2 } from "lucide-react";
+import { useMutation } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+
 import {
   AlertDialogFooter,
   AlertDialogHeader,
@@ -14,11 +16,11 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/lib/ui";
-import { useDeleteAssessment } from "../hooks";
-import type { AssessmentId } from "../types";
+import { Trash2 } from "lucide-react";
+import { LessonId } from "../types";
 
-export function DeleteAssessmentButton({ id }: { id: AssessmentId }) {
-  const { deleteAssessment } = useDeleteAssessment();
+export function DeleteLessonButton({ id }: { id: LessonId }) {
+  const deleteLessonSection = useMutation(api.lessons.deleteById);
 
   return (
     <AlertDialog>
@@ -26,18 +28,18 @@ export function DeleteAssessmentButton({ id }: { id: AssessmentId }) {
         <TooltipTrigger asChild>
           <AlertDialogTrigger asChild>
             <Button variant="ghost">
-              <Trash2 className="h-4 w-4 text-destructive" />
+              <Trash2 className="h-4 w-4" />
             </Button>
           </AlertDialogTrigger>
         </TooltipTrigger>
-        <TooltipContent>Delete assessment</TooltipContent>
+        <TooltipContent>Delete lesson</TooltipContent>
       </Tooltip>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action will permanently delete this assessment and remove it
-            from all courses and lessons that use it.
+            This action cannot be undone. This will permanently delete this
+            lesson in all courses that use it.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -45,7 +47,7 @@ export function DeleteAssessmentButton({ id }: { id: AssessmentId }) {
           <AlertDialogAction asChild>
             <Button
               variant="destructive"
-              onClick={() => deleteAssessment({ id })}
+              onClick={() => deleteLessonSection({ id })}
             >
               Yes, I&lsquo;m sure.
             </Button>

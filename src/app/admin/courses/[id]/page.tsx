@@ -5,5 +5,5 @@ interface AdminCoursePageProps {
 }
 
 export default function AdminCoursePage({ params }: AdminCoursePageProps) {
-  redirect(`/admin/courses/${params.id}/modules`);
+  redirect(`/admin/courses/${params.id}/lessons`);
 }

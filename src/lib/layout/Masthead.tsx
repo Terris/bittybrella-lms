@@ -59,8 +59,8 @@ export function Masthead() {
           <TextLink href="/admin/courses" className="font-bold">
             Courses
           </TextLink>
-          <TextLink href="/admin/modules" className="font-bold">
-            Modules
+          <TextLink href="/admin/lessons" className="font-bold">
+            Lessons
           </TextLink>
           <TextLink href="/admin/assessments" className="font-bold">
             Assessments
