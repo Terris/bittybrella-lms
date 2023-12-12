@@ -1,3 +1,5 @@
+import { cn } from "../utils";
+
 function AdminLayout() {}
 
 interface LayoutComponentWithChildren {
@@ -19,9 +21,18 @@ AdminLayout.BreadcrumbsWrapper = BreadcrumbsWrapper;
 /* 
   This wraps the page title and quick create/edit form
 */
-function PageTitleWrapper({ children }: LayoutComponentWithChildren) {
+interface PageTitleWrapperProps extends LayoutComponentWithChildren {
+  align?: "start" | "between";
+}
+function PageTitleWrapper({ children, align }: PageTitleWrapperProps) {
   return (
-    <div className="w-full flex flex-row items-center justify-start py-4 px-8 border-b">
+    <div
+      className={cn(
+        "w-full flex flex-row items-center justify-start py-4 px-8 border-b",
+        align === "start" && "justify-start",
+        align === "between" && "justify-between"
+      )}
+    >
       {children}
     </div>
   );

@@ -24,10 +24,14 @@ export function PrivatePageWrapper({
   }, [isAuthenticated, isLoading, router]);
 
   useEffect(() => {
-    if (!isLoading && isAuthenticated && authorizedRoles) {
-      if (!authorizedRoles.includes("admin") && !me?.isAdmin) {
-        router.push(`/`);
-      }
+    if (
+      !isLoading &&
+      isAuthenticated &&
+      authorizedRoles &&
+      !authorizedRoles.includes("admin") &&
+      !me?.isAdmin
+    ) {
+      router.push(`/`);
     }
   }, [authorizedRoles, isAuthenticated, isLoading, me?.isAdmin, router]);
 

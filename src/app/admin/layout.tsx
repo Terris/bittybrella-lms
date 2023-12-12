@@ -4,7 +4,7 @@ import { PrivatePageWrapper } from "@/lib/Authorization";
 import { useMe } from "@/lib/providers/MeProvider";
 import { useRouter } from "next/navigation";
 
-export default function AdminLayout({
+export default function AdminPagesLayout({
   children,
 }: {
   children: React.ReactNode;

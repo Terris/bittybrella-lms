@@ -1,26 +1,27 @@
 "use client";
 
 import { AssessmentsTable, QuickCreateAssessmentForm } from "@/lib/Assessments";
+import { AdminLayout } from "@/lib/layout";
 import { Breadcrumbs, Text } from "@/lib/ui";
 
 export default function AdminAssessmentsPage() {
   return (
     <>
-      <div className="w-full flex flex-row items-center justify-between py-2 px-8 border-b">
+      <AdminLayout.BreadcrumbsWrapper>
         <Breadcrumbs
           breadcrumbs={[
             { href: "/admin", label: "Admin" },
             { href: "/admin/assessments", label: "Assessments" },
           ]}
         />
-      </div>
-      <div className="py-4 px-8 border-b flex flex-row items-center justify-between">
+      </AdminLayout.BreadcrumbsWrapper>
+      <AdminLayout.PageTitleWrapper align="between">
         <Text className="text-3xl font-bold">Assessments</Text>
         <QuickCreateAssessmentForm />
-      </div>
-      <div className="px-4 w-full max-w-screen-2xl mx-auto">
+      </AdminLayout.PageTitleWrapper>
+      <AdminLayout.TableWrapper>
         <AssessmentsTable />
-      </div>
+      </AdminLayout.TableWrapper>
     </>
   );
 }
