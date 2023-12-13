@@ -68,7 +68,7 @@ export const QuickEditAssessmentForm = ({
         <Button variant="ghost" size="sm">
           <Tooltip>
             <TooltipTrigger>
-              <Settings className="h-4 w-4" />
+              <Settings className="h-4 w-4 text-muted-foreground" />
             </TooltipTrigger>
             <TooltipContent>Edit assessment settings</TooltipContent>
           </Tooltip>

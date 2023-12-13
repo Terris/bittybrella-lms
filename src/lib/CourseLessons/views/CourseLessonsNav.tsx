@@ -94,10 +94,12 @@ export function CourseLessonsNav({
       <div className="flex flex-row items-center justify-between pb-4">
         <Text className="font-bold">Course Lessons</Text>
         <DropdownMenu open={menuIsOpen} onOpenChange={setMenuIsOpen}>
-          <DropdownMenuTrigger>
-            <MoreVertical className="w-4 h-4" />
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm">
+              <MoreVertical className="w-4 h-4 text-muted-foreground" />
+            </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
+          <DropdownMenuContent side="right">
             <DropdownMenuItem asChild onSelect={(e) => e.preventDefault()}>
               <QuickEditCourseLessonForm
                 courseId={courseId}
