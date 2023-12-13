@@ -92,6 +92,7 @@ const Form = ({ section }: { section: LessonSectionDoc }) => {
       <div>
         <div className="flex flex-row">
           <Input
+            variant="contentBlockEditor"
             name="section-title"
             placeholder="Section title"
             value={newSectionTitle}
