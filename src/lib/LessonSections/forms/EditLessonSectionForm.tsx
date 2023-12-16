@@ -126,7 +126,7 @@ function LessonSectionSettingsMenu({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuPortal>
-        <DropdownMenuContent side="right">
+        <DropdownMenuContent>
           <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
             <AlertDialog onOpenChange={(open) => setMenuIsOpen(open)}>
               <AlertDialogTrigger>Delete section</AlertDialogTrigger>

@@ -102,7 +102,7 @@ export function LessonSectionsNav({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuPortal>
-              <DropdownMenuContent side="right">
+              <DropdownMenuContent>
                 <DropdownMenuItem onClick={handleCreateNewSection}>
                   Add lesson section
                 </DropdownMenuItem>

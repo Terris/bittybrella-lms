@@ -77,7 +77,11 @@ export const QuickEditCourseLessonForm = ({
       config={config}
       formTitle="Edit Course Lessons"
       renderTrigger={
-        <Button variant="ghost" size="sm">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="px-2 py-1.5 h-auto w-full justify-start"
+        >
           Edit course lessons
         </Button>
       }

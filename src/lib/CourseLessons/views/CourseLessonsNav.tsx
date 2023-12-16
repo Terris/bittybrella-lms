@@ -101,7 +101,7 @@ export function CourseLessonsNav({
               <MoreVertical className="w-4 h-4 text-muted-foreground" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side="right">
+          <DropdownMenuContent>
             <DropdownMenuItem asChild onSelect={(e) => e.preventDefault()}>
               <QuickEditCourseLessonForm
                 courseId={courseId}
