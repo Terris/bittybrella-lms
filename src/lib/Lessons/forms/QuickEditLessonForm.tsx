@@ -78,7 +78,7 @@ export const QuickEditLessonForm = ({ lessonId }: { lessonId: LessonId }) => {
         <Button variant="ghost" size="sm">
           <Tooltip>
             <TooltipTrigger>
-              <Settings className="h-4 w-4" />
+              <Settings className="h-4 w-4 text-muted-foreground" />
             </TooltipTrigger>
             <TooltipContent>Edit lesson settings</TooltipContent>
           </Tooltip>

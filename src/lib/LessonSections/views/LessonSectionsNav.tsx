@@ -94,11 +94,13 @@ export function LessonSectionsNav({
         <div className="flex flex-row items-center justify-between pb-2">
           <Text className="font-bold">Lesson Sections</Text>
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <MoreVertical className="w-4 h-4" />
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm">
+                <MoreVertical className="w-4 h-4 text-muted-foreground" />
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuPortal>
-              <DropdownMenuContent>
+              <DropdownMenuContent side="right">
                 <DropdownMenuItem onClick={handleCreateNewSection}>
                   Add lesson section
                 </DropdownMenuItem>
