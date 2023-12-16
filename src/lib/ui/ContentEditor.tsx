@@ -8,8 +8,15 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/lib/ui";
-import { Editor, EditorContent, useEditor } from "@tiptap/react";
+import {
+  BubbleMenu,
+  Editor,
+  EditorContent,
+  FloatingMenu,
+  useEditor,
+} from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Placeholder from "@tiptap/extension-placeholder";
 import Image from "@tiptap/extension-image";
 import Typography from "@tiptap/extension-typography";
 import Youtube from "@tiptap/extension-youtube";
@@ -44,9 +51,13 @@ const extensions = [
     nocookie: true,
     modestBranding: true,
   }),
+  Placeholder.configure({
+    placeholder: "Start writing something…",
+  }),
 ];
 
 const emptyJSON = '""';
+
 interface ContentEditorProps {
   initialContent?: string;
   onChange?: (content: string) => void;
@@ -68,7 +79,6 @@ export const ContentEditor = ({
   const contentString = JSON.stringify(editor?.getJSON());
   const debouncedContent = useDebounce(contentString, 1000);
   const hasChanges = initialContent !== debouncedContent;
-  const loading = !ready || hasChanges || contentString !== debouncedContent;
 
   // set the state to ready when the initialContent and debouncedContent are in sync
   useEffect(() => {
@@ -89,46 +99,22 @@ export const ContentEditor = ({
   }, [debouncedContent, editable, hasChanges, onChange, ready]);
 
   return (
-    <div>
-      {editable && <ToolBar editor={editor} loading={loading} />}
-      <EditorContent editor={editor} className="p-4" />
-    </div>
+    <>
+      <InlineMenu editor={editor} />
+      <BlockMenu editor={editor} />
+      <EditorContent editor={editor} />
+    </>
   );
 };
 
-const ToolBar = ({
-  editor,
-  loading,
-}: {
-  editor: Editor | null;
-  loading?: boolean;
-}) => {
-  if (!editor) {
-    return null;
-  }
-
-  const addYoutubeVideo = () => {
-    const url = prompt("Enter YouTube URL");
-
-    if (url) {
-      editor.commands.setYoutubeVideo({
-        src: url,
-        width: 640,
-        height: 480,
-      });
-    }
-  };
-
-  const addImage = () => {
-    const url = window.prompt("URL");
-
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
-    }
-  };
-
+const InlineMenu = ({ editor }: { editor: Editor | null }) => {
+  if (!editor) return null;
   return (
-    <div className="sticky top-0 z-50 bg-background flex flex-wrap gap-1 items-center p-2 shadow-sm">
+    <BubbleMenu
+      editor={editor}
+      tippyOptions={{ duration: 100, maxWidth: "100%" }}
+      className="w-full bg-secondary flex flex-wrap gap-1 items-center p-2 shadow-sm rounded"
+    >
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
@@ -164,7 +150,101 @@ const ToolBar = ({
       >
         <Code className="w-4 h-4" />
       </ToolbarButton>
+      <ToolbarButton
+        onClick={() => editor.chain().focus().setParagraph().run()}
+        isActive={editor.isActive("paragraph")}
+        helpText="Paragraph"
+      >
+        <Pilcrow className="w-4 h-4" />
+      </ToolbarButton>
 
+      <ToolbarButton
+        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+        isActive={editor.isActive("heading", { level: 1 })}
+        helpText="Heading 1"
+      >
+        <Heading1 className="w-4 h-4" />
+      </ToolbarButton>
+
+      <ToolbarButton
+        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+        isActive={editor.isActive("heading", { level: 2 })}
+        helpText="Heading 2"
+      >
+        <Heading2 className="w-4 h-4" />
+      </ToolbarButton>
+
+      <ToolbarButton
+        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+        isActive={editor.isActive("heading", { level: 3 })}
+        helpText="Heading 3"
+      >
+        <Heading3 className="w-4 h-4" />
+      </ToolbarButton>
+      <ToolbarButton
+        onClick={() => editor.chain().focus().toggleBulletList().run()}
+        isActive={editor.isActive("bulletList")}
+        helpText="Bullet list"
+      >
+        <List className="w-4 h-4" />
+      </ToolbarButton>
+
+      <ToolbarButton
+        onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        isActive={editor.isActive("orderedList")}
+        helpText="Numbered list"
+      >
+        <ListOrdered className="w-4 h-4" />
+      </ToolbarButton>
+
+      <ToolbarButton
+        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+        isActive={editor.isActive("codeBlock")}
+        helpText="Code block"
+      >
+        <SquareCode className="w-4 h-4" />
+      </ToolbarButton>
+
+      <ToolbarButton
+        onClick={() => editor.chain().focus().toggleBlockquote().run()}
+        isActive={editor.isActive("blockquote")}
+        helpText="Blockquote"
+      >
+        <Quote className="w-4 h-4" />
+      </ToolbarButton>
+    </BubbleMenu>
+  );
+};
+
+const BlockMenu = ({ editor }: { editor: Editor | null }) => {
+  if (!editor) return null;
+
+  const addYoutubeVideo = () => {
+    const url = prompt("Enter YouTube URL");
+
+    if (url) {
+      editor.commands.setYoutubeVideo({
+        src: url,
+        width: 640,
+        height: 480,
+      });
+    }
+  };
+
+  const addImage = () => {
+    const url = window.prompt("URL");
+
+    if (url) {
+      editor.chain().focus().setImage({ src: url }).run();
+    }
+  };
+
+  return (
+    <FloatingMenu
+      editor={editor}
+      tippyOptions={{ duration: 100, maxWidth: "100%" }}
+      className="w-full bg-secondary flex flex-wrap gap-1 items-center p-2 shadow-sm"
+    >
       <ToolbarButton
         onClick={() => editor.chain().focus().setParagraph().run()}
         isActive={editor.isActive("paragraph")}
@@ -251,7 +331,21 @@ const ToolBar = ({
       >
         <YouTubeIcon className="w-4 h-4" />
       </ToolbarButton>
+    </FloatingMenu>
+  );
+};
 
+const ToolBar = ({
+  editor,
+  loading,
+}: {
+  editor: Editor | null;
+  loading?: boolean;
+}) => {
+  if (!editor) return null;
+
+  return (
+    <div className="sticky top-0 z-50 bg-background flex flex-wrap gap-1 items-center p-2 shadow-sm">
       <div>
         <ToolbarButton
           onClick={() => editor.chain().focus().undo().run()}
