@@ -35,17 +35,17 @@ import { SortableAdminNavList } from "@/lib/Admin";
 interface LessonSectionsNavProps {
   lessonId: LessonId;
   sectionId?: LessonSectionId | null;
-  hideHeader?: boolean;
   rootUrl?: string;
   isEditingContentOrder?: boolean;
+  asSubNav?: boolean;
 }
 
 export function LessonSectionsNav({
   lessonId,
   sectionId,
-  hideHeader,
   rootUrl = "/admin/lessons",
   isEditingContentOrder,
+  asSubNav,
 }: LessonSectionsNavProps) {
   const router = useRouter();
   const { toast } = useToast();
@@ -92,7 +92,7 @@ export function LessonSectionsNav({
 
   return (
     <>
-      {hideHeader ? null : (
+      {asSubNav ? null : (
         <div className="flex flex-row items-center justify-between pb-2">
           <Text className="font-bold">Lesson Sections</Text>
           <DropdownMenu>
@@ -129,34 +129,46 @@ export function LessonSectionsNav({
                 }
                 className={cn(
                   "w-full truncate transition-all",
-                  selectedSectionId === section?._id && "font-bold pl-5"
+                  selectedSectionId === section?._id && "font-bold"
                 )}
               >
-                <div className="w-full text-left truncate">
+                <div
+                  className={cn(
+                    "w-full text-left truncate",
+                    asSubNav && "text-sm"
+                  )}
+                >
                   {section?.title ?? "Untitled section"}
                 </div>
               </Button>
             )}
           />
         ) : (
-          lessonSections.map((section) => (
-            <Button
-              key={section?._id}
-              variant={"ghost"}
-              size="sm"
-              onClick={() =>
-                router.push(`${rootUrl}/${lessonId}/sections/${section?._id}`)
-              }
-              className={cn(
-                "w-full truncate transition-all",
-                selectedSectionId === section?._id && "font-bold pl-5"
-              )}
-            >
-              <div className="w-full text-left truncate">
-                {section?.title ?? "Untitled section"}
-              </div>
-            </Button>
-          ))
+          <div className="flex flex-col">
+            {lessonSections.map((section) => (
+              <Button
+                key={section?._id}
+                variant={"ghost"}
+                size="sm"
+                onClick={() =>
+                  router.push(`${rootUrl}/${lessonId}/sections/${section?._id}`)
+                }
+                className={cn(
+                  "w-full truncate transition-all",
+                  selectedSectionId === section?._id && "font-bold"
+                )}
+              >
+                <div
+                  className={cn(
+                    "w-full text-left truncate",
+                    asSubNav && "text-xs"
+                  )}
+                >
+                  {section?.title ?? "Untitled section"}
+                </div>
+              </Button>
+            ))}
+          </div>
         )}
       </div>
       <div className="block lg:hidden pb-6">

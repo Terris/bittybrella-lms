@@ -108,8 +108,12 @@ export function CourseLessonsNav({
                 onCloseForm={() => setMenuIsOpen(false)}
               />
             </DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => setIsEditingContentOrder(true)}>
-              Edit content order
+            <DropdownMenuItem
+              onSelect={() => setIsEditingContentOrder((i) => !i)}
+            >
+              {isEditingContentOrder
+                ? "Done editing content order"
+                : "Edit content order"}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -131,9 +135,8 @@ export function CourseLessonsNav({
                     )
                   }
                   className={cn(
-                    "w-full truncate transition-all",
-                    selectedLessonId === courseLesson.lessonId &&
-                      "font-bold pl-5"
+                    "w-full truncate transition-all pl-2",
+                    selectedLessonId === courseLesson.lessonId && "font-bold"
                   )}
                 >
                   <div className="w-full text-left truncate">
@@ -141,14 +144,13 @@ export function CourseLessonsNav({
                   </div>
                 </Button>
                 {selectedLessonId === courseLesson.lessonId && (
-                  <div className="pt-2">
-                    <LessonSectionsNav
-                      lessonId={selectedLessonId}
-                      sectionId={selectedSectionId}
-                      hideHeader
-                      rootUrl={`/admin/courses/${courseId}/lessons`}
-                    />
-                  </div>
+                  <LessonSectionsNav
+                    lessonId={selectedLessonId}
+                    sectionId={selectedSectionId}
+                    rootUrl={`/admin/courses/${courseId}/lessons`}
+                    isEditingContentOrder={isEditingContentOrder}
+                    asSubNav
+                  />
                 )}
               </div>
             )}
@@ -167,22 +169,22 @@ export function CourseLessonsNav({
                   )
                 }
                 className={cn(
-                  "w-full truncate transition-all",
-                  selectedLessonId === courseLesson.lessonId && "font-bold pl-5"
+                  "w-full truncate transition-all pl-2",
+                  selectedLessonId === courseLesson.lessonId && "font-bold"
                 )}
               >
-                <div className="w-full text-left truncate text-lg">
+                <div className="w-full text-left truncate">
                   {courseLesson.lesson.title}
                 </div>
               </Button>
               {selectedLessonId === courseLesson.lessonId && (
-                <div className="pl-5">
+                <div className="pl-2">
                   <LessonSectionsNav
                     lessonId={selectedLessonId}
                     sectionId={selectedSectionId}
-                    hideHeader
                     rootUrl={`/admin/courses/${courseId}/lessons`}
                     isEditingContentOrder={isEditingContentOrder}
+                    asSubNav
                   />
                 </div>
               )}

@@ -13,7 +13,7 @@ import {
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { restrictToParentElement } from "@dnd-kit/modifiers";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui";
@@ -42,7 +42,7 @@ export function SortableList({ children, onUpdate, items }: SortableListProps) {
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
-      modifiers={[restrictToParentElement]}
+      modifiers={[restrictToVerticalAxis]}
     >
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
         {children}
@@ -73,15 +73,10 @@ export function SortableListItem({
       {...attributes}
       className="w-full flex flex-row items-start"
     >
-      <Tooltip>
-        <TooltipTrigger>
-          <GripVertical
-            className="flex-shrink-0 w-3 h-3  mt-3 cursor-move"
-            {...listeners}
-          />
-        </TooltipTrigger>
-        <TooltipContent>Drag to rearrange</TooltipContent>
-      </Tooltip>
+      <GripVertical
+        className="flex-shrink-0 w-3 h-3  mt-3 cursor-move"
+        {...listeners}
+      />
       {children}
     </div>
   );
