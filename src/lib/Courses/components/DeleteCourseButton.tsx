@@ -28,7 +28,7 @@ export function DeleteCourseButton({ id }: { id: CourseId }) {
         <TooltipTrigger asChild>
           <AlertDialogTrigger asChild>
             <Button variant="ghost">
-              <Trash2 className="h-4 w-4" /> adf
+              <Trash2 className="h-4 w-4" />
             </Button>
           </AlertDialogTrigger>
         </TooltipTrigger>
