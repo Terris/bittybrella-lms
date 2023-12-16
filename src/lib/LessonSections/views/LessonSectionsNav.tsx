@@ -37,6 +37,7 @@ interface LessonSectionsNavProps {
   sectionId?: LessonSectionId | null;
   hideHeader?: boolean;
   rootUrl?: string;
+  isEditingContentOrder?: boolean;
 }
 
 export function LessonSectionsNav({
@@ -44,6 +45,7 @@ export function LessonSectionsNav({
   sectionId,
   hideHeader,
   rootUrl = "/admin/lessons",
+  isEditingContentOrder,
 }: LessonSectionsNavProps) {
   const router = useRouter();
   const { toast } = useToast();
@@ -111,12 +113,33 @@ export function LessonSectionsNav({
       )}
 
       <div className="hidden lg:block">
-        <SortableAdminNavList<LessonSectionDoc, "_id">
-          data={lessonSections}
-          keyExtractor="_id"
-          sortableItemIds={sortableListItems}
-          onUpdate={handleOnUpdate}
-          renderItem={(section) => (
+        {isEditingContentOrder ? (
+          <SortableAdminNavList<LessonSectionDoc, "_id">
+            data={lessonSections}
+            keyExtractor="_id"
+            sortableItemIds={sortableListItems}
+            onUpdate={handleOnUpdate}
+            renderItem={(section) => (
+              <Button
+                key={section?._id}
+                variant={"ghost"}
+                size="sm"
+                onClick={() =>
+                  router.push(`${rootUrl}/${lessonId}/sections/${section?._id}`)
+                }
+                className={cn(
+                  "w-full truncate transition-all",
+                  selectedSectionId === section?._id && "font-bold pl-5"
+                )}
+              >
+                <div className="w-full text-left truncate">
+                  {section?.title ?? "Untitled section"}
+                </div>
+              </Button>
+            )}
+          />
+        ) : (
+          lessonSections.map((section) => (
             <Button
               key={section?._id}
               variant={"ghost"}
@@ -133,8 +156,8 @@ export function LessonSectionsNav({
                 {section?.title ?? "Untitled section"}
               </div>
             </Button>
-          )}
-        />
+          ))
+        )}
       </div>
       <div className="block lg:hidden pb-6">
         <LessonSectionsNavSelect

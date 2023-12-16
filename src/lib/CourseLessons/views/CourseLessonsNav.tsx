@@ -50,6 +50,8 @@ export function CourseLessonsNav({
   const { toast } = useToast();
   const selectedLessonId = lessonId;
   const selectedSectionId = lessonSectionId;
+  const [isEditingContentOrder, setIsEditingContentOrder] =
+    useState<boolean>(false);
 
   const { isLoading, courseLessons } = useCourseLessons({
     courseId,
@@ -106,17 +108,57 @@ export function CourseLessonsNav({
                 onCloseForm={() => setMenuIsOpen(false)}
               />
             </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setIsEditingContentOrder(true)}>
+              Edit content order
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
       <div className="hidden lg:block">
-        <SortableAdminNavList<CourseLessonWithLessonDoc, "_id">
-          data={courseLessons}
-          keyExtractor="_id"
-          sortableItemIds={sortableListItems}
-          onUpdate={handleOnUpdate}
-          renderItem={(courseLesson) => (
-            <div className="w-full flex flex-col truncate">
+        {isEditingContentOrder ? (
+          <SortableAdminNavList<CourseLessonWithLessonDoc, "_id">
+            data={courseLessons}
+            keyExtractor="_id"
+            sortableItemIds={sortableListItems}
+            onUpdate={handleOnUpdate}
+            renderItem={(courseLesson) => (
+              <div className="w-full flex flex-col truncate">
+                <Button
+                  variant="ghost"
+                  onClick={() =>
+                    router.push(
+                      `/admin/courses/${courseId}/lessons/${courseLesson.lessonId}/sections`
+                    )
+                  }
+                  className={cn(
+                    "w-full truncate transition-all",
+                    selectedLessonId === courseLesson.lessonId &&
+                      "font-bold pl-5"
+                  )}
+                >
+                  <div className="w-full text-left truncate">
+                    {courseLesson.lesson.title}
+                  </div>
+                </Button>
+                {selectedLessonId === courseLesson.lessonId && (
+                  <div className="pt-2">
+                    <LessonSectionsNav
+                      lessonId={selectedLessonId}
+                      sectionId={selectedSectionId}
+                      hideHeader
+                      rootUrl={`/admin/courses/${courseId}/lessons`}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+          />
+        ) : (
+          courseLessons.map((courseLesson) => (
+            <div
+              className="w-full flex flex-col truncate"
+              key={courseLesson._id}
+            >
               <Button
                 variant="ghost"
                 onClick={() =>
@@ -129,23 +171,24 @@ export function CourseLessonsNav({
                   selectedLessonId === courseLesson.lessonId && "font-bold pl-5"
                 )}
               >
-                <div className="w-full text-left truncate">
+                <div className="w-full text-left truncate text-lg">
                   {courseLesson.lesson.title}
                 </div>
               </Button>
               {selectedLessonId === courseLesson.lessonId && (
-                <div className="pt-2">
+                <div className="pl-5">
                   <LessonSectionsNav
                     lessonId={selectedLessonId}
                     sectionId={selectedSectionId}
                     hideHeader
                     rootUrl={`/admin/courses/${courseId}/lessons`}
+                    isEditingContentOrder={isEditingContentOrder}
                   />
                 </div>
               )}
             </div>
-          )}
-        />
+          ))
+        )}
       </div>
       <div className="block lg:hidden pb-6">
         <Select
