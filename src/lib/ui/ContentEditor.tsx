@@ -112,7 +112,7 @@ const InlineMenu = ({ editor }: { editor: Editor | null }) => {
   return (
     <BubbleMenu
       editor={editor}
-      tippyOptions={{ duration: 100, maxWidth: "100%" }}
+      tippyOptions={{ duration: 100, maxWidth: "100%", placement: "top-start" }}
       className="w-full bg-secondary flex flex-wrap gap-1 items-center p-2 shadow-sm rounded"
     >
       <ToolbarButton
@@ -242,7 +242,7 @@ const BlockMenu = ({ editor }: { editor: Editor | null }) => {
   return (
     <FloatingMenu
       editor={editor}
-      tippyOptions={{ duration: 100, maxWidth: "100%" }}
+      tippyOptions={{ duration: 100, maxWidth: "100%", placement: "top-start" }}
       className="w-full bg-secondary flex flex-wrap gap-1 items-center p-2 shadow-sm"
     >
       <ToolbarButton

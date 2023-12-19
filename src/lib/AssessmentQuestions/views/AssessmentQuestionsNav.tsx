@@ -1,8 +1,13 @@
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import {
   Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   Select,
   SelectContent,
   SelectItem,
@@ -10,20 +15,16 @@ import {
   SelectValue,
   Text,
 } from "@/lib/ui";
-import {
-  SortableList,
-  SortableListItem,
-} from "@/lib/providers/SortableListProvider";
 import { cn } from "@/lib/utils";
+import { SortableAdminNavList } from "@/lib/Admin";
 import { AssessmentId, useAssessment } from "@/lib/Assessments";
+import { useToast } from "@/lib/hooks";
 import {
   useAssessmentQuestions,
   useCreateAssessmentQuestion,
   useUpdateAssessmentQuestionsOrder,
 } from "../hooks";
-import { useToast } from "@/lib/hooks";
 import { AssessmentQuestionDoc, AssessmentQuestionId } from "../types";
-import { SortableAdminNavList } from "@/lib/Admin";
 
 interface AssessmentQuestionsNavProps {
   assessmentId: AssessmentId;
@@ -38,6 +39,8 @@ export function AssessmentQuestionsNav({
   const { toast } = useToast();
   const { isLoading, assessment } = useAssessment({ id: assessmentId });
   const selectedQuestionId = questionId;
+  const [isEditingContentOrder, setIsEditingContentOrder] =
+    useState<boolean>(false);
 
   const { assessmentQuestions } = useAssessmentQuestions({
     assessmentId,
@@ -83,46 +86,72 @@ export function AssessmentQuestionsNav({
     <>
       <div className="flex flex-row items-center justify-between pb-2">
         <Text className="font-bold">Assessment Questions</Text>
-      </div>
-      <div className="hidden lg:block">
-        <SortableList items={sortableListItems} onUpdate={handleOnUpdate}>
-          <div className="flex flex-col gap-2">
-            <SortableAdminNavList<AssessmentQuestionDoc, "_id">
-              data={assessmentQuestions}
-              keyExtractor="_id"
-              sortableItemIds={sortableListItems}
-              onUpdate={handleOnUpdate}
-              renderItem={(question) => (
-                <Button
-                  key={question._id}
-                  variant="ghost"
-                  size="sm"
-                  onClick={() =>
-                    router.push(
-                      `/admin/assessments/${assessmentId}/questions/${question?._id}`
-                    )
-                  }
-                  className={cn(
-                    "w-full truncate transition-all",
-                    selectedQuestionId === question?._id && "font-bold pl-5"
-                  )}
-                >
-                  <div className="w-full text-left truncate">
-                    {question.question}
-                  </div>
-                </Button>
-              )}
-            />
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={createBlankAssessmentQuestion}
-              className=" justify-start italic"
-            >
-              <Plus className="h-3 w-3 mr-1" /> Add assessment question
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm">
+              <MoreVertical className="w-4 h-4 text-muted-foreground" />
             </Button>
-          </div>
-        </SortableList>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onClick={createBlankAssessmentQuestion}>
+              Add question
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => setIsEditingContentOrder((i) => !i)}
+            >
+              {isEditingContentOrder
+                ? "Done editing content order"
+                : "Edit content order"}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+      <div className="hidden lg:flex lg:flex-col lg:gap-1">
+        {isEditingContentOrder ? (
+          <SortableAdminNavList<AssessmentQuestionDoc, "_id">
+            data={assessmentQuestions}
+            keyExtractor="_id"
+            sortableItemIds={sortableListItems}
+            onUpdate={handleOnUpdate}
+            renderItem={(question) => (
+              <Button
+                key={question._id}
+                variant="ghost"
+                size="sm"
+                onClick={() =>
+                  router.push(
+                    `/admin/assessments/${assessmentId}/questions/${question?._id}`
+                  )
+                }
+                className={cn("w-full truncate")}
+              >
+                <div className="w-full text-left truncate">
+                  {question.question}
+                </div>
+              </Button>
+            )}
+          />
+        ) : (
+          <>
+            {assessmentQuestions.map((question) => (
+              <Button
+                key={question._id}
+                variant="ghost"
+                size="sm"
+                onClick={() =>
+                  router.push(
+                    `/admin/assessments/${assessmentId}/questions/${question?._id}`
+                  )
+                }
+                className={cn("w-full truncate")}
+              >
+                <div className="w-full text-left truncate">
+                  {question.question}
+                </div>
+              </Button>
+            ))}
+          </>
+        )}
       </div>
       <div className="block lg:hidden pb-6">
         <AssessmentQuestionsNavSelect

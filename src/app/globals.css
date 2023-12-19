@@ -84,6 +84,24 @@
   font-size: 1rem;
   font-weight: 700;
 }
+.tiptap h1,
+.tiptap h2,
+.tiptap h3,
+.tiptap p {
+  margin: 1rem 0;
+}
+.tiptap h1:first-child,
+.tiptap h2:first-child,
+.tiptap h3:first-child,
+.tiptap p:first-child {
+  margin-top: 0;
+}
+.tiptap h1:last-child,
+.tiptap h2:last-child,
+.tiptap h3:last-child,
+.tiptap p:last-child {
+  margin-bottom: 0;
+}
 
 .tiptap hr {
   margin: 1rem 0;
@@ -119,6 +137,11 @@
   padding: 1rem;
   background: var(--accent);
   border-radius: 0.25rem;
+}
+
+.tiptap blockquote p:first-child,
+.tiptap blockquote p:last-child {
+  margin: 0;
 }
 
 .tiptap blockquote hr {

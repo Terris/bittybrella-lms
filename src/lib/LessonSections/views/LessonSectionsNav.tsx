@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "convex/react";
 import { MoreVertical, Plus } from "lucide-react";
@@ -8,7 +8,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuPortal,
   DropdownMenuTrigger,
   Select,
   SelectContent,
@@ -17,10 +16,6 @@ import {
   SelectValue,
   Text,
 } from "@/lib/ui";
-import {
-  SortableList,
-  SortableListItem,
-} from "@/lib/providers/SortableListProvider";
 import { cn } from "@/lib/utils";
 import {
   type LessonSectionDoc,
@@ -44,13 +39,16 @@ export function LessonSectionsNav({
   lessonId,
   sectionId,
   rootUrl = "/admin/lessons",
-  isEditingContentOrder,
+  isEditingContentOrder: isEditingContentOrderProp,
   asSubNav,
 }: LessonSectionsNavProps) {
   const router = useRouter();
   const { toast } = useToast();
   const { isLoading, lessonSections } = useLessonSections({ lessonId });
   const selectedSectionId = sectionId;
+  const [isEditingContentOrder, setIsEditingContentOrder] = useState<boolean>(
+    isEditingContentOrderProp ?? false
+  );
 
   const sortableListItems = lessonSections?.map((section) => section._id);
   const createLessonSection = useMutation(api.lessonSections.create);
@@ -101,18 +99,23 @@ export function LessonSectionsNav({
                 <MoreVertical className="w-4 h-4 text-muted-foreground" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuContent>
-                <DropdownMenuItem onClick={handleCreateNewSection}>
-                  Add lesson section
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenuPortal>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={handleCreateNewSection}>
+                Add lesson section
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onSelect={() => setIsEditingContentOrder((i) => !i)}
+              >
+                {isEditingContentOrder
+                  ? "Done editing content order"
+                  : "Edit content order"}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
           </DropdownMenu>
         </div>
       )}
 
-      <div className="hidden lg:block">
+      <div className="hidden lg:flex lg:flex-col lg:gap-1">
         {isEditingContentOrder ? (
           <SortableAdminNavList<LessonSectionDoc, "_id">
             data={lessonSections}
@@ -132,43 +135,32 @@ export function LessonSectionsNav({
                   selectedSectionId === section?._id && "font-bold"
                 )}
               >
-                <div
-                  className={cn(
-                    "w-full text-left truncate",
-                    asSubNav && "text-sm"
-                  )}
-                >
+                <div className={cn("w-full text-left truncate")}>
                   {section?.title ?? "Untitled section"}
                 </div>
               </Button>
             )}
           />
         ) : (
-          <div className="flex flex-col">
+          <>
             {lessonSections.map((section) => (
               <Button
                 key={section?._id}
-                variant={"ghost"}
+                variant={
+                  selectedSectionId === section?._id ? "secondary" : "ghost"
+                }
                 size="sm"
                 onClick={() =>
                   router.push(`${rootUrl}/${lessonId}/sections/${section?._id}`)
                 }
-                className={cn(
-                  "w-full truncate transition-all",
-                  selectedSectionId === section?._id && "font-bold"
-                )}
+                className={"w-full truncate transition-all"}
               >
-                <div
-                  className={cn(
-                    "w-full text-left truncate",
-                    asSubNav && "text-xs"
-                  )}
-                >
+                <div className={cn("w-full text-left truncate")}>
                   {section?.title ?? "Untitled section"}
                 </div>
               </Button>
             ))}
-          </div>
+          </>
         )}
       </div>
       <div className="block lg:hidden pb-6">
