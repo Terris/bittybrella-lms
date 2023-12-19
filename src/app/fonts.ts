@@ -1,3 +1,5 @@
+// Important! If you change things here you'll want to be sure Storybook preview is up to date as well.
+
 import {
   Alegreya_Sans as FontSans,
   Cormorant_Infant as FontSerif,
