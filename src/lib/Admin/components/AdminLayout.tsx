@@ -77,7 +77,7 @@ AdminLayout.NavWrapper = NavWrapper;
 export function ContentWrapper({ children }: LayoutComponentWithChildren) {
   return (
     <div className="px-4 lg:w-3/4 lg:pr-8">
-      <div className="max-w-4xl mx-auto">{children}</div>
+      <div className="max-w-3xl mx-auto">{children}</div>
     </div>
   );
 }
