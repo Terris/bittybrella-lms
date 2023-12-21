@@ -20,6 +20,10 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Image from "@tiptap/extension-image";
 import Typography from "@tiptap/extension-typography";
 import Youtube from "@tiptap/extension-youtube";
+import Collaboration from "@tiptap/extension-collaboration";
+import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
+import * as Y from "yjs";
+import { WebrtcProvider } from "y-webrtc";
 import {
   Bold,
   Check,
@@ -42,22 +46,11 @@ import {
 } from "lucide-react";
 import { useDebounce } from "../hooks/useDebounce";
 
-// define your extension array
-const extensions = [
-  Image,
-  Typography,
-  StarterKit,
-  Youtube.configure({
-    nocookie: true,
-    modestBranding: true,
-  }),
-  Placeholder.configure({
-    placeholder: "Start writing something…",
-  }),
-];
-
+const ydoc = new Y.Doc();
 const emptyJSON = '""';
 
+// required for collaboration
+const provider = new WebrtcProvider("tiptap-collaboration-extension", ydoc);
 interface ContentEditorProps {
   initialContent?: string;
   onChange?: (content: string) => void;
@@ -70,10 +63,43 @@ export const ContentEditor = ({
   editable = true,
 }: ContentEditorProps) => {
   const [ready, setReady] = useState(false);
+  const [editorJson, setEditorJson] = useState<string>(initialContent);
+
+  const extensions = [
+    Image,
+    Typography,
+    StarterKit.configure({
+      // Disable an included extension
+      history: false,
+
+      // Configure an included extension
+      heading: {
+        levels: [1, 2],
+      },
+    }),
+    Youtube.configure({
+      nocookie: true,
+      modestBranding: true,
+    }),
+    Placeholder.configure({
+      placeholder: "Start writing something…",
+    }),
+    Collaboration.configure({
+      document: ydoc,
+    }),
+    CollaborationCursor.configure({
+      provider,
+      user: {
+        name: createRandomString(10),
+        color: "#f783ac",
+      },
+    }),
+  ];
 
   const editor = useEditor({
     extensions,
-    content: JSON.parse(initialContent === "" ? emptyJSON : initialContent),
+    content: JSON.parse(editorJson === "" ? emptyJSON : initialContent),
+    onUpdate: ({ editor }) => console.log("on update!!!"),
   });
 
   const contentString = JSON.stringify(editor?.getJSON());
@@ -408,3 +434,16 @@ const ToolbarButton = ({
     </Tooltip>
   );
 };
+
+function createRandomString(length: number) {
+  var characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var randomString = "";
+  for (var i = 0; i < length; i++) {
+    var randomCharacter = characters.charAt(
+      Math.floor(Math.random() * characters.length)
+    );
+    randomString += randomCharacter;
+  }
+  return randomString;
+}
