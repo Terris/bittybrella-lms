@@ -60,4 +60,10 @@ export default defineSchema({
   })
     .index("by_assessmentId", ["assessmentId"])
     .index("by_order", ["order"]),
+  files: defineTable({
+    storageId: v.id("_storage"),
+    fileName: v.string(),
+    type: v.string(),
+    size: v.number(),
+  }),
 });
