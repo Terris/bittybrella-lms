@@ -17,7 +17,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
   Button,
-  ContentEditor,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -27,6 +26,7 @@ import {
 } from "@/lib/ui";
 import type { LessonSectionDoc, LessonSectionId } from "../types";
 import { useDeleteLessonSection, useLessonSection } from "../hooks";
+import { BlockNoteEditor } from "@/lib/ui/BlockNoteEditor";
 
 interface LessonSectionProps {
   id: LessonSectionId;
@@ -101,10 +101,7 @@ const Form = ({ section }: { section: LessonSectionDoc }) => {
           <LessonSectionSettingsMenu lessonSectionId={section._id} />
         </div>
       </div>
-      <ContentEditor
-        initialContent={section.content}
-        onChange={handleSaveContent}
-      />
+      <BlockNoteEditor />
     </div>
   );
 };
