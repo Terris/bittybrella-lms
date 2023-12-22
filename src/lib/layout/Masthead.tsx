@@ -62,6 +62,9 @@ export function Masthead() {
           <TextLink href="/admin/assessments" className="font-bold">
             Assessments
           </TextLink>
+          <TextLink href="/admin/files" className="font-bold">
+            Files
+          </TextLink>
         </div>
       )}
       <div className="flex flex-row items-center justify-between gap-4">
