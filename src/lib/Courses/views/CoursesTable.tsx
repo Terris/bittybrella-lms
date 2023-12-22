@@ -1,6 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { useQuery } from "convex/react";
-import { Id } from "../../../../convex/_generated/dataModel";
 import { api } from "../../../../convex/_generated/api";
 import { AdminTable, AdminTableBooleanCell } from "@/lib/Admin";
 import {
@@ -13,6 +12,7 @@ import {
 } from "@/lib/ui";
 import { QuickEditCourseForm } from "../forms";
 import { DeleteCourseButton } from "../components/DeleteCourseButton";
+import { CourseId } from "../types";
 
 interface CourseRow {
   _id: string;
@@ -77,15 +77,13 @@ const columns: ColumnDef<CourseRow>[] = [
     id: "edit",
     header: "Quick Edit",
     cell: ({ row }) => (
-      <QuickEditCourseForm courseId={row.original._id as Id<"courses">} />
+      <QuickEditCourseForm courseId={row.original._id as CourseId} />
     ),
   },
   {
     id: "delete",
     header: "Delete",
-    cell: ({ row }) => (
-      <DeleteCourseButton id={row.original._id as Id<"courses">} />
-    ),
+    cell: ({ row }) => <DeleteCourseButton id={row.original._id as CourseId} />,
   },
 ];
 
