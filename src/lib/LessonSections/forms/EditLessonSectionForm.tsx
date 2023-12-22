@@ -102,8 +102,8 @@ const Form = ({ section }: { section: LessonSectionDoc }) => {
         </div>
       </div>
       <ContentEditor
+        documentId={section._id}
         initialContent={section.content}
-        onChange={handleSaveContent}
       />
     </div>
   );

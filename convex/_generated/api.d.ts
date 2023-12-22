@@ -18,6 +18,8 @@ import type * as assessmentQuestions from "../assessmentQuestions.js";
 import type * as assessments from "../assessments.js";
 import type * as courseLessons from "../courseLessons.js";
 import type * as courses from "../courses.js";
+import type * as http from "../http.js";
+import type * as internal_ from "../internal.js";
 import type * as lessonSections from "../lessonSections.js";
 import type * as lessons from "../lessons.js";
 import type * as lib_authorization from "../lib/authorization.js";
@@ -39,6 +41,8 @@ declare const fullApi: ApiFromModules<{
   assessments: typeof assessments;
   courseLessons: typeof courseLessons;
   courses: typeof courses;
+  http: typeof http;
+  internal: typeof internal_;
   lessonSections: typeof lessonSections;
   lessons: typeof lessons;
   "lib/authorization": typeof lib_authorization;
