@@ -37,6 +37,7 @@ import {
   Youtube as YouTubeIcon,
 } from "lucide-react";
 import { useDebounce } from "../hooks/useDebounce";
+import { useMe } from "../providers/MeProvider";
 
 const emptyJSON = '""';
 const jwt = jsonwebtoken.sign(
@@ -59,6 +60,8 @@ export const ContentEditor = ({
   documentId,
   initialContent = emptyJSON,
 }: ContentEditorProps) => {
+  const { me } = useMe();
+
   const provider = new TiptapCollabProvider({
     appId: process.env.NEXT_PUBLIC_TIPTAP_APP_ID!,
     name: documentId ?? "test document",
@@ -86,7 +89,7 @@ export const ContentEditor = ({
       CollaborationCursor.configure({
         provider,
         user: {
-          name: randomString(10),
+          name: me?.firstName,
           color: randomHexColor(),
         },
       }),

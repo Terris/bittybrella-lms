@@ -15,6 +15,7 @@ import { Id } from "../../../convex/_generated/dataModel";
 interface User {
   id: Id<"users">;
   isAdmin?: boolean;
+  firstName?: string;
 }
 
 interface MeContextProps {
@@ -77,6 +78,7 @@ export const MeProvider = ({ children }: MeProviderProps) => {
 
   const me = dbUserData
     ? {
+        firstName: clerkUser?.firstName ?? "Guest",
         id: dbUserData._id,
         isAdmin: dbUserData.isAdmin,
       }
