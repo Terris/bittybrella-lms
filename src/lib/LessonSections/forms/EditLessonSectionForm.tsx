@@ -68,25 +68,6 @@ const Form = ({ section }: { section: LessonSectionDoc }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedNewSectionTitle]);
 
-  const handleSaveContent = useCallback(
-    (content: string) => {
-      if (!section._id) return;
-      try {
-        updateLessonSection({
-          id: section._id,
-          content: content,
-        });
-      } catch (error: any) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: error.message,
-        });
-      }
-    },
-    [section._id, toast, updateLessonSection]
-  );
-
   return (
     <div className="flex flex-col gap-4">
       <div>
